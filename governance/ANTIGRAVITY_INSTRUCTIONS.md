@@ -268,22 +268,23 @@ A later change to frozen behavior requires an explicit reopen/amendment path and
 
 ## 14. AGENT CONTINUITY — START OF TASK
 
-Before beginning any material TTC CAD task, the Agent MUST read repository artifacts in this exact order:
-
-```text
-1. governance/ANTIGRAVITY_INSTRUCTIONS.md
-2. governance/PROJECT_PROGRESS.md
-3. governance/AGENT_HANDOFF.md
-4. governance/DECISION_LOG.md
-5. docs/tranches/TRANCHE_STATUS.md
-6. docs/tranches/TRANCHE_ROADMAP.md
-7. current tranche README / front-door if one exists (e.g. docs/tranches/<ID>/README.md)
-8. current Spec if applicable
-9. current Work Order if applicable
-10. current Issue Registry if applicable (ISSUES.md)
-11. recent Execution Log entries if applicable (EXECUTION_LOG.md)
-12. latest Review Result if applicable (REVIEW.md)
-```
+Before beginning any material TTC CAD task, the Agent MUST:
+1. Dynamically resolve the current repository commit using `git rev-parse HEAD`;
+2. Read repository artifacts in this exact order:
+   ```text
+   1. governance/ANTIGRAVITY_INSTRUCTIONS.md
+   2. governance/PROJECT_PROGRESS.md
+   3. governance/AGENT_HANDOFF.md
+   4. governance/DECISION_LOG.md
+   5. docs/tranches/TRANCHE_STATUS.md
+   6. docs/tranches/TRANCHE_ROADMAP.md
+   7. current tranche README / front-door if one exists (e.g. docs/tranches/<ID>/README.md)
+   8. current Spec if applicable
+   9. current Work Order if applicable
+   10. current Issue Registry if applicable (ISSUES.md)
+   11. recent Execution Log entries if applicable (EXECUTION_LOG.md)
+   12. latest Review Result if applicable (REVIEW.md)
+   ```
 
 Then the Agent MUST produce internally or in its initial task report:
 
@@ -292,7 +293,8 @@ CONTINUITY CHECK
 
 Repository:
 Branch:
-HEAD:
+Repository HEAD: <actual runtime HEAD from git rev-parse HEAD>
+Baseline Commit: <commit recorded in AGENT_HANDOFF.md>
 
 Current Tranche:
 Lifecycle Stage:
@@ -321,9 +323,14 @@ Gate Result:
 PASS / BLOCKED
 ```
 
-> **Contradiction Rule:** If repository evidence is contradictory, output:
-> `Gate Result: BLOCKED_CONTINUITY_CONFLICT`
-> Identify the contradiction and stop. Do NOT guess which state is correct.
+> [!IMPORTANT]
+> **Commit Comparison & Contradiction Rules:**
+> - The continuity check compares `Repository HEAD` against `Baseline Commit` in `AGENT_HANDOFF.md`.
+> - If `Repository HEAD` is ahead of `Baseline Commit`, this is **NOT** automatically an error. The Agent must check `git log` to verify if newer commits are legitimate continuity, documentation, or governance updates.
+> - If repository evidence contains a material contradiction, output:
+>   `Gate Result: BLOCKED_CONTINUITY_CONFLICT`
+>   Identify the exact contradictory artifacts and stop. Do NOT guess which state is correct.
+> - Do not create a false blocker merely because HEAD is newer than the handoff's baseline commit.
 
 ## 15. AGENT CONTINUITY — DURING TASK
 

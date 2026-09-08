@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-08 22:15:00 +07:00
+2026-09-08 22:25:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -9,8 +9,12 @@ Khaittc/AgentsTools_Autocad
 Branch:
 simulator
 
-Current Commit:
-96b2d4b
+Baseline Commit:
+7b3940bc6724d25f8facb322d324b860b7092fed
+
+Repository HEAD:
+Resolve dynamically at task start using `git rev-parse HEAD`.
+Do not treat Baseline Commit as static current HEAD.
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -37,13 +41,13 @@ Frozen Dependencies:
 NONE
 
 Last Completed Task:
-Installed TTC CAD Agent Continuity & Handoff Protocol (TTC-GOV-002).
+Corrected TTC-GOV-002 continuity review findings.
 
 Last Agent:
 Antigravity
 
 Last Result:
-GOVERNANCE_ONLY
+GOVERNANCE_ONLY / PASS
 
 Open Blocking Issues:
 NONE
@@ -52,17 +56,19 @@ Open Non-Blocking Issues:
 NONE
 
 Reviewer Disposition:
-NOT_REVIEWED
+PENDING_REVIEW
 
 Next Authorized Action:
-Product Owner / Reviewer review continuity migration, then authorize F0 Intake / Design / Spec preparation.
+Independent reviewer verifies continuity correction commit.
 
 Forbidden Next Actions:
+- F0 Intake / Design / Spec until reviewer PASS
 - BUILD
 - create AutoCAD production code (.cs, .csproj, .sln)
-- start F1
-- implement P2
-- start M&E
+- F1
+- P1
+- P2 implementation
+- M&E
 
 Required First Reads:
 1. governance/ANTIGRAVITY_INSTRUCTIONS.md
@@ -73,4 +79,4 @@ Required First Reads:
 6. docs/tranches/TRANCHE_ROADMAP.md
 
 Handoff Notes:
-The repository is operating under Spec-First Per Tranche development with strict Git-based continuity. F0 is the next candidate tranche to establish the minimal AutoCAD 2023 Managed .NET plugin shell. All production code remains locked and blocked until F0 Spec is frozen and an approved Work Order exists.
+Baseline Commit records the commit from which this handed-off state was derived. Repository HEAD must always be queried dynamically via `git rev-parse HEAD`. F0 preparation remains gated behind independent reviewer PASS. All production code remains locked.

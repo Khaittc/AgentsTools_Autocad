@@ -2,6 +2,7 @@
 
 Status: DRAFT
 Work Order ID: WO-<MODULE>-<FEATURE>-<NNN>
+Work Order Type: <PRODUCTION / SIMULATOR / GOVERNANCE / REVIEW>
 Tranche ID: <F0 / F1 / P1 / etc.>
 Owner/Dispatcher: <human/orchestrator>
 Implementer: Antigravity
@@ -74,15 +75,24 @@ Authority boundary:
 
 ## 6. Allowed / Owned Paths
 
+> [!IMPORTANT]
+> **Production Path Safety Rule:**
+> For production Work Orders (`Work Order Type = PRODUCTION`):
+> - `production/` is the default writable implementation lane.
+> - `src/` and `public/` belong to the simulator lane and are FORBIDDEN by default.
+> - Simulator files may only be modified if the Work Order explicitly authorizes a simulator-lane task (`Work Order Type = SIMULATOR`).
+> - A production Work Order must never inherit simulator write access implicitly.
+
 | Path | Write Mode | Purpose |
 |---|---|---|
-| `src/...` | MODIFY/CREATE | |
-| `tests/...` | MODIFY/CREATE | |
+| `production/<explicit-path>` | MODIFY/CREATE | |
+| `production/tests/<explicit-path>` | MODIFY/CREATE | |
 
 ## 7. Forbidden Paths
 
-- `<path>`
-- `<path>`
+- `src/` (simulator lane — forbidden for production Work Orders)
+- `public/` (simulator lane — forbidden for production Work Orders)
+- `<explicit-forbidden-path>`
 
 Any required edit outside Allowed Paths => `BLOCKED_SCOPE_EXPANSION` unless the operator amends this Work Order.
 

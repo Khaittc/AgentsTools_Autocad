@@ -28,7 +28,22 @@ Status: ACTIVE_GOVERNANCE
 
 ---
 
-## 3. Production Tranche Progress
+## 3. Governance Continuity Review State
+
+- **Last Governance Task:** TTC-GOV-002 — Agent Continuity & Handoff Protocol
+- **Reviewed Commit:** `7b3940bc6724d25f8facb322d324b860b7092fed`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Reviewer Disposition:** `NEEDS_FIX`
+- **Review Findings:**
+  - continuity handoff commit field is self-referential/stale;
+  - production Work Order template uses simulator-path examples;
+  - project progress did not reflect the continuity review state.
+- **Current Correction Task:** Resolve TTC-GOV-002 review findings.
+- **Production Build Authorization:** `NOT AUTHORIZED`
+
+---
+
+## 4. Production Tranche Progress
 
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
@@ -41,7 +56,7 @@ Status: ACTIVE_GOVERNANCE
 
 ---
 
-## 4. Current Gate & Build Authorization
+## 5. Current Gate & Build Authorization
 
 - **Production Build Authorization:** `NOT AUTHORIZED`
 - **Active Work Orders:** `NONE`
@@ -56,7 +71,7 @@ Status: ACTIVE_GOVERNANCE
 
 ---
 
-## 5. Existing P2 (`TTCPANELPLACE`) Design Evidence
+## 6. Existing P2 (`TTCPANELPLACE`) Design Evidence
 
 The intake, design, and feature specification authored for `TTCPANELPLACE` remain preserved as valuable design evidence for Tranche P2:
 - **Intake:** [../docs/01_INTAKE_TTCPANELPLACE.md](../docs/01_INTAKE_TTCPANELPLACE.md) (`INTAKE-PANEL-001`, Status: `PENDING_HUMAN_CONFIRMATION`)
@@ -67,8 +82,13 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 
 ---
 
-## 6. Next Authorized Action
+## 7. Next Authorized Action
 
-Awaiting Product Owner / Project Owner review and explicit instruction to:
-1. Review the tranche migration and confirm the status of `docs/tranches/TRANCHE_ROADMAP.md`.
-2. Authorize the preparation of the **F0 AutoCAD Foundation** Intake and Design documents (`docs/01_INTAKE_F0_FOUNDATION.md`, `docs/02_DESIGN_F0_FOUNDATION.md`).
+**Immediate Next Authorized Action:**
+Independent reviewer verifies TTC-GOV-002 correction commit.
+
+**Subsequent Action (gated behind reviewer PASS):**
+If reviewer disposition = `PASS`:
+Product Owner may authorize F0 INTAKE / DESIGN / SPEC preparation (`docs/01_INTAKE_F0_FOUNDATION.md`, `docs/02_DESIGN_F0_FOUNDATION.md`).
+
+Do NOT write "Start F0" as the immediate next authorized action. F0 remains strictly gated behind reviewer PASS.

@@ -6,6 +6,11 @@
 > `EXECUTION_LOG` = historical append-only session log.
 > `ISSUES` = problem registry.
 > Do NOT duplicate execution history into this handoff document.
+> 
+> **Commit Semantics Rule:**
+> - `Baseline Commit` = the commit from which the handed-off task/session state was derived.
+> - `Repository HEAD` = runtime fact resolved dynamically by the incoming Agent via `git rev-parse HEAD`.
+> Do NOT use a static field as the sole source of current HEAD truth.
 
 Updated:
 <YYYY-MM-DD HH:MM / ISO timestamp>
@@ -16,8 +21,11 @@ Khaittc/AgentsTools_Autocad
 Branch:
 <branch>
 
-Current Commit:
-<commit sha>
+Baseline Commit:
+<starting commit / handoff reference sha>
+
+Repository HEAD:
+Resolve dynamically using `git rev-parse HEAD` during Continuity Check.
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -59,7 +67,7 @@ Open Non-Blocking Issues:
 <issue IDs or NONE>
 
 Reviewer Disposition:
-PASS / NEEDS_FIX / BLOCKED / NOT_REVIEWED
+PASS / NEEDS_FIX / BLOCKED / NOT_REVIEWED / PENDING_REVIEW
 
 Next Authorized Action:
 <exact next authorized action>
