@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0"
+                    AppVersion="1.0.0"
+                    Author="Real Group / TTC CAD Team"
+                    ProductCode="{4A7A779F-9C3D-4A42-A862-2D5392D6D3A0}"
+                    Name="TTC CAD Tools"
+                    Description="TTC CAD Foundation Plugin">
+  <CompanyDetails Name="Real Group"
+                  Url="https://realgroup.vn"
+                  Email="support@realgroup.vn" />
+  <Components Description="AutoCAD 2023 Foundation Parts">
+    <RuntimeRequirements OS="Win64"
+                         Platform="AutoCAD*"
+                         SeriesMin="R24.2"
+                         SeriesMax="R24.2" />
+    <ComponentEntry AppName="TTC.CadTools"
+                    ModuleName="./Contents/TTC.CadTools.AutoCAD.dll"
+                    AppType=".NET"
+                    AppDescription="TTC CAD Foundation Plugin"
+                    LoadOnAutoCADStartup="True">
+      <Commands GroupName="TTC_COMMANDS">
+        <Command Global="TTCINFO" Local="TTCINFO" />
+        <Command Global="TTCPALETTE" Local="TTCPALETTE" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

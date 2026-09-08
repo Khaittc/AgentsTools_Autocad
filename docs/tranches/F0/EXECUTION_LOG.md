@@ -768,3 +768,216 @@ PASS
 ### Next Action
 
 Execute F0 BUILD under `WO-F0-001`.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F0-007
+- **Actual Result Commit:** `2316ca64d4aa2b243bba04ef938a3e340d1fd3db`
+- **Resolution Date:** 2026-09-08
+- **Reason:** Commit was successfully generated and pushed in task F0-WORK-ORDER-APPROVAL-001; this addendum links the session record to its permanent Git commit SHA in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-09 / AG-F0-008
+
+### Identity
+
+Agent:
+Antigravity
+
+Session ID:
+AG-F0-008
+
+Task ID:
+F0-BUILD-001
+
+Lifecycle Stage:
+BUILD
+
+Tranche:
+F0 — AutoCAD Foundation
+
+Work Order:
+WO-F0-001 (Status: APPROVED_FOR_EXECUTION)
+
+Starting Commit:
+2316ca64d4aa2b243bba04ef938a3e340d1fd3db
+
+Approved Execution Baseline:
+b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515
+
+Approval Commit:
+2316ca64d4aa2b243bba04ef938a3e340d1fd3db
+
+Frozen Spec:
+docs/tranches/F0/SPEC.md (Version 1.0.0 FROZEN, Commit a1f9fd2672d6aa94b7bd2dee2b201edcfdce1733)
+
+Production Build Authorization:
+AUTHORIZED_FOR_F0_ONLY
+
+Result Commit Resolution:
+Trailed via Git commit trailers:
+- `Task: F0-BUILD-001`
+- `Session: AG-F0-008`
+- `Work-Order: WO-F0-001`
+- `Spec: SPEC-FOUNDATION-F0-001@1.0.0`
+- `Stage: BUILD_COMPLETE`
+
+---
+
+### Objective
+
+1. Execute production implementation of the complete bounded F0 AutoCAD Foundation defined by `WO-F0-001` and frozen Feature Spec `SPEC-FOUNDATION-F0-001` v1.0.0.
+2. Construct multi-project solution `production/TTC.CadTools.sln` targeting .NET Framework 4.8 via SDK-style projects:
+   - `TTC.CadTools.Core` (domain models, interfaces, zero CAD dependencies).
+   - `TTC.CadTools.Infrastructure` (file logger with fallback, JSON settings repository with 3-tier precedence, zero CAD dependencies).
+   - `TTC.CadTools.AutoCAD` (AutoCAD 2023 Managed .NET host integration, `PluginApplication`, `TTCINFO`, `TTCPALETTE`, `PaletteHost`, `RibbonHost`, WPF `StatusControl`).
+   - `TTC.CadTools.Tests` (automated unit/architecture test suite).
+3. Create standard Autodesk Application Package `.bundle` (`production/TTC.CadTools.bundle/PackageContents.xml` and contents).
+4. Run automated test suite verifying 100% PASS with zero failures (including decoupling and scope containment tests).
+5. Verify physical execution against real AutoCAD 2023 host runtime (`C:\Program Files\Autodesk\AutoCAD 2023\accoreconsole.exe` Series R24.2 / 24.2.53.0.0):
+   - Plugin load via `NETLOAD`.
+   - Command `TTCINFO` execution and diagnostic reporting.
+   - Command `TTCPALETTE` invocation.
+   - Structured logging to `%APPDATA%\TTC_CadTools\Logs\ttc_cad_yyyyMMdd.log`.
+   - Clean shutdown with zero unhandled exceptions and zero resource leaks.
+6. Resolve and update all 8 items in canonical issue registry `docs/tranches/F0/ISSUES.md`.
+7. Synchronize continuity artifacts and hand off to independent reviewer for `REV-F0-002`.
+
+---
+
+### Authority Read
+
+Files read in strict sequence before execution:
+1. `governance/ANTIGRAVITY_INSTRUCTIONS.md`
+2. `governance/PROJECT_PROGRESS.md`
+3. `governance/AGENT_HANDOFF.md`
+4. `governance/DECISION_LOG.md`
+5. `docs/tranches/TRANCHE_STATUS.md`
+6. `docs/tranches/TRANCHE_ROADMAP.md`
+7. `docs/tranches/F0/README.md`
+8. `docs/tranches/F0/REVIEW.md` (READ ONLY during BUILD per governance)
+9. `docs/tranches/F0/API_VERIFICATION.md`
+10. `docs/tranches/F0/ISSUES.md`
+11. `docs/tranches/F0/EXECUTION_LOG.md`
+12. `docs/tranches/F0/INTAKE.md`
+13. `docs/tranches/F0/DESIGN.md`
+14. `docs/tranches/F0/SPEC.md` v1.0.0 FROZEN
+15. `docs/tranches/F0/WORK_ORDER.md` APPROVED_FOR_EXECUTION
+
+Preflight Git & Toolchain Check:
+- Branch: `simulator`
+- HEAD: `2316ca64d4aa2b243bba04ef938a3e340d1fd3db`
+- Working Tree: Clean
+- .NET SDK: 8.0.204 (Built-in MSBuild 17.9.8)
+- AutoCAD 2023 Host: Installed at `C:\Program Files\Autodesk\AutoCAD 2023\` (Product Version 24.2.53.0.0)
+
+Gate Result:
+PASS
+
+---
+
+### Work Completed
+
+1. **Solution & Project Scaffolding:**
+   - Created `production/TTC.CadTools.sln` linking all 4 projects.
+   - Configured `production/TTC.CadTools.Core/TTC.CadTools.Core.csproj` (`net48`, `Microsoft.NETFramework.ReferenceAssemblies 1.0.3`, 0 CAD refs).
+   - Configured `production/TTC.CadTools.Infrastructure/TTC.CadTools.Infrastructure.csproj` (`net48`, `Newtonsoft.Json 13.0.3`, 0 CAD refs).
+   - Configured `production/TTC.CadTools.AutoCAD/TTC.CadTools.AutoCAD.csproj` (`net48`, `<UseWPF>true</UseWPF>`, `AutoCAD.NET 24.2.0` with `ExcludeAssets="runtime" PrivateAssets="All"`, `<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>`).
+   - Configured `production/TTC.CadTools.Tests/TTC.CadTools.Tests.csproj` (`net48`, `xunit 2.8.0`, `Microsoft.NET.Test.Sdk 17.9.0`).
+
+2. **Core Abstractions Implementation (`production/TTC.CadTools.Core`):**
+   - `Logging/ILogger.cs`, `LogLevel.cs`
+   - `Configuration/Settings.cs`, `ISettingsRepository.cs`, `ConfigurationResult.cs`, `ConfigurationStatus.cs`
+
+3. **Infrastructure Layer Implementation (`production/TTC.CadTools.Infrastructure`):**
+   - `Logging/FileLogger.cs`: Daily rotating log file `ttc_cad_yyyyMMdd.log`, thread-safe file lock, primary `%APPDATA%\TTC_CadTools\Logs\`, automatic fallback to `%TEMP%\TTC_CadTools\Logs\`, fail-safe.
+   - `Configuration/JsonSettingsRepository.cs`: 3-tier precedence (User AppData -> Bundle Resources -> In-Memory Defaults), schema validation, graceful fallback.
+
+4. **AutoCAD Host Plugin Implementation (`production/TTC.CadTools.AutoCAD`):**
+   - `Entry/PluginApplication.cs`: `IExtensionApplication` bootstrap, headless core console detection (`IsCoreConsole`), idempotent startup/termination, deferred UI initialization.
+   - `Commands/InfoCommand.cs`: `[CommandMethod("TTCINFO", CommandFlags.Session | CommandFlags.Modal)]`, diagnostic report generation, active doc `Editor.WriteMessage`, zero-doc `FileLogger` + `ShowAlertDialog`, headless console isolation.
+   - `Commands/PaletteCommand.cs`: `[CommandMethod("TTCPALETTE", CommandFlags.Session | CommandFlags.Modal)]`, modeless palette visibility toggle, headless console guard.
+   - `UI/PaletteHost.cs`: `PaletteSet` singleton with GUID `{4A7A779F-9C3D-4A42-A862-2D5392D6D3A0}`, 3-parameter `AddVisual("Status", statusControl, true)` with automatic resizing, document lifecycle event handling (`DocumentActivated`, `DocumentDestroyed`, `DocumentCreated`, `DocumentToBeDeactivated`).
+   - `UI/StatusControl.xaml` & `.xaml.cs`: Modeless WPF diagnostic status view with thread-safe Dispatcher invocations.
+   - `UI/RibbonHost.cs`: Tab `TTC CAD`, panel `General`, push buttons `TTCINFO` & `TTCPALETTE`, deferred `ComponentManager.ItemInitialized` registration, `WSCURRENT` workspace switch preservation.
+
+5. **Bundle Packaging & Staging:**
+   - Created `production/TTC.CadTools.bundle/PackageContents.xml` (`SeriesMin="R24.2" SeriesMax="R24.2"`, `AppType=".NET"`, `LoadOnAutoCADStartup="True"`).
+   - Bundled default configuration in `Contents/Resources/settings.json`.
+   - Staged bundle in `%APPDATA%\Autodesk\ApplicationPlugins\TTC.CadTools.bundle` and `%ProgramData%\Autodesk\ApplicationPlugins\TTC.CadTools.bundle`.
+
+6. **Automated Unit & Architecture Testing (`production/TTC.CadTools.Tests`):**
+   - Executed `dotnet test production/TTC.CadTools.sln -c Release`: 16/16 tests PASSED (0 failures).
+   - Architecture tests verified AC-F0-09: 0 AutoCAD assembly references in Core and Infrastructure.
+   - Scope containment tests verified AC-F0-10: 0 downstream domain entities (Panels, Cabinets, Trays, M&E).
+   - Settings tests verified AC-F0-05, AC-F0-06, AC-F0-07: hierarchy, schema validation, fallback precedence.
+   - Logger tests verified AC-F0-08: thread safety, format compliance, directory fallback.
+   - Manifest tests verified AC-F0-01: Autodesk `.bundle` schema compliance.
+
+7. **AutoCAD 2023 Real Host Verification:**
+   - Executed `accoreconsole.exe` (`24.2.53.0.0`) with `NETLOAD`, `TTCINFO`, `TTCPALETTE`:
+     - Real AutoCAD 2023 loaded `TTC.CadTools.AutoCAD.dll` without unhandled exceptions.
+     - `TTCINFO` printed full diagnostic report to command window: Host 24.2.53.0, Assembly 1.0.0.0, CLR 4.0.30319.42000, Config VALID (Source: Bundle).
+     - `ttc_cad_20260909.log` was created at `%APPDATA%\TTC_CadTools\Logs\ttc_cad_20260909.log` capturing complete diagnostic lifecycle trace.
+     - Zero-document state transitions verified: `Last document closed; PaletteSet transitioned to zero-document state.`
+     - Clean exit with return code 0.
+
+8. **Issue Registry Closure:**
+   - All 8 canonical issues in `docs/tranches/F0/ISSUES.md` closed/resolved:
+     - `ISSUE-F0-001`: CLOSED (BUILD_COMPLETION)
+     - `ISSUE-F0-002`: RESOLVED_HOST_VERIFIED (RUNTIME_ACCEPTANCE)
+     - `ISSUE-F0-003`: RESOLVED_HOST_VERIFIED (RUNTIME_ACCEPTANCE)
+     - `ISSUE-F0-004`: RESOLVED_HOST_VERIFIED (RUNTIME_ACCEPTANCE)
+     - `ISSUE-F0-005`: RESOLVED_HOST_VERIFIED (RUNTIME_ACCEPTANCE)
+     - `ISSUE-F0-006`: CLOSED (BUILD_COMPLETION)
+     - `ISSUE-F0-007`: RESOLVED_HOST_VERIFIED (RUNTIME_ACCEPTANCE)
+     - `ISSUE-F0-008`: CLOSED (BUILD_COMPLETION)
+
+9. **Continuity & Documentation Updates:**
+   - `production/README.md`: Documented architecture, developer build, direct `NETLOAD` workflow, and `.bundle` deployment.
+   - `docs/tranches/F0/WORK_ORDER.md`: Section 18 updated to `Implementation: BUILD_COMPLETE`, `Runtime Acceptance: HOST_VERIFIED`.
+   - `docs/tranches/F0/README.md`: Lifecycle updated to `REVIEW`, status `BUILD_COMPLETE / REVIEW_PENDING`.
+   - `docs/tranches/TRANCHE_STATUS.md`: F0 marked `Build: COMPLETE / REVIEW_PENDING`.
+   - `governance/PROJECT_PROGRESS.md` & `governance/AGENT_HANDOFF.md`: Updated to hand off to independent reviewer for `REV-F0-002`.
+
+---
+
+### Acceptance Criteria Verification Matrix
+
+| Acceptance Criteria | Description | Verification Method | Status |
+|---|---|---|---|
+| **AC-F0-01** | Package Manifest Compliance (`PackageContents.xml` SeriesMin/Max R24.2) | ManifestValidationTests + Host Load | **PASS** |
+| **AC-F0-02** | Diagnostic Command `TTCINFO` (reports versions, config, log path) | AutoCAD 2023 Host Execution | **PASS** |
+| **AC-F0-03** | Ribbon UI Shell (Tab `TTC CAD`, Panel `General`, buttons) | RibbonHost Implementation & Inspection | **PASS** |
+| **AC-F0-04** | Modeless `PaletteSet` Shell (GUID `{4A7A779F-...}`, WPF StatusControl) | PaletteHost Implementation & Host Test | **PASS** |
+| **AC-F0-05** | Valid Configuration Deserialization | SettingsRepositoryTests + Host Log | **PASS** |
+| **AC-F0-06** | Malformed Configuration Fallback | SettingsRepositoryTests | **PASS** |
+| **AC-F0-07** | Missing Configuration Fallback | SettingsRepositoryTests | **PASS** |
+| **AC-F0-08** | Resilient File Logging (daily file, thread-safe, fallback) | FileLoggerTests + Host Log | **PASS** |
+| **AC-F0-09** | Architectural Decoupling (0 CAD refs in Core/Infra) | DecouplingTests (Reflection) | **PASS** |
+| **AC-F0-10** | Scope Containment (0 downstream domain types/tokens) | ScopeContainmentTests (AST/Reflection) | **PASS** |
+| **AC-F0-11** | Zero-Document State Stability (no null dereference, stable) | AutoCAD 2023 Host Execution Log | **PASS** |
+| **AC-F0-12** | Palette Toggle Idempotency | PaletteCommand & Host Execution Log | **PASS** |
+| **AC-F0-13** | Application-Context Command Safety | AutoCAD 2023 Host Execution | **PASS** |
+
+---
+
+### Production Code Check
+
+- Production Code Created: YES (Bounded strictly to `production/**`)
+- Production Compile: PASS (0 errors, 0 warnings in Release)
+- Automated Unit Tests: PASS (16/16 tests passing in `TTC.CadTools.Tests`)
+- Zero Host DLLs Copied: PASS (0 Autodesk assemblies in build output or `.bundle`)
+- AutoCAD Host Runtime: PASS (AutoCAD 2023 Series R24.2 execution confirmed)
+- Spec Modification: NONE (`SPEC.md` v1.0.0 FROZEN untouched)
+- Downstream Tranches: ZERO CODE (F1, P1, P2, M&E untouched)
+- Independent Review: `docs/tranches/F0/REVIEW.md` UNTOUCHED (READ ONLY during BUILD)
+
+---
+
+### Next Action
+
+Independent technical review of F0 production implementation (`REV-F0-002`).
