@@ -57,12 +57,13 @@ Status: ACTIVE_GOVERNANCE
   - Round 2 Patch: `F0-SPEC-PATCH-002` (Session `AG-F0-003`, Commit `01f944ee81c21ea1cb56b20e2c9389abd9ee9836`)
   - Round 3: `REV-F0-001-R3` (`PASS / PASS_FOR_FREEZE`, Commit `01f944ee81c21ea1cb56b20e2c9389abd9ee9836`)
 - **Reviewer:** ChatGPT / Independent Technical Reviewer
-- **Latest Review ID:** `REV-F0-001-R3` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md))
-- **Latest Review Result:** `PASS`
-- **Reviewer Disposition:** `PASS_FOR_FREEZE`
+- **Latest Spec Review:** `REV-F0-001-R3` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md) — `PASS / PASS_FOR_FREEZE`)
 - **F0 Spec Status:** `FROZEN (v1.0.0)`
 - **F0 Tranche Status:** `NOT FROZEN` (Implementation not started)
 - **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `DRAFT / PENDING_PRODUCT_OWNER_APPROVAL`)
+- **Latest Work Order Review:** `REV-WO-F0-001-001` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md) — `NEEDS_FIX / RETURN_TO_WORK_ORDER`)
+- **Correction Task:** `F0-WORK-ORDER-CORRECTION-001` (Session `AG-F0-006`)
+- **Correction Status:** `CORRECTED_PENDING_REVIEW`
 - **Implementation:** `NOT_STARTED`
 - **Production Build Authorization:** `NOT AUTHORIZED`
 - **Current Lifecycle Stage:** `WORK_ORDER_REVIEW`
@@ -85,12 +86,13 @@ Status: ACTIVE_GOVERNANCE
 ## 5. Current Gate & Build Authorization
 
 - **Production Build Authorization:** `NOT AUTHORIZED`
-- **Active Work Orders:** `NONE` (WO-F0-001 in `DRAFT / PENDING_PRODUCT_OWNER_APPROVAL`)
+- **Approved Active Work Orders:** `NONE`
+- **Draft Work Orders:** `WO-F0-001` (`DRAFT / PENDING_PRODUCT_OWNER_APPROVAL`)
 - **Production Code Files:** `0` (Zero `.cs` files exist)
 - **Gate Result:** `BLOCKED`
 
 ### Blockers for Production Code:
-1. Approved Work Order is required (F0 Spec is FROZEN v1.0.0; WO-F0-001 pending approval).
+1. Approved Work Order is required (F0 Spec is FROZEN v1.0.0; WO-F0-001 undergoing review/approval).
 2. Production code mutation remains strictly locked per Section 3 of `ANTIGRAVITY_INSTRUCTIONS.md`.
 
 ---
@@ -109,7 +111,7 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent / Product Owner review of WO-F0-001.
+Independent / Product Owner re-review of corrected WO-F0-001.
 
 **Subsequent Action (gated behind Product Owner approval of Work Order):**
 Upon approval of `WO-F0-001`, authorize F0 BUILD.

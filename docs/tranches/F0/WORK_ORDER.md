@@ -1,19 +1,20 @@
 # TTC CAD — Agent Work Order: F0 AutoCAD Foundation
 
-Status: DRAFT / PENDING_PRODUCT_OWNER_APPROVAL  
-Work Order ID: WO-F0-001  
-Work Order Type: PRODUCTION  
-Tranche ID: F0  
-Capability: AutoCAD Foundation  
-Owner / Dispatcher: TTC CAD Product Owner  
-Implementer: Antigravity  
-Reviewer: Independent Technical Reviewer / Product Owner  
-Date: 2026-09-08  
-Base Commit: a1f9fd2672d6aa94b7bd2dee2b201edcfdce1733  
-Frozen Spec: docs/tranches/F0/SPEC.md v1.0.0  
-Frozen Spec Commit: a1f9fd2672d6aa94b7bd2dee2b201edcfdce1733  
-Execution Authorization: NOT APPROVED  
-Build Authorization: NOT AUTHORIZED  
+Status: DRAFT / PENDING_PRODUCT_OWNER_APPROVAL<br>
+Work Order ID: WO-F0-001<br>
+Work Order Type: PRODUCTION<br>
+Tranche ID: F0<br>
+Capability: AutoCAD Foundation<br>
+Owner / Dispatcher: TTC CAD Product Owner<br>
+Implementer: Antigravity<br>
+Reviewer: Independent Technical Reviewer / Product Owner<br>
+Date: 2026-09-08<br>
+Frozen Spec: docs/tranches/F0/SPEC.md (v1.0.0, FROZEN)<br>
+Frozen Spec Commit: a1f9fd2672d6aa94b7bd2dee2b201edcfdce1733<br>
+Work Order Preparation Commit: 3ac81521c7ac3298c35e510bc64da25e2a03ef0b<br>
+Approved Execution Baseline: PENDING<br>
+Execution Authorization: NOT APPROVED<br>
+Build Authorization: NOT AUTHORIZED
 
 ---
 
@@ -60,21 +61,25 @@ Zero Panel or M&E engineering logic belongs in F0.
 
 ## 2. Authority Chain
 
+- **Execution Behavioral Authority:**
+  - Feature Spec: [./SPEC.md](./SPEC.md) (`SPEC-FOUNDATION-F0-001`, Version: `1.0.0`, Status: `FROZEN`)
+  - Spec Freeze Review: [./REVIEW.md](./REVIEW.md) (`REV-F0-001-R3` = `PASS_FOR_FREEZE`)
+  - Spec Freeze Baseline Commit: `a1f9fd2672d6aa94b7bd2dee2b201edcfdce1733`
+- **Supporting Planning & Architectural Evidence (Non-Authoritative for Execution):**
+  - Supporting Intake Evidence: [./INTAKE.md](./INTAKE.md) (`INTAKE-FOUNDATION-F0`, Status: `DRAFT`, Role: upstream planning evidence)
+  - Supporting Design Evidence: [./DESIGN.md](./DESIGN.md) (`DESIGN-FOUNDATION-F0`, Version: `0.1.2`, Status: `DRAFT`, Role: architectural design evidence)
 - **Architecture Baseline:** [../../TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md](../../TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md) (Status: `APPROVED_BASELINE`)
 - **Governance Doctrine:**
   - `TTC-GOV-001`: Spec-First Per Tranche Methodology ([../../../governance/DECISION_LOG.md](../../../governance/DECISION_LOG.md))
   - `TTC-GOV-002`: Git-Based Agent Continuity & Handoff Protocol ([../../../governance/DECISION_LOG.md](../../../governance/DECISION_LOG.md))
-- **F0 Intake:** [./INTAKE.md](./INTAKE.md) (`INTAKE-F0-001`, Status: `APPROVED`)
-- **F0 Design Evidence:** [./DESIGN.md](./DESIGN.md) (`DESIGN-F0-001` v0.1.2, Status: `APPROVED`)
-- **Frozen Feature Spec:** [./SPEC.md](./SPEC.md) (`SPEC-F0-001` v1.0.0, Status: `FROZEN`)
-- **Spec Freeze Review:** [./REVIEW.md](./REVIEW.md) (`REV-F0-001-R3` = `PASS_FOR_FREEZE`)
 - **Canonical Issue Registry:** [./ISSUES.md](./ISSUES.md) (`ISSUE-F0-001` to `ISSUE-F0-008`)
 - **API Technical Verification:** [./API_VERIFICATION.md](./API_VERIFICATION.md) (SRC-01 through SRC-06)
 
-Authority rule:
-- The frozen Feature Spec governs required system behavior;
-- This Work Order governs bounded execution scope;
-- This Work Order may narrow implementation scope, but may NOT contradict or expand the frozen Spec.
+> [!IMPORTANT]
+> **Authority Separation Rule:**
+> Frozen SPEC (`SPEC-FOUNDATION-F0-001` v1.0.0) is the sole authoritative source of execution behavior.
+> Intake and Design are supporting traceability evidence and are not independently used as execution authorization.
+> This Work Order governs bounded execution scope; it may narrow implementation scope, but may NOT contradict or expand the frozen Spec.
 
 ---
 
@@ -149,14 +154,29 @@ The future approved BUILD task may create or modify files **only** within the fo
 | `production/TTC.CadTools.bundle/**` | CREATE | Bundle package directory and `PackageContents.xml` manifest |
 | `production/README.md` | MODIFY / CREATE | Developer build, deployment, and NETLOAD documentation |
 | `docs/tranches/F0/WORK_ORDER.md` | MODIFY | Work Order status updates |
-| `docs/tranches/F0/EXECUTION_LOG.md` | MODIFY | Append execution log sessions |
+| `docs/tranches/F0/EXECUTION_LOG.md` | MODIFY | Append execution log sessions and build/test evidence |
 | `docs/tranches/F0/ISSUES.md` | MODIFY | Update issue statuses and recorded evidence |
-| `docs/tranches/F0/REVIEW.md` | MODIFY | Record build and review verification outcomes |
 | `docs/tranches/TRANCHE_STATUS.md` | MODIFY | Synchronize master tranche status register |
 | `governance/PROJECT_PROGRESS.md` | MODIFY | Synchronize project progress tracking |
 | `governance/AGENT_HANDOFF.md` | MODIFY | Synchronize agent continuity handoff |
+| `docs/tranches/F0/REVIEW.md` | READ ONLY DURING BUILD | Reviewer-owned; implementer records evidence in execution log and handoff |
 
 Any file creation or edit outside these paths will trigger `BLOCKED_SCOPE_EXPANSION`.
+
+### 6.1 Review Stage Ownership & Separation of Duties
+
+- **BUILD Agent:** Implements production code and records build, test, and host verification evidence in `EXECUTION_LOG.md`, `ISSUES.md`, and project status artifacts. The BUILD agent MUST NOT modify `docs/tranches/F0/REVIEW.md`, set review results or dispositions, mark review criteria PASS or NEEDS_FIX, mark tranches FROZEN, or self-authorize lifecycle transitions.
+- **Independent Technical Reviewer:** Inspects implementation, tests, and runtime evidence; authors review reports; and writes formal dispositions in `docs/tranches/F0/REVIEW.md`.
+- **Product Owner:** Approves lifecycle transitions and tranche freezes where governance requires operator authority.
+
+Expected post-BUILD lifecycle flow:
+```text
+BUILD COMPLETE
+  → IMPLEMENTATION EVIDENCE READY
+  → REVIEW (Independent Technical Reviewer authors REV-F0-002 in REVIEW.md)
+  → Reviewer Disposition: PASS / NEEDS_FIX / BLOCKED
+  → F0 Tranche FREEZE (Only if review is PASS and Product Owner explicitly authorizes)
+```
 
 ---
 
@@ -209,21 +229,32 @@ Every executing Agent must strictly observe the lifecycle and continuity rules i
 
 ## 9. Source Verification / Pre-Flight
 
-Before modifying or creating production files, verify:
-- [ ] Working tree is clean and baseline commit matches `a1f9fd2672d6aa94b7bd2dee2b201edcfdce1733`;
-- [ ] Target framework is `.NETFramework,Version=v4.8`;
-- [ ] AutoCAD Managed reference baseline targets AutoCAD 2023 (Series `R24.2`);
-- [ ] No unresolved spec ambiguities block execution;
-- [ ] No production C# files exist prior to build initiation.
+Before BUILD execution verify:
+1. Frozen Spec remains:
+   - File: `docs/tranches/F0/SPEC.md`
+   - Version: `1.0.0`
+   - Status: `FROZEN`
+2. Work Order status is:
+   - File: `docs/tranches/F0/WORK_ORDER.md`
+   - Status: `APPROVED_FOR_EXECUTION` (signed by Product Owner)
+3. Current repository HEAD contains or descends from the Approved Execution Baseline recorded in this Work Order;
+4. Target framework is `.NETFramework,Version=v4.8`;
+5. AutoCAD Managed reference baseline targets AutoCAD 2023 (Series `R24.2`);
+6. Frozen Spec has not been modified or reopened;
+7. Continuity artifacts do not contradict the approved Work Order state;
+8. No production C# files exist prior to build initiation.
 
 Pre-flight diagnostic commands:
 ```bash
 git status --short
 git rev-parse HEAD
 git branch --show-current
+git log -1 --oneline
 ```
 
-If source facts differ materially from this Work Order, STOP and report `BLOCKED_STALE_SOURCE_FACT`.
+> [!NOTE]
+> **Intervening Commits Policy:**
+> If current repository HEAD is newer than Approved Execution Baseline, do NOT automatically block. Inspect intervening commits. Block only when intervening changes materially conflict with execution authority. Use `BLOCKED_STALE_SOURCE_FACT` only for a real material mismatch.
 
 ---
 
@@ -249,16 +280,20 @@ If source facts differ materially from this Work Order, STOP and report `BLOCKED
 
 ## 11. Open Issue Trace & Handling
 
-| Issue ID | Problem Summary | Work Order Action | Required Evidence | Blocks AC | Expected Closure Stage |
-|---|---|---|---|---|---|
-| **ISSUE-F0-001** | AutoCAD reference assembly resolution across developer workstations | Use NuGet `AutoCAD.NET` (version `24.2.0`) targeting .NET 4.8 with `Private=False`, `ExcludeAssets="runtime"`. | Clean compilation on developer workstation without local AutoCAD DLL copy | AC-F0-01, AC-F0-09 | `BUILD` |
-| **ISSUE-F0-002** | Plugin log directory permissions in standard bundle installation | Implement primary path `%APPDATA%\TTC_CadTools\Logs\` with fallback to `%TEMP%\TTC_CadTools\Logs\`. | Runtime test verifying log creation under standard user account | AC-F0-07 | `BUILD` |
-| **ISSUE-F0-003** | Modeless PaletteSet threading, context switching & zero-document safety | Implement document event guards; modeless WPF UI checks `MdiActiveDocument != null`; display neutral state when zero drawings open. | Interactive AutoCAD 2023 test opening, closing, and switching drawings while Palette is open | AC-F0-11 | `RUNTIME_ACCEPTANCE` |
-| **ISSUE-F0-004** | Ribbon tab refresh behavior across AutoCAD workspaces | Handle workspace switching; verify ribbon tab persists or is restored on workspace change. | AutoCAD 2023 workspace toggle test | AC-F0-03 | `RUNTIME_ACCEPTANCE` |
-| **ISSUE-F0-005** | PaletteSet position and state persistence across AutoCAD sessions | Use unique GUID `4A7A779F-9C3D-4A42-A862-2D5392D6D3A0` and AutoCAD native registry persistence. | Verify dock position persists across AutoCAD restart | AC-F0-04 | `RUNTIME_ACCEPTANCE` |
-| **ISSUE-F0-006** | Bundle deployment path vs NETLOAD developer workflow | Support both `.bundle` packaging and direct `NETLOAD` of `bin\Debug\TTC.CadTools.AutoCAD.dll`. | Documented developer instructions in `production/README.md` | AC-F0-01 | `BUILD` |
-| **ISSUE-F0-007** | Ribbon initialization timing relative to `Initialize()` | If `ComponentManager.Ribbon` is null during `Initialize()`, subscribe to `ItemInitialized` and unsubscribe after creation. | AutoCAD 2023 cold-start test showing ribbon appears reliably | AC-F0-03 | `BUILD` |
-| **ISSUE-F0-008** | Settings file resolution precedence & schema fallback | Implement 3-tier resolution: (1) `%APPDATA%`, (2) Bundle resources, (3) Hardcoded in-memory defaults. | Unit tests covering missing and corrupted JSON files | AC-F0-05, AC-F0-06 | `BUILD` |
+| Issue ID | Problem Summary | Blocks BUILD Entry? | Must Close By | Work Order Action | Required Evidence | Blocks AC |
+|---|---|:---:|---|---|---|---|
+| **ISSUE-F0-001** | AutoCAD reference assembly resolution across developer workstations | NO | `BUILD_COMPLETION` | Use NuGet `AutoCAD.NET` (version `24.2.0`) targeting .NET 4.8 with `Private=False`, `ExcludeAssets="runtime"`. | Clean compilation on developer workstation without local AutoCAD DLL copy | AC-F0-01, AC-F0-09 |
+| **ISSUE-F0-002** | Plugin log directory permissions in standard bundle installation | NO | `RUNTIME_ACCEPTANCE` | Implement primary path `%APPDATA%\TTC_CadTools\Logs\` with fallback to `%TEMP%\TTC_CadTools\Logs\`. | Runtime test verifying log creation under standard user account | AC-F0-07 |
+| **ISSUE-F0-003** | Modeless PaletteSet threading, context switching & zero-document safety | NO | `RUNTIME_ACCEPTANCE` | Implement document event guards; modeless WPF UI checks `MdiActiveDocument != null`; display neutral state when zero drawings open. | Interactive AutoCAD 2023 test opening, closing, and switching drawings while Palette is open | AC-F0-11 |
+| **ISSUE-F0-004** | Ribbon tab refresh behavior across AutoCAD workspaces | NO | `RUNTIME_ACCEPTANCE` | Handle workspace switching; verify ribbon tab persists or is restored on workspace change. | AutoCAD 2023 workspace toggle test | AC-F0-03 |
+| **ISSUE-F0-005** | PaletteSet position and state persistence across AutoCAD sessions | NO | `RUNTIME_ACCEPTANCE` | Use unique GUID `4A7A779F-9C3D-4A42-A862-2D5392D6D3A0` and AutoCAD native registry persistence. | Verify dock position persists across AutoCAD restart | AC-F0-04 |
+| **ISSUE-F0-006** | Bundle deployment path vs NETLOAD developer workflow | NO | `BUILD_COMPLETION` | Support both `.bundle` packaging and direct `NETLOAD` of `bin\Debug\TTC.CadTools.AutoCAD.dll`. | Documented developer instructions in `production/README.md` | AC-F0-01 |
+| **ISSUE-F0-007** | Ribbon initialization timing relative to `Initialize()` | NO | `RUNTIME_ACCEPTANCE` | If `ComponentManager.Ribbon` is null during `Initialize()`, subscribe to `ItemInitialized` and unsubscribe after creation. | AutoCAD 2023 cold-start test showing ribbon appears reliably | AC-F0-03 |
+| **ISSUE-F0-008** | Settings file resolution precedence & schema fallback | NO | `BUILD_COMPLETION` | Implement 3-tier resolution: (1) `%APPDATA%`, (2) Bundle resources, (3) Hardcoded in-memory defaults. | Unit tests covering missing and corrupted JSON files | AC-F0-05, AC-F0-06 |
+
+> [!IMPORTANT]
+> **Issue Gate Invariant:**
+> The registered open issues represent active engineering and validation work to be resolved or verified DURING authorized BUILD/REVIEW execution. None of these issues block entry to BUILD. They must be resolved or validated before their respective closure gates (`BUILD_COMPLETION` or `RUNTIME_ACCEPTANCE`).
 
 ---
 
@@ -371,6 +406,10 @@ The executing agent must immediately STOP and report a blocking condition if any
 - `BLOCKED_DEPENDENCY`: If required build tools, SDKs, or NuGet packages are inaccessible and no approved fallback exists.
 - `BLOCKED_CONTINUITY_CONFLICT`: If repository continuity artifacts contain unreconciled contradictions.
 
+> [!NOTE]
+> **Open Issues Stop Condition Rule:**
+> Open runtime/build issues already registered in `ISSUE-F0-001` through `ISSUE-F0-008` do NOT themselves trigger a stop condition upon BUILD entry. A stop condition is triggered during BUILD only if new evidence demonstrates that an issue cannot be resolved within the frozen Spec contracts and approved Work Order scope.
+
 ---
 
 ## 16. Worker Autonomy & Remediation Rules
@@ -459,6 +498,9 @@ Production Build Authorization:
 NOT AUTHORIZED
 
 Reviewer / Product Owner Disposition:
+RETURN_TO_WORK_ORDER (Undergoing correction per REV-WO-F0-001-001)
+
+Approved Execution Baseline:
 PENDING
 
 Available Operator Choices:

@@ -220,20 +220,57 @@ All runtime-dependent acceptance criteria (AC-F0-01 through AC-F0-13) remain: **
 
 ---
 
-## 8. Review & Lifecycle Status Summary
+## 8. Independent Work Order Review: REV-WO-F0-001-001
+
+- **Review ID:** `REV-WO-F0-001-001`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Review Date:** 2026-09-08
+- **Reviewed Commit:** `3ac81521c7ac3298c35e510bc64da25e2a03ef0b`
+- **Reviewed Artifact:** `docs/tranches/F0/WORK_ORDER.md`
+- **Result:** `NEEDS_FIX`
+- **Disposition:** `RETURN_TO_WORK_ORDER`
+
+### Evaluation Summary
+
+- **Authority / Scope:** `NEEDS_FIX` (4 findings: Intake/Design/Spec IDs and statuses; execution baseline semantics; issue gate semantics; REVIEW.md write authority)
+- **AC Traceability:** `PASS` (AC-F0-01 through AC-F0-13 mapped without renumbering or scope drift)
+- **AutoCAD Evidence Plan:** `PASS` (Comprehensive host execution protocol covering startup, commands, palette docking, zero-doc state safety, and workspace switching)
+- **Stop Conditions:** `PASS` (Explicit stop codes defined)
+- **Continuity:** `PASS_WITH_FIXES`
+- **Execution Authorization:** `NOT APPROVED`
+- **Production Build Authorization:** `NOT AUTHORIZED`
+
+### Findings Identified for Correction
+
+1. **Finding 01 (Authority Chain Facts):** Intake, Design, and Spec identifiers and statuses must match authoritative repository facts (`INTAKE-FOUNDATION-F0` DRAFT, `DESIGN-FOUNDATION-F0` DRAFT, `SPEC-FOUNDATION-F0-001` FROZEN v1.0.0). Frozen Spec is the sole behavioral authority.
+2. **Finding 02 (Execution Baseline Semantics):** Separate Frozen Spec baseline (`a1f9fd2672d6aa94b7bd2dee2b201edcfdce1733`) from Work Order preparation baseline (`3ac81521c7ac3298c35e510bc64da25e2a03ef0b`) and Approved Execution Baseline (`PENDING`). Preflight must not require runtime HEAD to equal the frozen-spec commit.
+3. **Finding 03 (Issue Gate Semantics):** Distinguish "Blocks BUILD Entry?" (`NO`) from "Must Close By" (`BUILD_COMPLETION` or `RUNTIME_ACCEPTANCE`) to avoid governance deadlock.
+4. **Finding 04 (Review Ownership Protection):** `docs/tranches/F0/REVIEW.md` is reviewer-owned and must be `READ ONLY DURING BUILD` for the implementer.
+
+> [!NOTE]
+> **Reviewer Note:**
+> Antigravity records external review evidence. This review returns WO-F0-001 for rework.
+> Production Build Authorization remains strictly NOT AUTHORIZED.
+
+---
+
+## 9. Review & Lifecycle Status Summary
 
 - **Historical REV-F0-001:** `NEEDS_FIX / RETURN_TO_SPEC`
 - **REV-F0-001-R2:** `NEEDS_FIX / RETURN_TO_SPEC`
-- **Latest Review (REV-F0-001-R3):** `PASS / PASS_FOR_FREEZE`
+- **Spec Freeze Review (REV-F0-001-R3):** `PASS / PASS_FOR_FREEZE`
 - **F0 Spec Status:** `FROZEN` (Version 1.0.0)
 - **F0 Tranche Status:** `NOT FROZEN` (Implementation stage pending)
-- **Current Lifecycle Stage:** `WORK_ORDER_PREPARATION`
-- **Work Order:** `NONE`
+- **Current Lifecycle Stage:** `WORK_ORDER`
+- **Current Work Order:** `WO-F0-001` (`docs/tranches/F0/WORK_ORDER.md` — Status: `DRAFT / PENDING_PRODUCT_OWNER_APPROVAL`)
+- **Work Order Review (REV-WO-F0-001-001):** `NEEDS_FIX / RETURN_TO_WORK_ORDER`
+- **Work Order Correction Task:** `F0-WORK-ORDER-CORRECTION-001` (Session `AG-F0-006`)
 - **Implementation:** `NOT_STARTED`
 - **Production Build Authorization:** `NOT AUTHORIZED`
 
 ---
 
-## 9. Next Authorized Action
+## 10. Next Authorized Action
 
-Prepare F0 Work Order (`WO-F0-001`) for Product Owner / independent review.
+Independent / Product Owner re-review of corrected WO-F0-001.

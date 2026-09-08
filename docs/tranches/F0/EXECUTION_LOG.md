@@ -529,3 +529,115 @@ PASS
 ### Next Action
 
 Independent / Product Owner review of `WO-F0-001`.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F0-005
+- **Actual Result Commit:** `3ac81521c7ac3298c35e510bc64da25e2a03ef0b`
+- **Resolution Date:** 2026-09-08
+- **Reason:** Commit was successfully generated and pushed in task F0-WORK-ORDER-PREP-001; this addendum links the session record to its permanent Git commit SHA in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-08 / AG-F0-006
+
+### Identity
+
+Agent:
+Antigravity
+
+Session ID:
+AG-F0-006
+
+Task ID:
+F0-WORK-ORDER-CORRECTION-001
+
+Lifecycle Stage:
+WORK_ORDER_CORRECTION
+
+Tranche:
+F0 — AutoCAD Foundation
+
+Work Order:
+WO-F0-001 (Status: DRAFT / PENDING_PRODUCT_OWNER_APPROVAL)
+
+Starting Commit:
+3ac81521c7ac3298c35e510bc64da25e2a03ef0b
+
+Review:
+REV-WO-F0-001-001 (NEEDS_FIX / RETURN_TO_WORK_ORDER)
+
+Result Commit Resolution:
+Trailed via Git commit trailer `Session: AG-F0-006`.
+
+---
+
+### Objective
+
+1. Persist external independent review result `REV-WO-F0-001-001` (`NEEDS_FIX / RETURN_TO_WORK_ORDER`) in `docs/tranches/F0/REVIEW.md`.
+2. Correct Finding 01 (Authority Chain Facts) in `docs/tranches/F0/WORK_ORDER.md`: align Intake ID (`INTAKE-FOUNDATION-F0` DRAFT), Design ID (`DESIGN-FOUNDATION-F0` DRAFT), and Spec ID (`SPEC-FOUNDATION-F0-001` FROZEN v1.0.0); state frozen Spec is the sole behavioral authority.
+3. Correct Finding 02 (Execution Baseline Semantics): decouple Frozen Spec baseline (`a1f9fd2...`) from Work Order preparation baseline (`3ac8152...`) and Approved Execution Baseline (`PENDING`); rewrite preflight checks to allow newer non-conflicting HEAD commits.
+4. Correct Finding 03 (Issue Gate Semantics): separate "Blocks BUILD Entry?" (`NO`) from "Must Close By" (`BUILD_COMPLETION` or `RUNTIME_ACCEPTANCE`) in `WORK_ORDER.md` and synchronize with `ISSUES.md`. Clarify that registered open issues do not trigger stop conditions upon entry.
+5. Correct Finding 04 (Review Ownership Protection): restrict `docs/tranches/F0/REVIEW.md` to `READ ONLY DURING BUILD` for implementer; define review stage ownership and separation of duties.
+6. Update status and handoff artifacts across `README.md`, `TRANCHE_STATUS.md`, `PROJECT_PROGRESS.md`, `AGENT_HANDOFF.md`, and `EXECUTION_LOG.md`.
+7. Maintain zero production C# code files; keep Production Build Authorization strictly `NOT AUTHORIZED`.
+
+---
+
+### Authority Read
+
+Files read in strict sequence before execution:
+1. `governance/ANTIGRAVITY_INSTRUCTIONS.md`
+2. `governance/PROJECT_PROGRESS.md`
+3. `governance/AGENT_HANDOFF.md`
+4. `governance/DECISION_LOG.md`
+5. `docs/tranches/TRANCHE_STATUS.md`
+6. `docs/tranches/TRANCHE_ROADMAP.md`
+7. `docs/tranches/F0/README.md`
+8. `docs/tranches/F0/REVIEW.md`
+9. `docs/tranches/F0/API_VERIFICATION.md`
+10. `docs/tranches/F0/ISSUES.md`
+11. `docs/tranches/F0/EXECUTION_LOG.md`
+12. `docs/tranches/F0/INTAKE.md`
+13. `docs/tranches/F0/DESIGN.md`
+14. `docs/tranches/F0/SPEC.md`
+15. `docs/tranches/F0/WORK_ORDER.md`
+
+Preflight Git Check:
+- Branch: `simulator`
+- HEAD: `3ac81521c7ac3298c35e510bc64da25e2a03ef0b`
+- Working Tree: Clean
+
+Gate Result:
+PASS
+
+---
+
+### Work Completed
+
+1. **Review Persistence:** Appended Section 8 to `docs/tranches/F0/REVIEW.md` recording external reviewer (ChatGPT) evaluation `REV-WO-F0-001-001` (`NEEDS_FIX / RETURN_TO_WORK_ORDER`) on commit `3ac81521c7ac3298c35e510bc64da25e2a03ef0b`.
+2. **Authority Chain Facts Corrected (Finding 01):** Updated Section 2 of `docs/tranches/F0/WORK_ORDER.md` to match actual repository artifacts: `INTAKE-FOUNDATION-F0` (DRAFT, upstream planning evidence), `DESIGN-FOUNDATION-F0` (v0.1.2, DRAFT, architectural design evidence), and `SPEC-FOUNDATION-F0-001` (v1.0.0, FROZEN, execution behavioral authority).
+3. **Execution Baseline Semantics Corrected (Finding 02):** Updated header and Section 9 of `WORK_ORDER.md` separating Frozen Spec Commit (`a1f9fd2...`), Work Order Preparation Commit (`3ac8152...`), and Approved Execution Baseline (`PENDING`). Added intervening commits inspection policy.
+4. **Issue Gate Semantics Decoupled (Finding 03):** Updated Section 11 table in `WORK_ORDER.md` and synchronized `docs/tranches/F0/ISSUES.md` to explicitly specify `Blocks BUILD Entry?: NO` and define target closure gates (`BUILD_COMPLETION` or `RUNTIME_ACCEPTANCE`). Added open issues stop condition rule to Section 15.
+5. **Review Authority Protected (Finding 04):** Restricted `docs/tranches/F0/REVIEW.md` to `READ ONLY DURING BUILD` in Section 6 and added Section 6.1 defining strict separation of duties between implementer, reviewer, and Product Owner.
+6. **Continuity Synchronization:** Updated `docs/tranches/F0/README.md`, `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, and `governance/AGENT_HANDOFF.md` reflecting `WORK_ORDER_REVIEW` status and pending re-review.
+7. **Execution Logging:** Reconciled historical addendum for `AG-F0-005` and appended session `AG-F0-006`.
+
+---
+
+### Production Code Check
+
+- Production code created: NONE (0 `.cs`, 0 `.csproj`, 0 `.sln`, 0 `.bundle`).
+- Production Compile: NOT_RUN
+- Unit Tests: NOT_RUN
+- AutoCAD Runtime: NOT_RUN
+- Acceptance Criteria: ALL PENDING / NOT_RUN
+- Production Build Authorization: NOT AUTHORIZED
+
+---
+
+### Next Action
+
+Independent / Product Owner re-review of corrected `WO-F0-001`.

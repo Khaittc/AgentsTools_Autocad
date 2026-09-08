@@ -30,6 +30,7 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 ## 2. Hard Build Gate Summary
 
 - **Production Build Authorization:** `NOT AUTHORIZED`
-- **Active Work Orders:** `NONE` (WO-F0-001 in `DRAFT / PENDING_PRODUCT_OWNER_APPROVAL`)
 - **Frozen Specs:** `F0 — docs/tranches/F0/SPEC.md v1.0.0`
+- **Approved Active Work Orders:** `NONE`
+- **Draft Work Orders:** `WO-F0-001 (DRAFT / PENDING_PRODUCT_OWNER_APPROVAL)`
 - **Production Code Status:** `LOCKED` (0 `.cs` files exist)

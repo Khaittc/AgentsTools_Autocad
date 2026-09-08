@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-08 23:25:00 +07:00
+2026-09-08 23:35:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-a1f9fd2672d6aa94b7bd2dee2b201edcfdce1733
+3ac81521c7ac3298c35e510bc64da25e2a03ef0b
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
@@ -46,29 +46,32 @@ docs/tranches/F0/WORK_ORDER.md (Status: DRAFT / PENDING_PRODUCT_OWNER_APPROVAL)
 Implementation:
 NOT_STARTED
 
-Latest Review:
+Latest Spec Review:
 REV-F0-001-R3 = PASS / PASS_FOR_FREEZE
 
+Latest WO Review:
+REV-WO-F0-001-001 = NEEDS_FIX / RETURN_TO_WORK_ORDER
+
 Last Completed Task:
-F0-WORK-ORDER-PREP-001
+F0-WORK-ORDER-CORRECTION-001
 
 Last Agent:
-Antigravity / AG-F0-005
+Antigravity / AG-F0-006
 
 Last Result:
-PASS / WO_PREPARED
+PASS / WO_CORRECTED
 
 Open Blocking Issues:
-NONE
+NONE (0 issues block BUILD entry)
 
 Open Non-Blocking Issues:
-8 (ISSUE-F0-001 to ISSUE-F0-008 in docs/tranches/F0/ISSUES.md; blocking BUILD/RUNTIME_ACCEPTANCE, 0 blocking SPEC_FREEZE)
+8 (ISSUE-F0-001 to ISSUE-F0-008 in docs/tranches/F0/ISSUES.md; active implementation/verification tasks during BUILD/REVIEW)
 
 Reviewer Disposition:
-PENDING_WORK_ORDER_REVIEW
+PENDING_WORK_ORDER_RE_REVIEW
 
 Next Authorized Action:
-Independent / Product Owner review of WO-F0-001.
+Independent / Product Owner re-review of corrected WO-F0-001.
 
 Forbidden Next Actions:
 - BUILD
@@ -96,4 +99,4 @@ Required First Reads:
 15. docs/tranches/F0/WORK_ORDER.md
 
 Handoff Notes:
-Work Order WO-F0-001 has been drafted and submitted for Product Owner review. Target Tranche F0 Feature Specification is FROZEN at version 1.0.0. All 13 Acceptance Criteria (AC-F0-01 through AC-F0-13) and 8 open technical issues (ISSUE-F0-001 through ISSUE-F0-008) are mapped in the Work Order. Work Order status is DRAFT / PENDING_PRODUCT_OWNER_APPROVAL; Execution Authorization is NOT APPROVED; Production Build Authorization remains strictly NOT AUTHORIZED. Zero production code files exist.
+Work Order WO-F0-001 has been corrected following independent review REV-WO-F0-001-001 (NEEDS_FIX). Corrections resolve all 4 findings: (1) Authority chain facts aligned to repository artifacts (Intake DRAFT, Design DRAFT, Spec FROZEN v1.0.0); (2) Execution baseline model decoupled (frozen spec commit a1f9fd2, WO prep commit 3ac8152, Approved Execution Baseline PENDING); (3) Open issue gate semantics clarified (0 block BUILD entry; required closure gates specified); (4) REVIEW.md protected as READ ONLY DURING BUILD for implementer with explicit stage ownership rules. Work Order status is DRAFT / PENDING_PRODUCT_OWNER_APPROVAL; Execution Authorization is NOT APPROVED; Production Build Authorization remains strictly NOT AUTHORIZED. Zero production code files exist.

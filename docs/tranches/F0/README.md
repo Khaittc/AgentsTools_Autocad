@@ -29,7 +29,7 @@ Artifacts:
 - Work Order: [./WORK_ORDER.md](./WORK_ORDER.md) — DRAFT / PENDING_PRODUCT_OWNER_APPROVAL
 - Execution Log: [./EXECUTION_LOG.md](./EXECUTION_LOG.md)
 - Issue Registry: [./ISSUES.md](./ISSUES.md)
-- Review: [./REVIEW.md](./REVIEW.md) — REV-F0-001-R3 (PASS_FOR_FREEZE)
+- Review: [./REVIEW.md](./REVIEW.md) — REV-F0-001-R3 (PASS_FOR_FREEZE), REV-WO-F0-001-001 (NEEDS_FIX)
 - API Verification: [./API_VERIFICATION.md](./API_VERIFICATION.md)
 
 Implementation:
@@ -39,7 +39,7 @@ Build Authorization:
 NOT AUTHORIZED
 
 Next Authorized Action:
-Independent / Product Owner review of WO-F0-001.
+Independent / Product Owner re-review of corrected WO-F0-001.
 
 Forbidden Until Work Order Approval:
 - BUILD
