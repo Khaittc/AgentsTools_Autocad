@@ -44,13 +44,14 @@ Establish the smallest real TTC AutoCAD 2023 production plugin foundation that c
 - Modeless `PaletteSet` WPF hosting shell with clean show/hide toggling.
 - `settings.json` loading, schema validation, and fallback handling.
 - File-based structured diagnostic logging with startup, command, and error categorization.
-- Core repository interface declarations (`ISettingsRepository`, placeholder `IComponentRepository`, `ICabinetRepository`).
+- Foundation settings repository abstraction: `ISettingsRepository` (`IComponentRepository` and `ICabinetRepository` are deferred to Tranche P1).
 - AutoCAD Application Package (`.bundle`) manifest (`PackageContents.xml`) for automated discovery and loading.
 - Developer build, deployment, and debugging documentation.
 - Robust exception boundaries preventing AutoCAD host crashes on startup or command execution.
 
 ## 6. Out of Scope / Non-Goals
 
+- **Domain Repositories & Catalogs:** Component Library repository (`IComponentRepository`), Cabinet Library repository (`ICabinetRepository`), and Cable Tray repository (`ITrayLibraryRepository`) are strictly deferred to their respective owning tranches (P1, M1).
 - **Panel Mechanical Features:** Component placement (`TTCPANELPLACE`), DIN rail placement (`TTCRAIL`), wiring duct placement (`TTCDUCT`), alignment/spacing tools (`TTCALIGN`), panel clearance checker (`TTCPANELCHECK`), enclosure depth checking, cabinet sizing recommendation (`TTCPANELSIZE`), reserved cable zones.
 - **M&E Cable Tray Features:** Tray routing, tray fittings, elevation/rise/drop, supports/hangers, tray-panel connections, M&E QA, quantity takeoff.
 - **EPLAN Integration:** EPLAN API, Master Data synchronization, device tags, electrical BOM, wire numbering, terminal logic.

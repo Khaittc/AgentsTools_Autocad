@@ -1,80 +1,132 @@
-# Tranche F0: AutoCAD Foundation — Issue Registry
+# Tranche F0: AutoCAD Foundation — Canonical Issue & Question Registry
 
-## Summary
-
-- Open Blocking Issues: NONE
-- Open Non-Blocking Issues: 3
-- Resolved Issues: 0
+> **Rule:** This file is the single canonical source of truth for all architectural questions, open investigations, and host quirks for Tranche F0.
+> DESIGN.md, SPEC.md, EXECUTION_LOG.md, and AGENT_HANDOFF.md must link to or summarize this registry and must NOT maintain independent, drifting ID schemes.
 
 ---
 
-## ISSUE-F0-001: AutoCAD 2023 Reference Assembly Resolution Strategy
+## 1. Registry Summary
 
-Status: OPEN  
-Severity: MEDIUM  
-Category: BUILD  
-Owner: Developer / Implementer  
-Found In: Tranche F0 (Planning/Spec)  
-Found By: Antigravity / AG-F0-001  
-Found Date: 2026-09-08  
-
-### Problem
-AutoCAD 2023 Managed .NET assemblies (`AcCoreMgd.dll`, `AcDbMgd.dll`, `AcMgd.dll`) are required to compile `TTC.CadTools.AutoCAD`.
-If developer machines lack AutoCAD 2023 installed in the standard path (`C:\Program Files\Autodesk\AutoCAD 2023\`), compilation will fail unless an official NuGet package (e.g. `AutoCAD.NET 24.2.0`) or environment variable reference path (`$(AutoCADPath)`) is used with `Private=False` (`CopyLocal=False`).
-
-### Expected
-A deterministic reference strategy that builds seamlessly on developer machines without polluting the build output with duplicate Autodesk host DLLs.
-
-### Actual
-Currently in planning stage; exact workstation environments need confirmation before Work Order.
-
-### Proposed Resolution
-Use the official `AutoCAD.NET` NuGet package (v24.2.0 for AutoCAD 2023) targeting `.NETFramework,Version=v4.8` with `ExcludeAssets="runtime"` / `Private=False`.
+- **Total Registered Issues:** 8
+- **Open Blocking Issues (Blocking SPEC_FREEZE):** 0
+- **Open Implementation Issues (Blocking BUILD / RUNTIME_ACCEPTANCE):** 8
+- **Resolved Issues:** 0
 
 ---
 
-## ISSUE-F0-002: Plugin Log Directory Permissions in Standard Bundle Locations
+## 2. Historical ID Reconciliation & Cross-Reference Mapping
 
-Status: OPEN  
-Severity: LOW  
-Category: HOST  
-Owner: Developer / Implementer  
-Found In: Tranche F0 (Planning/Spec)  
-Found By: Antigravity / AG-F0-001  
-Found Date: 2026-09-08  
+| Historical ID | Meaning in Source Document | Source File & Section | Canonical Issue ID | Blocked Gate | Status |
+|---|---|---|---|---|---|
+| `OQ-F0-01` (Design) | NuGet assembly resolution across workstations | `DESIGN.md` §13 | **ISSUE-F0-001** | `BUILD` | OPEN |
+| `OQ-F0-02` (Design) | Ribbon tab refresh when switching workspaces | `DESIGN.md` §13 | **ISSUE-F0-004** | `RUNTIME_ACCEPTANCE` | OPEN |
+| `OQ-F0-03` (Design) | PaletteSet state persistence across sessions | `DESIGN.md` §13 | **ISSUE-F0-005** | `RUNTIME_ACCEPTANCE` | OPEN |
+| `OQ-F0-01` (ExecLog) | AutoCAD reference assembly resolution | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-001** | `BUILD` | OPEN |
+| `OQ-F0-02` (ExecLog) | Bundle deployment path vs NETLOAD debugging workflow | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-006** | `BUILD` | OPEN |
+| `OQ-F0-03` (ExecLog) | PaletteSet modeless threading & document switching | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-003** | `BUILD` | OPEN |
+| `OQ-F0-04` (ExecLog) | Ribbon creation timing relative to Initialize() | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-007** | `BUILD` | OPEN |
+| `OQ-F0-05` (ExecLog) | Settings file resolution (bundle vs AppData) | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-008** | `BUILD` | OPEN |
+| `OQ-F0-06` (ExecLog) | Fallback log directory when bundle is read-only | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-002** | `BUILD` | OPEN |
+| `ISSUE-F0-001` (Issues) | AutoCAD 2023 Reference Assembly Resolution Strategy | `ISSUES.md` (initial) | **ISSUE-F0-001** | `BUILD` | OPEN |
+| `ISSUE-F0-002` (Issues) | Plugin Log Directory Permissions in Standard Bundle | `ISSUES.md` (initial) | **ISSUE-F0-002** | `BUILD` | OPEN |
+| `ISSUE-F0-003` (Issues) | Modeless PaletteSet Threading & Context Switching | `ISSUES.md` (initial) | **ISSUE-F0-003** | `BUILD` | OPEN |
 
-### Problem
-If the AutoCAD `.bundle` package is deployed in `C:\Program Files\Autodesk\ApplicationPlugins\` or `C:\ProgramData\Autodesk\ApplicationPlugins\`, regular standard user accounts do not have write permissions to write log files into the bundle root directory (`Contents/Logs/`).
-
-### Expected
-The logging infrastructure must either write to a per-user application directory (`%APPDATA%\TTC_CadTools\Logs`) or gracefully fall back if the local bundle directory is read-only.
-
-### Actual
-Planning/spec stage; need explicit path precedence in Spec.
-
-### Proposed Resolution
-Specify primary log path as `%APPDATA%\TTC_CadTools\Logs\` with fallback to `%TEMP%\TTC_CadTools\Logs\`.
+> **Collision Resolution Note:** Previous drafting used `OQ-F0-01`..`03` in `DESIGN.md` for different topics than in `EXECUTION_LOG.md`. All items have been assigned unique canonical IDs (`ISSUE-F0-001` through `ISSUE-F0-008`) above.
 
 ---
 
-## ISSUE-F0-003: Modeless PaletteSet Threading and Document Context Switching
+## 3. Canonical Issues Register
 
-Status: OPEN  
-Severity: LOW  
-Category: CAD_API  
-Owner: Developer / Implementer  
-Found In: Tranche F0 (Planning/Spec)  
-Found By: Antigravity / AG-F0-001  
-Found Date: 2026-09-08  
+### ISSUE-F0-001: AutoCAD 2023 Reference Assembly Resolution Strategy
+- **Status:** OPEN
+- **Severity:** MEDIUM
+- **Category:** BUILD
+- **Owner:** Implementer / Build Engineer
+- **Blocked Gate:** `BUILD` (Must resolve before Work Order build execution)
+- **Problem:** Target machines may not have AutoCAD 2023 installed in standard path (`C:\Program Files\Autodesk\AutoCAD 2023\`). Relying on local absolute hints breaks portable developer and CI builds.
+- **Proposed Contract / Resolution:** Reference official NuGet package `AutoCAD.NET` (version `24.2.0`) targeting `.NETFramework,Version=v4.8` with `Private=False` (`CopyLocal=False`) and `ExcludeAssets="runtime"`.
+- **Evidence Required to Close:** Solution compiles cleanly on clean machine without local AutoCAD installation.
 
-### Problem
-A modeless `PaletteSet` hosting WPF controls executes on the UI thread and may trigger actions when the active document changes or when no drawing is open (`ActiveDocument == null`). Calling document-mutating methods without proper document locking or when in a quiescent state causes host crashes.
+---
 
-### Expected
-In Tranche F0, the `PaletteSet` is a shell only. It must observe `DocumentCollection.DocumentActivated` and gracefully handle null active document states without attempting any drawing transaction.
+### ISSUE-F0-002: Plugin Log Directory Permissions in Standard Bundle Locations
+- **Status:** OPEN
+- **Severity:** LOW
+- **Category:** HOST
+- **Owner:** Implementer / Infrastructure Engineer
+- **Blocked Gate:** `BUILD` (Contract defined in Spec; requires host execution verification)
+- **Problem:** If `.bundle` is installed in `C:\ProgramData\Autodesk\ApplicationPlugins\` or `C:\Program Files\...`, standard user accounts lack write permissions to `./Contents/Logs/`.
+- **Contract Defined:** Primary log directory is `%APPDATA%\TTC_CadTools\Logs\`; fallback is `%TEMP%\TTC_CadTools\Logs\`.
+- **Evidence Required to Close:** Runtime test verifying log creation under non-admin user account in AutoCAD 2023.
 
-### Actual
-Documented as a design constraint in `docs/tranches/F0/DESIGN.md` and `SPEC.md`.
+---
 
-### Proposed Resolution
-Define explicit guard in F0 Spec: Palette shell controls are read-only / diagnostic in F0; all command dispatches must verify `Application.DocumentManager.MdiActiveDocument != null` and use `DocumentLock` if mutating.
+### ISSUE-F0-003: Modeless PaletteSet Threading & Document Context Switching
+- **Status:** OPEN
+- **Severity:** MEDIUM
+- **Category:** CAD_API
+- **Owner:** Implementer / UI Engineer
+- **Blocked Gate:** `BUILD` (Contract defined in Spec; requires host event verification)
+- **Problem:** Modeless WPF views execute on the UI thread. Accessing `MdiActiveDocument` when zero drawings are open or during document switching may cause null references.
+- **Contract Defined:** Palette view is strictly diagnostic/read-only in F0 with zero DWG database transactions. It subscribes to `DocumentActivated` and checks `MdiActiveDocument != null` before reading document info.
+- **Evidence Required to Close:** Interactive host test opening, closing, and switching drawings while Palette is visible.
+
+---
+
+### ISSUE-F0-004: Ribbon Tab Refresh Behavior Across AutoCAD Workspaces
+- **Status:** OPEN
+- **Severity:** LOW
+- **Category:** UI
+- **Owner:** Implementer / UI Engineer
+- **Blocked Gate:** `RUNTIME_ACCEPTANCE`
+- **Problem:** When an AutoCAD user switches workspaces (e.g. from *Drafting & Annotation* to *3D Modeling* or *AutoCAD Classic*), the ribbon visual tree can be rebuilt by AutoCAD, potentially discarding dynamically added tabs.
+- **Contract Defined:** Listen to AutoCAD workspace change events if needed; in F0 DRAFT, ribbon is constructed on startup or `ItemInitialized`.
+- **Evidence Required to Close:** Verify in AutoCAD 2023 whether `TTC CAD` tab remains visible when toggling workspaces.
+
+---
+
+### ISSUE-F0-005: PaletteSet Position and State Persistence Across AutoCAD Sessions
+- **Status:** OPEN
+- **Severity:** LOW
+- **Category:** UI
+- **Owner:** Implementer / UI Engineer
+- **Blocked Gate:** `RUNTIME_ACCEPTANCE`
+- **Problem:** Determining whether `PaletteSet` size and dock state persist automatically via AutoCAD's native workspace XML/registry or require explicit plugin settings persistence.
+- **Contract Defined:** Rely on AutoCAD's native `PaletteSet` registry persistence via its unique GUID (`4A7A779F-9C3D-4A42-A862-2D5392D6D3A0`).
+- **Evidence Required to Close:** Verify dock position is remembered after restarting AutoCAD 2023.
+
+---
+
+### ISSUE-F0-006: Bundle Deployment Path vs Developer Symlink / NETLOAD Workflow
+- **Status:** OPEN
+- **Severity:** LOW
+- **Category:** BUILD
+- **Owner:** Build Engineer
+- **Blocked Gate:** `BUILD`
+- **Problem:** During active development, copying assemblies to `%APPDATA%\Autodesk\ApplicationPlugins\` can lock DLLs inside running AutoCAD.
+- **Contract Defined:** Support dual workflow: (1) Standard `.bundle` deployment for end-user installation, and (2) Direct `NETLOAD` of debug build output (`bin\Debug\TTC.CadTools.AutoCAD.dll`) for iterative development.
+- **Evidence Required to Close:** Documented in developer load instructions in F0 Spec.
+
+---
+
+### ISSUE-F0-007: Ribbon Initialization Timing Relative to IExtensionApplication.Initialize()
+- **Status:** OPEN
+- **Severity:** MEDIUM
+- **Category:** CAD_API
+- **Owner:** Implementer
+- **Blocked Gate:** `BUILD`
+- **Problem:** `Autodesk.Windows.ComponentManager.Ribbon` is often null at the exact moment `IExtensionApplication.Initialize()` runs during AutoCAD cold start.
+- **Contract Defined:** Check `ComponentManager.Ribbon`. If null, attach to `ComponentManager.ItemInitialized` event and build the tab once the ribbon control initializes; unsubscribe immediately.
+- **Evidence Required to Close:** Real AutoCAD 2023 cold-start test showing ribbon tab appears reliably.
+
+---
+
+### ISSUE-F0-008: Settings File Resolution Precedence & Schema Fallback
+- **Status:** OPEN
+- **Severity:** LOW
+- **Category:** CONFIGURATION
+- **Owner:** Implementer
+- **Blocked Gate:** `BUILD`
+- **Problem:** Resolving configuration when user configuration in `%APPDATA%` does not exist yet.
+- **Contract Defined:** Resolution precedence: (1) `%APPDATA%\TTC_CadTools\settings.json`, (2) `<BundleRoot>\Contents\Resources\settings.json`, (3) Hardcoded in-memory fallback.
+- **Evidence Required to Close:** Unit tests covering missing and malformed JSON scenarios (`SettingsFallbackTests.cs`).

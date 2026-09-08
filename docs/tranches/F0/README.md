@@ -10,7 +10,7 @@ Lifecycle Stage:
 SPEC
 
 Status:
-SPEC_DRAFT / READY_FOR_REVIEW
+SPEC_DRAFT / READY_FOR_REVIEW (v0.1.1)
 
 Dependencies:
 Product Baseline
@@ -28,13 +28,14 @@ Artifacts:
 - Work Order: NONE
 - Execution Log: [./EXECUTION_LOG.md](./EXECUTION_LOG.md)
 - Issue Registry: [./ISSUES.md](./ISSUES.md)
-- Review: NONE / PENDING
+- Review: [./REVIEW.md](./REVIEW.md)
+- API Verification: [./API_VERIFICATION.md](./API_VERIFICATION.md)
 
 Build Authorization:
 NOT AUTHORIZED
 
 Next Authorized Action:
-Independent review of F0 Intake / Design / Spec.
+Independent reviewer verifies F0 correction commit (REV-F0-001 re-review).
 
 Forbidden Actions:
 - Freeze F0 Spec without explicit human Product Owner instruction

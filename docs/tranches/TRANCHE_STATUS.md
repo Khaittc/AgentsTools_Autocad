@@ -10,7 +10,7 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 
 | Tranche ID | Capability | Depends On | Spec Status | Work Order | Build Status | Frozen? | Current Disposition |
 |:---:|---|---|:---:|:---:|:---:|:---:|---|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `DRAFT / READY_FOR_REVIEW` | `NONE` | `BLOCKED` | NO | **SPEC_REVIEW** (Intake, Design, and Spec prepared; ready for independent review) |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `DRAFT / READY_FOR_REVIEW (v0.1.1)` | `NONE` | `BLOCKED` | NO | **SPEC_REVIEW** (Corrected v0.1.1; ready for independent review) |
 | **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F0) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` | `NONE` | `BLOCKED` | NO | **BLOCKED_BY_UPSTREAM** (Spec evidence exists in `docs/03_FEATURE_SPEC_TTCPANELPLACE.md`; awaiting F0/F1/P1) |

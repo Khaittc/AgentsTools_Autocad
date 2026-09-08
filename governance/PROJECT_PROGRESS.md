@@ -48,11 +48,24 @@ Status: ACTIVE_GOVERNANCE
 
 ---
 
+## 3.1. Tranche F0 Review State
+
+- **Review ID:** `REV-F0-001` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md))
+- **Reviewed Commit:** `90f1d30d2407850a653af277738dcfbefb30f378`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Historical Review Disposition:** `NEEDS_FIX / RETURN_TO_SPEC` (6 findings)
+- **Reviewer Addendum:** Withdrew compile-error claims for `AddVisual` (Finding 01) and invalid-syntax claims for `LoadOnAutoCADStartup` (Finding 02).
+- **Correction Task:** `F0-SPEC-CORRECTION-001` (Session `AG-F0-002`)
+- **Agent Correction Status:** `CORRECTED_PENDING_REVIEW` (FINDING-01 to FINDING-06 addressed; API verification documented in [docs/tranches/F0/API_VERIFICATION.md](../docs/tranches/F0/API_VERIFICATION.md))
+- **Re-Review Status:** `PENDING_REVIEW`
+
+---
+
 ## 4. Production Tranche Progress
 
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `DRAFT / READY_FOR_REVIEW` | `NONE` | `BLOCKED` (SPEC_REVIEW / READY_FOR_REVIEW) |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `DRAFT / READY_FOR_REVIEW (v0.1.1)` | `NONE` | `BLOCKED` (SPEC_REVIEW / PENDING_RE_REVIEW) |
 | **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F0) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F0_F1_P1) |
@@ -90,7 +103,7 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent reviewer reviews F0 Intake, Design, and Spec (`docs/tranches/F0/INTAKE.md`, `docs/tranches/F0/DESIGN.md`, `docs/tranches/F0/SPEC.md`).
+Independent reviewer verifies F0 correction commit (`F0-SPEC-CORRECTION-001`, addressing `REV-F0-001`).
 
 **Subsequent Action (gated behind reviewer PASS + Product Owner approval):**
 If reviewer disposition = `PASS`:
