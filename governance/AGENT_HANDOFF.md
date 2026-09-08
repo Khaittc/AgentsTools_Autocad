@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-08 22:25:00 +07:00
+2026-09-08 22:35:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-7b3940bc6724d25f8facb322d324b860b7092fed
+ff105c9f134f0835e55941c3bd5a1f12e7ab0180
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
@@ -23,16 +23,16 @@ Current Tranche:
 F0 — AutoCAD Foundation
 
 Current Lifecycle Stage:
-TRANCHE PLANNING
+SPEC
 
 Current Status:
-NEXT_TRANCHE / NOT_STARTED
+SPEC_REVIEW
 
 Production Build Authorization:
 NOT AUTHORIZED
 
 Current Spec:
-NONE
+docs/tranches/F0/SPEC.md (Status: DRAFT / READY_FOR_REVIEW)
 
 Current Work Order:
 NONE
@@ -40,34 +40,38 @@ NONE
 Frozen Dependencies:
 NONE
 
+Previous Review:
+REV-GOV-002-CORRECTION-001 = PASS
+
 Last Completed Task:
-Corrected TTC-GOV-002 continuity review findings.
+Prepared Tranche F0 Intake, Design, and Spec; persisted REV-GOV-002-CORRECTION-001 review PASS.
 
 Last Agent:
-Antigravity
+Antigravity / AG-F0-001
 
 Last Result:
-GOVERNANCE_ONLY / PASS
+PASS / PLANNING_ONLY
 
 Open Blocking Issues:
 NONE
 
 Open Non-Blocking Issues:
-NONE
+3 (ISSUE-F0-001, ISSUE-F0-002, ISSUE-F0-003 in docs/tranches/F0/ISSUES.md)
 
 Reviewer Disposition:
 PENDING_REVIEW
 
 Next Authorized Action:
-Independent reviewer verifies continuity correction commit.
+Independent reviewer reviews F0 Intake / Design / Spec.
 
 Forbidden Next Actions:
-- F0 Intake / Design / Spec until reviewer PASS
+- Freeze Spec
+- create Work Order
 - BUILD
 - create AutoCAD production code (.cs, .csproj, .sln)
 - F1
 - P1
-- P2 implementation
+- P2
 - M&E
 
 Required First Reads:
@@ -77,6 +81,10 @@ Required First Reads:
 4. governance/DECISION_LOG.md
 5. docs/tranches/TRANCHE_STATUS.md
 6. docs/tranches/TRANCHE_ROADMAP.md
+7. docs/tranches/F0/README.md
+8. docs/tranches/F0/INTAKE.md
+9. docs/tranches/F0/DESIGN.md
+10. docs/tranches/F0/SPEC.md
 
 Handoff Notes:
-Baseline Commit records the commit from which this handed-off state was derived. Repository HEAD must always be queried dynamically via `git rev-parse HEAD`. F0 preparation remains gated behind independent reviewer PASS. All production code remains locked.
+Tranche F0 has completed INTAKE, DESIGN, and SPEC stages. All planning and specification artifacts are ready for independent technical review. Zero production code files exist. Production build authorization remains strictly NOT AUTHORIZED until F0 Spec is frozen by Product Owner and an approved Work Order exists.

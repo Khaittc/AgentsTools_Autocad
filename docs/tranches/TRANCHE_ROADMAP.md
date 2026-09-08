@@ -93,13 +93,13 @@ Early host validation in AutoCAD 2023 prevents late-stage architectural rework. 
 
 ### Foundation Tranches (F-Series)
 - **F0 — AutoCAD Foundation:** Smallest real AutoCAD 2023 Managed .NET plugin shell. Command `TTCINFO`, Ribbon tab, modeless `PaletteSet` host, JSON settings loader, structured logging, `.bundle` package.
-- **F1 — Common CAD Contracts:** Cross-feature standards: Host integration, CAD object identity (`TTC_OBJECT_ID`), metadata lifecycle (`XRecord`), native `MOVE`/`COPY`/`ERASE`/`UNDO`/`REDO`/`SAVE`/`REOPEN` semantics, drawing units (`INSUNITS = 4`), geometric tolerance ($\varepsilon = 10^{-4}\text{ mm}$), and block asset management.
+- **F1 — Common CAD Contracts:** Cross-feature standards: Host integration, CAD object identity (`TTC_OBJECT_ID`), metadata lifecycle (`XRecord`), native `MOVE`/`COPY`/`ERASE`/`UNDO`/`REDO`/`SAVE`/`REOPEN` semantics, drawing units (proposed/candidate `INSUNITS = 4`; final authority belongs to F1 Spec), geometric tolerance (proposed/candidate $\varepsilon = 10^{-4}\text{ mm}$; final authority belongs to F1 Spec), and block asset management.
 
 ### Module A: Panel Layout Designer Tranches (P-Series)
 - **P1 — Component Library:** Repository layer and data model for reading mechanical footprint specifications from `catalog.json` with dimensional caching.
 - **P2 — Component Placement (`TTCPANELPLACE`):** Interactive placement Jig, DIN rail snap assist, `BlockReference` on `TTC-PANEL-EQUIP`, non-plot clearance `Polyline` on `TTC-PANEL-CLEARANCE`, and `XRecord` persistence.
-- **P3 — DIN Rail (`TTCRAIL`):** 2D DIN rail placement, standard rail profiles (35x7.5mm), centerline elevation tracking.
-- **P4 — Wiring Duct (`TTCDUCT`):** Perimeter and divider wiring ducts, standard sizing (60x80, 40x60mm).
+- **P3 — DIN Rail (`TTCRAIL`):** 2D DIN rail placement, candidate standard rail profiles (e.g. 35x7.5mm), centerline elevation tracking.
+- **P4 — Wiring Duct (`TTCDUCT`):** Perimeter and divider wiring ducts, candidate standard sizing (e.g. 60x80, 40x60mm).
 - **P5 — Arrange Tools (`TTCALIGN`):** Alignment (Left, Right, Top, Bottom) and equal spacing (H, V) preserving block references and metadata.
 - **P6 — Panel QA & Clearance Checker (`TTCPANELCHECK`):** Explicit clash detection, thermal clearance overlap checking, reporting audit log.
 - **P7 — Depth Validation:** 2.5D enclosure depth vs device depth + door allowance verification.

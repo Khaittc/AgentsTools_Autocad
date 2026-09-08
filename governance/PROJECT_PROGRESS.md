@@ -1,8 +1,8 @@
 # TTC CAD — Project Progress
 
 Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))  
-Current Lifecycle Stage: TRANCHE PLANNING & F0 PREPARATION  
-Current Focus: F0 — AutoCAD Foundation (Candidate Next Tranche)  
+Current Lifecycle Stage: SPEC_REVIEW  
+Current Focus: F0 — AutoCAD Foundation  
 Status: ACTIVE_GOVERNANCE  
 
 ---
@@ -30,15 +30,20 @@ Status: ACTIVE_GOVERNANCE
 
 ## 3. Governance Continuity Review State
 
-- **Last Governance Task:** TTC-GOV-002 — Agent Continuity & Handoff Protocol
-- **Reviewed Commit:** `7b3940bc6724d25f8facb322d324b860b7092fed`
-- **Reviewer:** ChatGPT / Independent Technical Reviewer
-- **Reviewer Disposition:** `NEEDS_FIX`
-- **Review Findings:**
-  - continuity handoff commit field is self-referential/stale;
-  - production Work Order template uses simulator-path examples;
-  - project progress did not reflect the continuity review state.
-- **Current Correction Task:** Resolve TTC-GOV-002 review findings.
+- **Governance Doctrine:** TTC-GOV-002 — Agent Continuity & Handoff Protocol
+- **Initial Review:**
+  - Reviewed Commit: `7b3940bc6724d25f8facb322d324b860b7092fed`
+  - Reviewer: ChatGPT / Independent Technical Reviewer
+  - Disposition: `NEEDS_FIX` (3 findings: handoff commit semantics, work order paths, review state)
+- **Correction Commit:** `ff105c9f134f0835e55941c3bd5a1f12e7ab0180`
+- **Correction Re-Review:**
+  - Review ID: `REV-GOV-002-CORRECTION-001` ([docs/reviews/REV-GOV-002-CORRECTION-001.md](../docs/reviews/REV-GOV-002-CORRECTION-001.md))
+  - Reviewer: ChatGPT / Independent Technical Reviewer
+  - Disposition: `PASS_TO_NEXT_STAGE`
+  - Scope Compliance: `PASS`
+  - Continuity Compliance: `PASS`
+- **TTC-GOV-002 Status:** `IMPLEMENTED / REVIEWED PASS`
+- **Continuity Gate:** `PASS`
 - **Production Build Authorization:** `NOT AUTHORIZED`
 
 ---
@@ -47,7 +52,7 @@ Status: ACTIVE_GOVERNANCE
 
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `NOT_STARTED` | `NONE` | `BLOCKED` (NEXT_TRANCHE / PLANNED) |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `DRAFT / READY_FOR_REVIEW` | `NONE` | `BLOCKED` (SPEC_REVIEW / READY_FOR_REVIEW) |
 | **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F0) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F0_F1_P1) |
@@ -85,10 +90,10 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent reviewer verifies TTC-GOV-002 correction commit.
+Independent reviewer reviews F0 Intake, Design, and Spec (`docs/tranches/F0/INTAKE.md`, `docs/tranches/F0/DESIGN.md`, `docs/tranches/F0/SPEC.md`).
 
-**Subsequent Action (gated behind reviewer PASS):**
+**Subsequent Action (gated behind reviewer PASS + Product Owner approval):**
 If reviewer disposition = `PASS`:
-Product Owner may authorize F0 INTAKE / DESIGN / SPEC preparation (`docs/01_INTAKE_F0_FOUNDATION.md`, `docs/02_DESIGN_F0_FOUNDATION.md`).
+Product Owner may freeze F0 Spec and issue an approved Work Order for F0 BUILD.
 
-Do NOT write "Start F0" as the immediate next authorized action. F0 remains strictly gated behind reviewer PASS.
+Do NOT write production C# code or begin BUILD before an approved Work Order exists. Production build authorization remains strictly `NOT AUTHORIZED`.
