@@ -87,7 +87,19 @@ export type ActiveTool =
 export interface ValidationIssue {
   id: string;
   severity: 'ERROR' | 'WARNING' | 'INFO';
-  ruleCode: string;
+  ruleCode:
+    | 'DEVICE_DEVICE_COLLISION'
+    | 'OUTSIDE_MOUNTING_PLATE'
+    | 'CLEARANCE_OVERLAP'
+    | 'CABINET_DEPTH_VIOLATION'
+    | string;
   message: string;
   entityIds: string[];
+  depthDetails?: {
+    requiredDepth: number;
+    usableDepth: number;
+    bodyDepth: number;
+    frontClearance: number;
+  };
 }
+

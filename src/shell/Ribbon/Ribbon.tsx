@@ -231,7 +231,7 @@ export const Ribbon: React.FC = () => {
                   onClick={() => loadScenario('S01')}
                   title="Load Scenario S01: Clean empty panel"
                 >
-                  <Box size={22} />
+                  <Box size={20} />
                   <span>S01 Empty</span>
                 </button>
                 <button
@@ -239,11 +239,35 @@ export const Ribbon: React.FC = () => {
                   onClick={() => loadScenario('S02')}
                   title="Load Scenario S02: Fully populated typical control panel"
                 >
-                  <Layers size={22} color="#61afef" />
+                  <Layers size={20} color="#61afef" />
                   <span>S02 Typical</span>
                 </button>
+                <button
+                  className="cad-ribbon-btn-big"
+                  onClick={() => loadScenario('S03')}
+                  title="Load Scenario S03: Intentional clearance & spacing conflicts"
+                >
+                  <Eye size={20} color="#e5c07b" />
+                  <span>S03 Clearance</span>
+                </button>
+                <button
+                  className="cad-ribbon-btn-big"
+                  onClick={() => loadScenario('S04')}
+                  title="Load Scenario S04: Equipment overflows 600x800 cabinet"
+                >
+                  <Sliders size={20} color="#e06c75" />
+                  <span>S04 Too Small</span>
+                </button>
+                <button
+                  className="cad-ribbon-btn-big"
+                  onClick={() => loadScenario('S05')}
+                  title="Load Scenario S05: Component chassis exceeds enclosure depth"
+                >
+                  <Box size={20} color="#c678dd" />
+                  <span>S05 Depth</span>
+                </button>
               </div>
-              <div className="cad-ribbon-group-title">Predefined Test Scenarios</div>
+              <div className="cad-ribbon-group-title">Predefined Engineering Scenarios</div>
             </div>
           </>
         )}

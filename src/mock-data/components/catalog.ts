@@ -160,5 +160,22 @@ export const COMPONENT_CATALOG: PanelComponentDef[] = [
     color: '#868e96',
     terminalsTop: 10,
     terminalsBottom: 10
+  },
+  {
+    id: 'comp-vfd-15kw',
+    name: 'Heavy VFD 15kW (Deep)',
+    category: 'DRIVE',
+    manufacturer: 'Schneider Electric',
+    model: 'Altivar Machine ATV320D15N4B',
+    description: 'Variable Speed Drive 15kW (Requires 270mm usable depth with front clearance)',
+    width: 180,
+    height: 330,
+    depth: 210,
+    mountingType: 'MOUNTING_PLATE',
+    clearance: { top: 150, bottom: 150, left: 30, right: 30, front: 60 },
+    color: '#092b60',
+    terminalsTop: 3,
+    terminalsBottom: 4
   }
 ];
+

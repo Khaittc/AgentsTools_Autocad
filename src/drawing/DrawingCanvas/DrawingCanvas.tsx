@@ -151,11 +151,19 @@ export const DrawingCanvas: React.FC = () => {
           const cw = ent.width + clr.left + clr.right;
           const ch = ent.height + clr.top + clr.bottom;
 
-          ctx.fillStyle = 'rgba(97, 175, 239, 0.08)';
+          const hasClearanceConflict = violations.some(
+            v => v.ruleCode === 'CLEARANCE_OVERLAP' && v.entityIds.includes(ent.id)
+          );
+
+          ctx.fillStyle = hasClearanceConflict
+            ? 'rgba(229, 192, 123, 0.22)'
+            : 'rgba(97, 175, 239, 0.08)';
           ctx.fillRect(cx, cy, cw, ch);
 
-          ctx.strokeStyle = 'rgba(97, 175, 239, 0.35)';
-          ctx.lineWidth = 1 / viewport.zoom;
+          ctx.strokeStyle = hasClearanceConflict
+            ? 'rgba(229, 192, 123, 0.85)'
+            : 'rgba(97, 175, 239, 0.35)';
+          ctx.lineWidth = (hasClearanceConflict ? 1.5 : 1) / viewport.zoom;
           ctx.setLineDash([4 / viewport.zoom, 4 / viewport.zoom]);
           ctx.strokeRect(cx, cy, cw, ch);
           ctx.setLineDash([]);
@@ -241,9 +249,15 @@ export const DrawingCanvas: React.FC = () => {
       ctx.fillStyle = comp.color || '#343a40';
       ctx.fillRect(comp.x, comp.y, comp.width, comp.height);
 
+      // Check violation status
+      const compViolations = violations.filter(v => v.entityIds.includes(comp.id));
+      const hasError = compViolations.some(v => v.severity === 'ERROR');
+      const hasWarning = compViolations.some(v => v.severity === 'WARNING');
+      const borderColor = hasError ? '#e06c75' : hasWarning ? '#e5c07b' : isSelected ? '#00e5ff' : '#21252b';
+
       // Bevel border
-      ctx.strokeStyle = hasViolation ? '#e06c75' : isSelected ? '#00e5ff' : '#21252b';
-      ctx.lineWidth = (hasViolation || isSelected ? 2.5 : 1) / viewport.zoom;
+      ctx.strokeStyle = borderColor;
+      ctx.lineWidth = (hasError || isSelected ? 2.5 : hasWarning ? 2 : 1) / viewport.zoom;
       ctx.strokeRect(comp.x, comp.y, comp.width, comp.height);
 
       // Terminal blocks top and bottom
@@ -281,8 +295,17 @@ export const DrawingCanvas: React.FC = () => {
         textY + 14
       );
 
-      // Mounting badge
-      if (comp.mountingType) {
+      // Mounting badge & depth alert
+      const depthIssue = compViolations.find(v => v.ruleCode === 'CABINET_DEPTH_VIOLATION');
+      if (depthIssue && depthIssue.depthDetails) {
+        ctx.fillStyle = '#e06c75';
+        ctx.font = `bold ${Math.max(8, 9 / viewport.zoom)}px sans-serif`;
+        ctx.fillText(
+          `DEPTH ALERT (+${depthIssue.depthDetails.requiredDepth - depthIssue.depthDetails.usableDepth}mm)`,
+          comp.x + comp.width / 2,
+          textY + 26
+        );
+      } else if (comp.mountingType) {
         ctx.fillStyle = comp.mountingType === 'DIN_RAIL' ? '#4dabf7' : '#ffa94d';
         ctx.font = `italic ${Math.max(7, 8 / viewport.zoom)}px sans-serif`;
         ctx.fillText(
@@ -399,19 +422,25 @@ export const DrawingCanvas: React.FC = () => {
       <div className="cad-canvas-hud">
         <div className="cad-hud-row">
           <span className="cad-hud-label">Cabinet:</span>
-          <span className="cad-hud-value">{cabinet.series} {cabinet.model}</span>
+          <span className="cad-hud-value">{cabinet.series} {cabinet.model} ({cabinet.width}×{cabinet.height}×{cabinet.depth}mm)</span>
         </div>
         <div className="cad-hud-row">
           <span className="cad-hud-label">Mounting Plate:</span>
           <span className="cad-hud-value">{cabinet.mountingPlate.width} × {cabinet.mountingPlate.height} mm</span>
         </div>
         <div className="cad-hud-row">
+          <span className="cad-hud-label">Usable Depth:</span>
+          <span className="cad-hud-value">
+            {cabinet.depth - cabinet.mountingPlate.depthOffset - cabinet.doorInternalAllowance} mm
+          </span>
+        </div>
+        <div className="cad-hud-row">
           <span className="cad-hud-label">Items Placed:</span>
           <span className="cad-hud-value">{entities.length}</span>
         </div>
         {violations.length > 0 && (
-          <div className="cad-hud-row" style={{ color: '#e06c75' }}>
-            <span className="cad-hud-label">QA Issues:</span>
+          <div className="cad-hud-row" style={{ color: '#e06c75', marginTop: 2 }}>
+            <span className="cad-hud-label" style={{ color: '#e06c75' }}>QA Issues:</span>
             <span className="cad-hud-value" style={{ color: '#e06c75', fontWeight: 'bold' }}>
               {violations.length} Violation(s)
             </span>

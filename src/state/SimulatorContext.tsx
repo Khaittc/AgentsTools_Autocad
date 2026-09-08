@@ -9,7 +9,13 @@ import {
 } from '../shared/types/index.ts';
 import { CABINET_CATALOG } from '../mock-data/cabinets/catalog.ts';
 import { COMPONENT_CATALOG } from '../mock-data/components/catalog.ts';
-import { SCENARIO_S01_EMPTY, SCENARIO_S02_TYPICAL } from '../scenarios/panel/scenarioData.ts';
+import {
+  SCENARIO_S01_EMPTY,
+  SCENARIO_S02_TYPICAL,
+  SCENARIO_S03_CLEARANCE,
+  SCENARIO_S04_TOO_SMALL,
+  SCENARIO_S05_DEPTH
+} from '../scenarios/panel/scenarioData.ts';
 
 interface SimulatorSettings {
   showClearances: boolean;
@@ -50,8 +56,9 @@ interface SimulatorContextType {
   toggleSnapGrid: () => void;
   togglePalette: () => void;
   toggleCabinetModal: () => void;
-  loadScenario: (scenarioId: 'S01' | 'S02') => void;
+  loadScenario: (scenarioId: 'S01' | 'S02' | 'S03' | 'S04' | 'S05') => void;
   runQACheck: () => void;
+  runExplicitQACheck: () => void;
   executeCommand: (cmdString: string) => void;
   alignSelected: (type: 'LEFT' | 'RIGHT' | 'TOP' | 'BOTTOM' | 'SPACE_H' | 'SPACE_V') => void;
   resetView: () => void;
@@ -161,41 +168,63 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     logCmd('View centered to mounting plate.');
   }, [logCmd]);
 
-  const loadScenario = useCallback((scenarioId: 'S01' | 'S02') => {
-    if (scenarioId === 'S01') {
-      setCabinet(SCENARIO_S01_EMPTY.cabinet);
-      setEntities(SCENARIO_S01_EMPTY.entities);
-      setSelectedIds([]);
-      logCmd('Loaded Scenario S01: Empty Panel');
-    } else {
-      setCabinet(SCENARIO_S02_TYPICAL.cabinet);
-      setEntities(SCENARIO_S02_TYPICAL.entities);
-      setSelectedIds([]);
-      logCmd('Loaded Scenario S02: Typical Control Panel');
-    }
-  }, [logCmd]);
+  const loadScenario = useCallback((scenarioId: 'S01' | 'S02' | 'S03' | 'S04' | 'S05') => {
+    setSelectedIds([]);
+    cancelTool();
 
-  // QA Checker
-  const runQACheck = useCallback(() => {
+    switch (scenarioId) {
+      case 'S01':
+        setCabinet(SCENARIO_S01_EMPTY.cabinet);
+        setEntities(SCENARIO_S01_EMPTY.entities);
+        logCmd('Loaded Scenario S01: Empty Panel (800x1000mm)');
+        break;
+      case 'S02':
+        setCabinet(SCENARIO_S02_TYPICAL.cabinet);
+        setEntities(SCENARIO_S02_TYPICAL.entities);
+        logCmd('Loaded Scenario S02: Typical Control Panel (Standard Layout)');
+        break;
+      case 'S03':
+        setCabinet(SCENARIO_S03_CLEARANCE.cabinet);
+        setEntities(SCENARIO_S03_CLEARANCE.entities);
+        logCmd('Loaded Scenario S03: Clearance Violations (Thermal & lateral conflicts)');
+        break;
+      case 'S04':
+        setCabinet(SCENARIO_S04_TOO_SMALL.cabinet);
+        setEntities(SCENARIO_S04_TOO_SMALL.entities);
+        logCmd('Loaded Scenario S04: Cabinet Too Small (600x800mm boundary overflow)');
+        break;
+      case 'S05':
+        setCabinet(SCENARIO_S05_DEPTH.cabinet);
+        setEntities(SCENARIO_S05_DEPTH.entities);
+        logCmd('Loaded Scenario S05: Depth Violation (Chassis exceeds usable enclosure depth)');
+        break;
+    }
+  }, [cancelTool, logCmd]);
+
+  // Compute validation issues across all rules
+  const computeIssues = useCallback((): ValidationIssue[] => {
     const issues: ValidationIssue[] = [];
     const plateW = cabinet.mountingPlate.width;
     const plateH = cabinet.mountingPlate.height;
+    const usableDepth = cabinet.depth - cabinet.mountingPlate.depthOffset - cabinet.doorInternalAllowance;
 
-    // Check Outside Plate
+    // 1. Check Outside Plate Boundary
     entities.forEach(ent => {
       if (ent.x < 0 || ent.y < 0 || ent.x + ent.width > plateW || ent.y + ent.height > plateH) {
         issues.push({
           id: `outside-${ent.id}`,
           severity: 'ERROR',
           ruleCode: 'OUTSIDE_MOUNTING_PLATE',
-          message: `${ent.name} exceeds mounting plate boundary!`,
+          message: `${ent.name} exceeds mounting plate boundary (${plateW}x${plateH}mm)!`,
           entityIds: [ent.id]
         });
       }
     });
 
-    // Check Component-Component Overlap
     const components = entities.filter(e => e.entityType === 'COMPONENT');
+    const ducts = entities.filter(e => e.entityType === 'WIRING_DUCT');
+
+    // 2. Check Device-Device Physical Collision
     for (let i = 0; i < components.length; i++) {
       for (let j = i + 1; j < components.length; j++) {
         const a = components[i];
@@ -218,14 +247,128 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       }
     }
 
-    setViolations(issues);
-    logCmd(`TTCPANELCHECK: Found ${issues.length} violation(s).`);
-  }, [cabinet, entities, logCmd]);
+    // 3. Check Clearance Overlaps (Thermal / Spacing)
+    for (let i = 0; i < components.length; i++) {
+      const a = components[i];
+      if (!a.clearance) continue;
 
-  // Run QA automatically when entities change
+      const cLeft = a.x - a.clearance.left;
+      const cRight = a.x + a.width + a.clearance.right;
+      const cTop = a.y - a.clearance.top;
+      const cBottom = a.y + a.height + a.clearance.bottom;
+
+      // Clearance vs other components
+      for (let j = 0; j < components.length; j++) {
+        if (i === j) continue;
+        const b = components[j];
+
+        // If a and b are already colliding body-to-body, collision rule takes priority
+        const bodyCollision =
+          a.x < b.x + b.width &&
+          a.x + a.width > b.x &&
+          a.y < b.y + b.height &&
+          a.y + a.height > b.y;
+
+        if (!bodyCollision) {
+          const bInClearance =
+            b.x < cRight &&
+            b.x + b.width > cLeft &&
+            b.y < cBottom &&
+            b.y + b.height > cTop;
+
+          if (bInClearance && i < j) {
+            issues.push({
+              id: `clearance-${a.id}-${b.id}`,
+              severity: 'WARNING',
+              ruleCode: 'CLEARANCE_OVERLAP',
+              message: `Clearance overlap between ${a.name} and ${b.name}`,
+              entityIds: [a.id, b.id]
+            });
+          }
+        }
+      }
+
+      // Clearance vs Wiring Ducts
+      for (const duct of ducts) {
+        const bodyInDuct =
+          a.x < duct.x + duct.width &&
+          a.x + a.width > duct.x &&
+          a.y < duct.y + duct.height &&
+          a.y + a.height > duct.y;
+
+        if (!bodyInDuct) {
+          const ductInClearance =
+            duct.x < cRight &&
+            duct.x + duct.width > cLeft &&
+            duct.y < cBottom &&
+            duct.y + duct.height > cTop;
+
+          if (ductInClearance) {
+            issues.push({
+              id: `clearance-duct-${a.id}-${duct.id}`,
+              severity: 'WARNING',
+              ruleCode: 'CLEARANCE_OVERLAP',
+              message: `${a.name} clearance envelope penetrates into ${duct.name}`,
+              entityIds: [a.id, duct.id]
+            });
+          }
+        }
+      }
+    }
+
+    // 4. Check Cabinet Depth Violation
+    components.forEach(comp => {
+      const bodyDepth = comp.depth || 0;
+      const frontClearance = comp.clearance?.front || 0;
+      const reqDepth = bodyDepth + frontClearance;
+
+      if (reqDepth > usableDepth) {
+        issues.push({
+          id: `depth-${comp.id}`,
+          severity: 'ERROR',
+          ruleCode: 'CABINET_DEPTH_VIOLATION',
+          message: `${comp.name} requires ${reqDepth}mm depth (${bodyDepth}mm body + ${frontClearance}mm clearance), exceeding usable cabinet depth (${usableDepth}mm) by ${reqDepth - usableDepth}mm!`,
+          entityIds: [comp.id],
+          depthDetails: {
+            requiredDepth: reqDepth,
+            usableDepth,
+            bodyDepth,
+            frontClearance
+          }
+        });
+      }
+    });
+
+    return issues;
+  }, [cabinet, entities]);
+
+  // Live Diagnostics: Automatically update violations in the background
   useEffect(() => {
-    runQACheck();
-  }, [entities, cabinet, runQACheck]);
+    const issues = computeIssues();
+    setViolations(issues);
+  }, [computeIssues]);
+
+  // Explicit QA Check Command: Triggered manually to print formal diagnostic report
+  const runExplicitQACheck = useCallback(() => {
+    const issues = computeIssues();
+    setViolations(issues);
+
+    const usableDepth = cabinet.depth - cabinet.mountingPlate.depthOffset - cabinet.doorInternalAllowance;
+    logCmd('───────────────────────────────────────────────────────');
+    logCmd(`[QA REPORT] TTCPANELCHECK — Cabinet: ${cabinet.series} (${cabinet.width}x${cabinet.height}x${cabinet.depth}mm)`);
+    logCmd(`Mounting Plate: ${cabinet.mountingPlate.width}x${cabinet.mountingPlate.height}mm | Usable Depth: ${usableDepth}mm`);
+    logCmd(`Total Issues Found: ${issues.length}`);
+
+    if (issues.length === 0) {
+      logCmd('✔ PASS: All equipment within plate limits, clearances, and depth allowances.');
+    } else {
+      issues.forEach((iss, idx) => {
+        logCmd(` [${idx + 1}] [${iss.ruleCode}] ${iss.message}`);
+      });
+      logCmd(`✖ FAILED: Resolve the ${issues.length} issue(s) highlighted above.`);
+    }
+    logCmd('───────────────────────────────────────────────────────');
+  }, [computeIssues, cabinet, logCmd]);
 
   // Alignment Tools
   const alignSelected = useCallback((type: 'LEFT' | 'RIGHT' | 'TOP' | 'BOTTOM' | 'SPACE_H' | 'SPACE_V') => {
@@ -310,10 +453,13 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         logCmd('  TTCPANELPLACE  - Insert selected component');
         logCmd('  TTCRAIL        - Draw DIN rail');
         logCmd('  TTCDUCT        - Draw wiring duct');
-        logCmd('  TTCPANELCHECK  - Run collision check');
+        logCmd('  TTCPANELCHECK  - Run full QA check and print report');
         logCmd('  TTCCABINET     - Change cabinet size');
         logCmd('  S01            - Load Scenario S01 (Empty Panel)');
         logCmd('  S02            - Load Scenario S02 (Typical Control Panel)');
+        logCmd('  S03            - Load Scenario S03 (Clearance Violations)');
+        logCmd('  S04            - Load Scenario S04 (Cabinet Too Small)');
+        logCmd('  S05            - Load Scenario S05 (Depth Violation)');
         logCmd('  CLEAR          - Clear drawing');
         logCmd('  FIT            - Center view');
         break;
@@ -338,7 +484,7 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         break;
 
       case 'TTCPANELCHECK':
-        runQACheck();
+        runExplicitQACheck();
         break;
 
       case 'TTCCABINET':
@@ -351,6 +497,18 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
       case 'S02':
         loadScenario('S02');
+        break;
+
+      case 'S03':
+        loadScenario('S03');
+        break;
+
+      case 'S04':
+        loadScenario('S04');
+        break;
+
+      case 'S05':
+        loadScenario('S05');
         break;
 
       case 'CLEAR':
@@ -375,7 +533,7 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     startPlaceComponent,
     startDrawRail,
     startDrawDuct,
-    runQACheck,
+    runExplicitQACheck,
     loadScenario,
     resetView
   ]);
@@ -411,7 +569,8 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     togglePalette,
     toggleCabinetModal,
     loadScenario,
-    runQACheck,
+    runQACheck: runExplicitQACheck,
+    runExplicitQACheck,
     executeCommand,
     alignSelected,
     resetView
@@ -441,7 +600,7 @@ export const SimulatorProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     togglePalette,
     toggleCabinetModal,
     loadScenario,
-    runQACheck,
+    runExplicitQACheck,
     executeCommand,
     alignSelected,
     resetView
