@@ -1,8 +1,8 @@
 # TTC CAD — Project Progress
 
 Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))<br>
-Current Lifecycle Stage: WORK_ORDER_PREPARATION<br>
-Current Focus: F0 — AutoCAD Foundation<br>
+Current Lifecycle Stage: WORK_ORDER_REVIEW<br>
+Current Focus: F0 — WO-F0-001<br>
 Status: ACTIVE_GOVERNANCE
 
 ---
@@ -62,10 +62,10 @@ Status: ACTIVE_GOVERNANCE
 - **Reviewer Disposition:** `PASS_FOR_FREEZE`
 - **F0 Spec Status:** `FROZEN (v1.0.0)`
 - **F0 Tranche Status:** `NOT FROZEN` (Implementation not started)
-- **Work Order:** `NONE`
+- **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `DRAFT / PENDING_PRODUCT_OWNER_APPROVAL`)
 - **Implementation:** `NOT_STARTED`
 - **Production Build Authorization:** `NOT AUTHORIZED`
-- **Current Lifecycle Stage:** `WORK_ORDER_PREPARATION`
+- **Current Lifecycle Stage:** `WORK_ORDER_REVIEW`
 
 ---
 
@@ -73,7 +73,7 @@ Status: ACTIVE_GOVERNANCE
 
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `NONE` | `BLOCKED / AWAITING_WORK_ORDER` |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `DRAFT / WO-F0-001` | `BLOCKED / AWAITING_WO_APPROVAL` |
 | **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F0) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F0_F1_P1) |
@@ -85,12 +85,12 @@ Status: ACTIVE_GOVERNANCE
 ## 5. Current Gate & Build Authorization
 
 - **Production Build Authorization:** `NOT AUTHORIZED`
-- **Active Work Orders:** `NONE`
+- **Active Work Orders:** `NONE` (WO-F0-001 in `DRAFT / PENDING_PRODUCT_OWNER_APPROVAL`)
 - **Production Code Files:** `0` (Zero `.cs` files exist)
 - **Gate Result:** `BLOCKED`
 
 ### Blockers for Production Code:
-1. Approved Work Order is required (F0 Spec is FROZEN v1.0.0; Work Order pending).
+1. Approved Work Order is required (F0 Spec is FROZEN v1.0.0; WO-F0-001 pending approval).
 2. Production code mutation remains strictly locked per Section 3 of `ANTIGRAVITY_INSTRUCTIONS.md`.
 
 ---
@@ -109,7 +109,7 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Prepare F0 Work Order (`WO-F0-001`) for Product Owner review.
+Independent / Product Owner review of WO-F0-001.
 
 **Subsequent Action (gated behind Product Owner approval of Work Order):**
 Upon approval of `WO-F0-001`, authorize F0 BUILD.

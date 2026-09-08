@@ -7,10 +7,10 @@ Capability:
 AutoCAD Foundation
 
 Lifecycle Stage:
-SPEC_FROZEN
+WORK_ORDER
 
 Status:
-SPEC_FROZEN (v1.0.0)
+WORK_ORDER_REVIEW
 
 Dependencies:
 Product Baseline
@@ -26,7 +26,7 @@ Artifacts:
 - Intake: [./INTAKE.md](./INTAKE.md)
 - Design: [./DESIGN.md](./DESIGN.md)
 - Spec: [./SPEC.md](./SPEC.md) — FROZEN v1.0.0
-- Work Order: NONE
+- Work Order: [./WORK_ORDER.md](./WORK_ORDER.md) — DRAFT / PENDING_PRODUCT_OWNER_APPROVAL
 - Execution Log: [./EXECUTION_LOG.md](./EXECUTION_LOG.md)
 - Issue Registry: [./ISSUES.md](./ISSUES.md)
 - Review: [./REVIEW.md](./REVIEW.md) — REV-F0-001-R3 (PASS_FOR_FREEZE)
@@ -39,7 +39,7 @@ Build Authorization:
 NOT AUTHORIZED
 
 Next Authorized Action:
-Prepare F0 Work Order (`WO-F0-001`).
+Independent / Product Owner review of WO-F0-001.
 
 Forbidden Until Work Order Approval:
 - BUILD

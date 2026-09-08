@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-08 23:15:00 +07:00
+2026-09-08 23:25:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-01f944ee81c21ea1cb56b20e2c9389abd9ee9836
+a1f9fd2672d6aa94b7bd2dee2b201edcfdce1733
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
@@ -23,10 +23,16 @@ Current Tranche:
 F0 — AutoCAD Foundation
 
 Current Lifecycle Stage:
-WORK_ORDER_PREPARATION
+WORK_ORDER
 
 Current Status:
-SPEC_FROZEN
+WORK_ORDER_REVIEW
+
+Current Frozen Authority:
+docs/tranches/F0/SPEC.md — FROZEN v1.0.0
+
+Frozen Dependencies:
+NONE — F0 is the root technical tranche.
 
 Production Build Authorization:
 NOT AUTHORIZED
@@ -35,22 +41,22 @@ Current Spec:
 docs/tranches/F0/SPEC.md (Status: FROZEN v1.0.0)
 
 Current Work Order:
-NONE
+docs/tranches/F0/WORK_ORDER.md (Status: DRAFT / PENDING_PRODUCT_OWNER_APPROVAL)
 
-Frozen Dependencies:
-docs/tranches/F0/SPEC.md (v1.0.0)
+Implementation:
+NOT_STARTED
 
 Latest Review:
 REV-F0-001-R3 = PASS / PASS_FOR_FREEZE
 
 Last Completed Task:
-F0-SPEC-FREEZE-001
+F0-WORK-ORDER-PREP-001
 
 Last Agent:
-Antigravity / AG-F0-004
+Antigravity / AG-F0-005
 
 Last Result:
-PASS / SPEC_FROZEN
+PASS / WO_PREPARED
 
 Open Blocking Issues:
 NONE
@@ -59,10 +65,10 @@ Open Non-Blocking Issues:
 8 (ISSUE-F0-001 to ISSUE-F0-008 in docs/tranches/F0/ISSUES.md; blocking BUILD/RUNTIME_ACCEPTANCE, 0 blocking SPEC_FREEZE)
 
 Reviewer Disposition:
-PASS_FOR_FREEZE
+PENDING_WORK_ORDER_REVIEW
 
 Next Authorized Action:
-Prepare F0 Work Order for independent/Product Owner review.
+Independent / Product Owner review of WO-F0-001.
 
 Forbidden Next Actions:
 - BUILD
@@ -87,6 +93,7 @@ Required First Reads:
 12. docs/tranches/F0/INTAKE.md
 13. docs/tranches/F0/DESIGN.md
 14. docs/tranches/F0/SPEC.md
+15. docs/tranches/F0/WORK_ORDER.md
 
 Handoff Notes:
-Tranche F0 Feature Specification has been frozen as durable baseline version 1.0.0 following independent review PASS (REV-F0-001-R3). The F0 Frozen Claim Boundary (Section 11.1 of SPEC.md) explicitly distinguishes authoritative contracts from runtime unproven items. All ACs remain NOT_RUN. Tranche F0 itself is NOT FROZEN (requires BUILD -> REVIEW -> FREEZE). Production build authorization remains strictly NOT AUTHORIZED until an approved Work Order exists. Next action is preparing F0 Work Order (WO-F0-001) for Product Owner review.
+Work Order WO-F0-001 has been drafted and submitted for Product Owner review. Target Tranche F0 Feature Specification is FROZEN at version 1.0.0. All 13 Acceptance Criteria (AC-F0-01 through AC-F0-13) and 8 open technical issues (ISSUE-F0-001 through ISSUE-F0-008) are mapped in the Work Order. Work Order status is DRAFT / PENDING_PRODUCT_OWNER_APPROVAL; Execution Authorization is NOT APPROVED; Production Build Authorization remains strictly NOT AUTHORIZED. Zero production code files exist.
