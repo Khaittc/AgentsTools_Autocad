@@ -7,10 +7,10 @@ Capability:
 AutoCAD Foundation
 
 Lifecycle Stage:
-SPEC
+SPEC_FROZEN
 
 Status:
-SPEC_DRAFT / READY_FOR_REVIEW (v0.1.2)
+SPEC_FROZEN (v1.0.0)
 
 Dependencies:
 Product Baseline
@@ -20,26 +20,28 @@ Inherited Authority:
 - Governance Decision `TTC-GOV-001` (Spec-First Per Tranche Methodology)
 - Governance Decision `TTC-GOV-002` (Git-Based Agent Continuity and Handoff Protocol)
 - AutoCAD 2023 Managed .NET API technical baseline (.NET Framework 4.8)
+- Operator Instruction for `F0-SPEC-FREEZE-001`
 
 Artifacts:
 - Intake: [./INTAKE.md](./INTAKE.md)
 - Design: [./DESIGN.md](./DESIGN.md)
-- Spec: [./SPEC.md](./SPEC.md)
+- Spec: [./SPEC.md](./SPEC.md) — FROZEN v1.0.0
 - Work Order: NONE
 - Execution Log: [./EXECUTION_LOG.md](./EXECUTION_LOG.md)
 - Issue Registry: [./ISSUES.md](./ISSUES.md)
-- Review: [./REVIEW.md](./REVIEW.md)
+- Review: [./REVIEW.md](./REVIEW.md) — REV-F0-001-R3 (PASS_FOR_FREEZE)
 - API Verification: [./API_VERIFICATION.md](./API_VERIFICATION.md)
+
+Implementation:
+NOT_STARTED
 
 Build Authorization:
 NOT AUTHORIZED
 
 Next Authorized Action:
-Independent reviewer verifies final F0 spec patch (REV-F0-001-R2 re-review).
+Prepare F0 Work Order (`WO-F0-001`).
 
-Forbidden Actions:
-- Freeze F0 Spec without explicit human Product Owner instruction
-- Create or approve Work Order
+Forbidden Until Work Order Approval:
+- BUILD
 - Implement production AutoCAD C# code (`.cs`, `.csproj`, `.sln`, `.bundle`)
-- Begin BUILD
 - Advance to F1, P1, P2, or M&E

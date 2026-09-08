@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-08 23:10:00 +07:00
+2026-09-08 23:15:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-c59f85c894322e03043f83f66a7da2bf7f83d7d3
+01f944ee81c21ea1cb56b20e2c9389abd9ee9836
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
@@ -23,34 +23,34 @@ Current Tranche:
 F0 — AutoCAD Foundation
 
 Current Lifecycle Stage:
-SPEC
+WORK_ORDER_PREPARATION
 
 Current Status:
-SPEC_REVIEW
+SPEC_FROZEN
 
 Production Build Authorization:
 NOT AUTHORIZED
 
 Current Spec:
-docs/tranches/F0/SPEC.md (Status: DRAFT / READY_FOR_REVIEW v0.1.2)
+docs/tranches/F0/SPEC.md (Status: FROZEN v1.0.0)
 
 Current Work Order:
 NONE
 
 Frozen Dependencies:
-NONE
+docs/tranches/F0/SPEC.md (v1.0.0)
 
 Latest Review:
-REV-F0-001-R2 = NEEDS_FIX / RETURN_TO_SPEC (Finding 03 zero-doc command vs state safety)
+REV-F0-001-R3 = PASS / PASS_FOR_FREEZE
 
 Last Completed Task:
-F0-SPEC-PATCH-002
+F0-SPEC-FREEZE-001
 
 Last Agent:
-Antigravity / AG-F0-003
+Antigravity / AG-F0-004
 
 Last Result:
-PASS / SPEC_PATCH_ONLY
+PASS / SPEC_FROZEN
 
 Open Blocking Issues:
 NONE
@@ -59,14 +59,12 @@ Open Non-Blocking Issues:
 8 (ISSUE-F0-001 to ISSUE-F0-008 in docs/tranches/F0/ISSUES.md; blocking BUILD/RUNTIME_ACCEPTANCE, 0 blocking SPEC_FREEZE)
 
 Reviewer Disposition:
-PENDING_REVIEW
+PASS_FOR_FREEZE
 
 Next Authorized Action:
-Independent reviewer verifies final F0 spec patch.
+Prepare F0 Work Order for independent/Product Owner review.
 
 Forbidden Next Actions:
-- Freeze Spec
-- create Work Order
 - BUILD
 - create AutoCAD production code (.cs, .csproj, .sln)
 - F1
@@ -91,4 +89,4 @@ Required First Reads:
 14. docs/tranches/F0/SPEC.md
 
 Handoff Notes:
-Tranche F0 has completed final spec patch task F0-SPEC-PATCH-002 addressing REV-F0-001-R2 findings. Zero-document state safety has been formally decoupled from interactive command-line invocation. AC-F0-11 has been rewritten for state safety, AC-F0-13 added for application-context commands, negative cases expanded, and source attribution clarified in API_VERIFICATION.md. Zero production code files exist. Production build authorization remains strictly NOT AUTHORIZED until F0 Spec is frozen by Product Owner and an approved Work Order exists.
+Tranche F0 Feature Specification has been frozen as durable baseline version 1.0.0 following independent review PASS (REV-F0-001-R3). The F0 Frozen Claim Boundary (Section 11.1 of SPEC.md) explicitly distinguishes authoritative contracts from runtime unproven items. All ACs remain NOT_RUN. Tranche F0 itself is NOT FROZEN (requires BUILD -> REVIEW -> FREEZE). Production build authorization remains strictly NOT AUTHORIZED until an approved Work Order exists. Next action is preparing F0 Work Order (WO-F0-001) for Product Owner review.

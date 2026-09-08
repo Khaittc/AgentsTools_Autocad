@@ -1,9 +1,9 @@
 # TTC CAD — Project Progress
 
-Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))  
-Current Lifecycle Stage: SPEC_REVIEW  
-Current Focus: F0 — AutoCAD Foundation  
-Status: ACTIVE_GOVERNANCE  
+Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))<br>
+Current Lifecycle Stage: WORK_ORDER_PREPARATION<br>
+Current Focus: F0 — AutoCAD Foundation<br>
+Status: ACTIVE_GOVERNANCE
 
 ---
 
@@ -48,18 +48,24 @@ Status: ACTIVE_GOVERNANCE
 
 ---
 
-## 3.1. Tranche F0 Review State
+## 3.1. Tranche F0 Review & Freeze State
 
 - **Review History:**
   - Round 1: `REV-F0-001` (`NEEDS_FIX / RETURN_TO_SPEC`, Commit `90f1d30d2407850a653af277738dcfbefb30f378`)
   - Round 1 Correction: `F0-SPEC-CORRECTION-001` (Session `AG-F0-002`, Commit `c59f85c894322e03043f83f66a7da2bf7f83d7d3`)
   - Round 2: `REV-F0-001-R2` (`NEEDS_FIX / RETURN_TO_SPEC`, Commit `c59f85c894322e03043f83f66a7da2bf7f83d7d3`)
+  - Round 2 Patch: `F0-SPEC-PATCH-002` (Session `AG-F0-003`, Commit `01f944ee81c21ea1cb56b20e2c9389abd9ee9836`)
+  - Round 3: `REV-F0-001-R3` (`PASS / PASS_FOR_FREEZE`, Commit `01f944ee81c21ea1cb56b20e2c9389abd9ee9836`)
 - **Reviewer:** ChatGPT / Independent Technical Reviewer
-- **Latest Review ID:** `REV-F0-001-R2` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md))
-- **Latest Review Disposition:** `NEEDS_FIX / RETURN_TO_SPEC` (Finding 03 zero-doc command vs state safety)
-- **Latest Correction Task:** `F0-SPEC-PATCH-002` (Session `AG-F0-003`)
-- **Correction Status:** `CORRECTED_PENDING_REVIEW` (Zero-doc state safety decoupled from command-line invocation, AC-F0-11 rewritten, AC-F0-13 added, source attribution clarified in `API_VERIFICATION.md`)
-- **Independent Re-Review Status:** `PENDING_REVIEW`
+- **Latest Review ID:** `REV-F0-001-R3` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md))
+- **Latest Review Result:** `PASS`
+- **Reviewer Disposition:** `PASS_FOR_FREEZE`
+- **F0 Spec Status:** `FROZEN (v1.0.0)`
+- **F0 Tranche Status:** `NOT FROZEN` (Implementation not started)
+- **Work Order:** `NONE`
+- **Implementation:** `NOT_STARTED`
+- **Production Build Authorization:** `NOT AUTHORIZED`
+- **Current Lifecycle Stage:** `WORK_ORDER_PREPARATION`
 
 ---
 
@@ -67,7 +73,7 @@ Status: ACTIVE_GOVERNANCE
 
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `DRAFT / READY_FOR_REVIEW (v0.1.2)` | `NONE` | `BLOCKED` (SPEC_REVIEW / PENDING_RE_REVIEW) |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `NONE` | `BLOCKED / AWAITING_WORK_ORDER` |
 | **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F0) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F0_F1_P1) |
@@ -84,10 +90,8 @@ Status: ACTIVE_GOVERNANCE
 - **Gate Result:** `BLOCKED`
 
 ### Blockers for Production Code:
-1. No frozen Tranche Spec exists yet.
-2. No approved Work Order exists yet.
-3. F0 (AutoCAD Foundation) must be designed, specified, and authorized before any production code can be written.
-4. Production code mutation remains strictly locked per Section 3 of `ANTIGRAVITY_INSTRUCTIONS.md`.
+1. Approved Work Order is required (F0 Spec is FROZEN v1.0.0; Work Order pending).
+2. Production code mutation remains strictly locked per Section 3 of `ANTIGRAVITY_INSTRUCTIONS.md`.
 
 ---
 
@@ -105,10 +109,9 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent reviewer verifies final F0 patch (`F0-SPEC-PATCH-002`, addressing `REV-F0-001-R2`).
+Prepare F0 Work Order (`WO-F0-001`) for Product Owner review.
 
-**Subsequent Action (gated behind reviewer PASS + Product Owner approval):**
-If reviewer disposition = `PASS`:
-Product Owner may freeze F0 Spec and issue an approved Work Order for F0 BUILD.
+**Subsequent Action (gated behind Product Owner approval of Work Order):**
+Upon approval of `WO-F0-001`, authorize F0 BUILD.
 
 Do NOT write production C# code or begin BUILD before an approved Work Order exists. Production build authorization remains strictly `NOT AUTHORIZED`.

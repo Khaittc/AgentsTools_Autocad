@@ -305,3 +305,113 @@ Trailed via Git commit trailer `Session: AG-F0-003`.
 ### Next Action
 
 Independent reviewer verifies final F0 spec patch (`F0-SPEC-PATCH-002`).
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F0-003
+- **Actual Result Commit:** `01f944ee81c21ea1cb56b20e2c9389abd9ee9836`
+- **Resolution Date:** 2026-09-08
+- **Reason:** Commit was successfully generated and pushed in task F0-SPEC-PATCH-002; this addendum links the session record to its permanent Git commit SHA in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-08 / AG-F0-004
+
+### Identity
+
+Agent:
+Antigravity
+
+Session ID:
+AG-F0-004
+
+Task ID:
+F0-SPEC-FREEZE-001
+
+Lifecycle Stage:
+SPEC_FREEZE
+
+Tranche:
+F0 — AutoCAD Foundation
+
+Work Order:
+NONE (Specification Freeze and Review Persistence Only)
+
+Starting Commit:
+01f944ee81c21ea1cb56b20e2c9389abd9ee9836
+
+Review:
+REV-F0-001-R3 (PASS / PASS_FOR_FREEZE)
+
+Result Commit Resolution:
+Trailed via Git commit trailer `Session: AG-F0-004`.
+
+---
+
+### Objective
+
+1. Persist external independent review result `REV-F0-001-R3` (`PASS / PASS_FOR_FREEZE`).
+2. Implement minor wording cleanups:
+   - Clarify `PackageContents.xml` manifest source attribution in `SPEC.md` and `API_VERIFICATION.md` (SRC-03 framework vs SRC-04 blog sample).
+   - Clarify `CommandFlags.Session` application context vs interactive CLI prompt in `API_VERIFICATION.md`.
+3. Freeze F0 Feature Specification as durable baseline version `1.0.0` (`Status: FROZEN`).
+4. Establish explicit F0 Frozen Claim Boundary (Section 11.1 of `SPEC.md`) separating authoritative contracts from runtime unproven items.
+5. Synchronize continuity artifacts (`REVIEW.md`, `README.md`, `TRANCHE_STATUS.md`, `PROJECT_PROGRESS.md`, `AGENT_HANDOFF.md`, `EXECUTION_LOG.md`).
+6. Maintain zero production C# code files; keep Production Build Authorization strictly `NOT AUTHORIZED`.
+
+---
+
+### Authority Read
+
+Files read in strict sequence before execution:
+1. `governance/ANTIGRAVITY_INSTRUCTIONS.md`
+2. `governance/PROJECT_PROGRESS.md`
+3. `governance/AGENT_HANDOFF.md`
+4. `governance/DECISION_LOG.md`
+5. `docs/tranches/TRANCHE_STATUS.md`
+6. `docs/tranches/TRANCHE_ROADMAP.md`
+7. `docs/tranches/F0/README.md`
+8. `docs/tranches/F0/REVIEW.md`
+9. `docs/tranches/F0/API_VERIFICATION.md`
+10. `docs/tranches/F0/ISSUES.md`
+11. `docs/tranches/F0/EXECUTION_LOG.md`
+12. `docs/tranches/F0/INTAKE.md`
+13. `docs/tranches/F0/DESIGN.md`
+14. `docs/tranches/F0/SPEC.md`
+
+Preflight Git Check:
+- Branch: `simulator`
+- HEAD: `01f944ee81c21ea1cb56b20e2c9389abd9ee9836`
+- Working Tree: Clean
+
+Gate Result:
+PASS
+
+---
+
+### Work Completed
+
+1. **Review Persistence:** Appended Section 6 to `docs/tranches/F0/REVIEW.md` recording external reviewer (ChatGPT) PASS (`REV-F0-001-R3` / `PASS_FOR_FREEZE`) on commit `01f944ee81c21ea1cb56b20e2c9389abd9ee9836`. Appended Section 7 recording F0 Spec Freeze and Claim Boundary.
+2. **Technical Reference Wording Cleanups:** Updated `docs/tranches/F0/API_VERIFICATION.md` refining SRC-05 application-context documentation and normalizing manifest attribution between SRC-03 and SRC-04.
+3. **Spec Freeze Baseline v1.0.0:** Updated `docs/tranches/F0/SPEC.md` to `Status: FROZEN`, `Version: 1.0.0`, `Freeze Review: REV-F0-001-R3 (PASS_FOR_FREEZE)`, added Section 11.1 F0 Frozen Claim Boundary, normalized Section 6.7 manifest attribution, and updated Section 12 gate to `PASS / SPEC_FROZEN`.
+4. **Tranche Register & Front-Door Update:** Updated `docs/tranches/TRANCHE_STATUS.md` and `docs/tranches/F0/README.md` reflecting F0 Spec `FROZEN (v1.0.0)`, Tranche F0 `NOT FROZEN`, Lifecycle Stage `WORK_ORDER_PREPARATION`.
+5. **Project Governance Synchronization:** Updated `governance/PROJECT_PROGRESS.md` and `governance/AGENT_HANDOFF.md` recording Spec Freeze baseline, reviewer disposition `PASS_FOR_FREEZE`, and next authorized action as Work Order preparation.
+6. **Execution Logging:** Reconciled historical addendum for `AG-F0-003` linking result commit `01f944ee81c21ea1cb56b20e2c9389abd9ee9836` and appended session `AG-F0-004`.
+
+---
+
+### Production Code Check
+
+- Production code created: NONE (0 `.cs`, 0 `.csproj`, 0 `.sln`, 0 `.bundle`).
+- Compile: NOT_RUN
+- AutoCAD Runtime: NOT_RUN
+- Acceptance Criteria: ALL NOT_RUN (AC-F0-01 through AC-F0-13 remain unexecuted pending build)
+- Production Build Authorization: NOT AUTHORIZED
+
+---
+
+### Next Action
+
+Prepare F0 Work Order (`WO-F0-001`) for Product Owner review.

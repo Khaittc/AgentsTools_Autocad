@@ -1,13 +1,13 @@
 # TTC CAD — Feature Specification: Tranche F0 (AutoCAD Foundation)
 
-Status: DRAFT / READY_FOR_REVIEW
+Status: FROZEN
 Tranche ID: F0
 Module: FOUNDATION
 Capability: AutoCAD Foundation
 Feature ID: SPEC-FOUNDATION-F0-001
 Feature Name: AutoCAD 2023 Managed .NET Plugin Shell & Diagnostic Infrastructure
 Command(s): `TTCINFO`, `TTCPALETTE`
-Version: 0.1.2
+Version: 1.0.0
 
 Depends On: Product Baseline
 Inherits From: None (Root Technical Tranche)
@@ -16,15 +16,19 @@ Previous Frozen Baseline: None
 
 Product Owner: TTC CAD Project Owner
 Reviewer: Independent Technical Reviewer
+Freeze Review: REV-F0-001-R3 (PASS_FOR_FREEZE)
+Frozen Against Commit: 01f944ee81c21ea1cb56b20e2c9389abd9ee9836 plus freeze documentation commit
+Product Owner Freeze Authority: Operator instruction for F0-SPEC-FREEZE-001
 Date: 2026-09-08
 
-Open Issues & Questions: 8 canonical issues registered in [`docs/tranches/F0/ISSUES.md`](./ISSUES.md) (0 blocking SPEC_FREEZE)
-Build Status: BLOCKED (Requires FROZEN Spec + APPROVED_FOR_EXECUTION Work Order)
+Open Issues & Questions: 8 canonical issues registered in [`docs/tranches/F0/ISSUES.md`](./ISSUES.md) (0 blocking SPEC_FREEZE, 8 open for BUILD/RUNTIME)
+Build Status: BLOCKED (Requires APPROVED_FOR_EXECUTION Work Order)
 Work Order: NONE
+Production Build Authorization: NOT AUTHORIZED
 
 > [!CAUTION]
 > **BUILD GATE INVARIANT:**
-> This specification grants NO implementation authority until Status = `FROZEN` and an approved Work Order exists.
+> This frozen specification defines authoritative architectural and interface contracts for Tranche F0, but grants NO implementation authority until an approved Work Order exists.
 > Zero production C# files may be created or mutated under this document alone.
 
 ---
@@ -249,10 +253,12 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
       </Commands>
   </ComponentEntry>
   ```
-- **Load Policy Rationale (FINDING-02 Addendum):**
-  - `LoadOnAutoCADStartup="True"` is an officially supported attribute in AutoCAD 2023 (SRC-03).
-  - Selected for F0 to ensure the `TTC CAD` Ribbon tab shell is constructed on host boot without requiring prior command invocation.
-  - `<Commands>` block registers global command names in AutoCAD's command dictionary for auto-completion.
+- **Load Policy Rationale & Source Attribution (FINDING-02):**
+  - **SRC-03:** AutoCAD 2023 Components documentation defines the component/load framework and load-related semantics.
+  - **SRC-04:** Autodesk developer sample demonstrates standalone `LoadOnAutoCADStartup="True"` usage in `PackageContents.xml`.
+  - **Selected F0 Frozen Policy:** Startup loading (`LoadOnAutoCADStartup="True"`) to ensure the `TTC CAD` Ribbon tab shell is constructed on host boot without requiring prior command invocation.
+  - **Commands Element:** `<Commands>` block registers global command names in AutoCAD's command dictionary for auto-completion.
+  - **Runtime Verification:** `NOT_RUN` (Deferred to WORK ORDER-authorized BUILD).
 
 ---
 
@@ -329,7 +335,41 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
 
 ---
 
-## 11. AutoCAD Reality Boundary
+## 11. AutoCAD Reality Boundary & Frozen Claim Boundary
+
+### 11.1 F0 Frozen Claim Boundary
+
+**Frozen / Authoritative:**
+- AutoCAD 2023 target baseline
+- .NET Framework 4.8
+- project dependency direction
+- `TTC.Core` AutoCAD-independence
+- plugin bootstrap scope
+- `TTCINFO` contract
+- `TTCPALETTE` shell contract
+- Ribbon shell contract
+- settings resolution/validation contract
+- logging contract
+- bundle packaging contract
+- zero-document state safety contract
+- F0 acceptance criteria (AC-F0-01 through AC-F0-13)
+- F0 scope exclusions
+
+**Not Yet Proven:**
+- successful compilation
+- exact AutoCAD 2023 assembly compatibility
+- AutoCAD host startup behavior
+- Ribbon timing behavior
+- `PaletteSet` runtime lifecycle
+- bundle autoloader behavior
+- zero-document host transitions
+- workspace switching
+- logging filesystem behavior
+- any acceptance criterion requiring BUILD/runtime evidence
+
+All runtime-dependent acceptance criteria (AC-F0-01 through AC-F0-13) remain: **NOT_RUN**.
+
+### 11.2 Host Interaction Reality
 
 > [!NOTE]
 > All AutoCAD host interactions defined herein (`IExtensionApplication` lifecycle, `PaletteSet` dock styling, `AddVisual` resize behavior, and `ComponentManager.Ribbon` timing) are:
@@ -346,13 +386,14 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
 - [x] Assembly and decoupling contracts specified (`TTC.Core` clean).
 - [x] Commands `TTCINFO` and `TTCPALETTE` fully specified with zero-doc output channels.
 - [x] 3-parameter `AddVisual` resize contract specified (FINDING-01).
-- [x] Autoloader manifest and startup load policy documented (FINDING-02).
+- [x] Autoloader manifest and startup load policy documented with normalized attribution (FINDING-02).
 - [x] Configuration schema, resolution order, and fallback defined.
 - [x] Structured file logging and directory failover specified.
 - [x] Complete negative-case error handling matrix defined (NEG-F0-01 to NEG-F0-14).
 - [x] Acceptance criteria and verification matrix established (AC-F0-01 to AC-F0-13, all `NOT_RUN`).
 - [x] Zero-document state safety explicitly defined and decoupled from command-line availability (FINDING-03 R2).
-- [x] AutoCAD reality boundary explicitly acknowledged.
+- [x] AutoCAD reality boundary and Frozen Claim Boundary explicitly acknowledged.
 - [x] No engineering domain feature creep; domain repositories deferred to P1/M1.
+- [x] Independent review REV-F0-001-R3 passed for freeze; Product Owner operator authority accepted.
 
-Gate Result: `PASS`
+Gate Result: `PASS / SPEC_FROZEN`

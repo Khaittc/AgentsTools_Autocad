@@ -13,7 +13,7 @@
 | **SRC-02** | Autodesk Managed Reference: PaletteSet.AddVisual(string, Visual, bool) | AutoCAD 2022 / Managed API | `https://help.autodesk.com/cloudhelp/2022/ENU/OARX-ManagedRefGuide/files/OARX-ManagedRefGuide-Autodesk_AutoCAD_Windows_PaletteSet_AddVisual_string_Visual__MarshalAsUnmanagedType_U1__bool.html` | Confirms 3rd parameter is `bool bResizeContentToPaletteSize` controlling whether child visual resizes with palette. |
 | **SRC-03** | AutoCAD 2023 Customization Guide: Components Element Reference | AutoCAD 2023 | `https://help.autodesk.com/cloudhelp/2023/ENU/AutoCAD-Customization/files/GUID-3C25E517-8660-4BB7-9447-2310462EF06F.htm` | Defines component element structure, load-reason semantics, and supported load parameters. |
 | **SRC-04** | Autodesk Developer Blog: PackageContents.xml Manifest Examples | AutoCAD 2023–2025 | `https://blog.autodesk.io/autocad-2025-update-your-packagecontentsxml-with-runtimerequirements/` | Demonstrates standalone `LoadOnAutoCADStartup="True"` usage in PackageContents.xml examples and series requirements. |
-| **SRC-05** | Autodesk Managed Reference: CommandFlags Enum | AutoCAD 2022 / Managed API | `https://help.autodesk.com/cloudhelp/2022/ENU/OARX-ManagedRefGuide/files/OARX-ManagedRefGuide-Autodesk_AutoCAD_Runtime_CommandFlags.html` | Confirms `CommandFlags.Session` runs in application context (enabling zero-document execution); `CommandFlags.Modal` default. |
+| **SRC-05** | Autodesk Managed Reference: CommandFlags Enum | AutoCAD 2022 / Managed API | `https://help.autodesk.com/cloudhelp/2022/ENU/OARX-ManagedRefGuide/files/OARX-ManagedRefGuide-Autodesk_AutoCAD_Runtime_CommandFlags.html` | Confirms `CommandFlags.Session` establishes application execution context. Does not by itself guarantee availability of a normal interactive command-line surface after all drawing documents are closed. |
 | **SRC-06** | AutoCAD Managed DevGuide: Application Initialization & Command Discovery | AutoCAD 2022 / Managed API | `https://help.autodesk.com/cloudhelp/2022/ENU/OARX-DevGuide-Managed/files/GUID-FA3B4125-F7BD-4E89-969F-9DCC90AC6977.htm` | Confirms AutoCAD runtime reflects on `[CommandMethod]` upon assembly load; manual command registration in `Initialize()` is unnecessary. |
 
 ---
@@ -65,12 +65,13 @@
 - **Target APIs:** `CommandFlags.Session`, `Application.DocumentManager.MdiActiveDocument`, `Editor.WriteMessage`, `Application.ShowAlertDialog`
 - **Source:** SRC-05, SRC-06
 - **Source Verification Content:**
-  - **Verified:**
-    - `CommandFlags.Session` establishes application execution context rather than document execution context.
+  - **Verified (SRC-05, SRC-06):**
+    - `CommandFlags.Session` establishes application execution context.
     - Active document (`Application.DocumentManager.MdiActiveDocument`) can be `null` when all drawings are closed or during document switching.
     - `Editor` is strictly document-associated; accessing `MdiActiveDocument.Editor` when no document is open throws `NullReferenceException`.
-  - **Not Proven / Not Claimed:**
-    - Normal interactive command-line invocation after the last drawing is closed is NOT proven and is NOT guaranteed by F0.
+  - **Not Implied / Not Proven:**
+    - `CommandFlags.Session` does not by itself guarantee availability of a normal interactive command-line surface after all drawing documents are closed.
+    - F0 explicitly enforces: `Zero-Document STATE SAFETY` $\neq$ `Guaranteed Zero-Document Command Invocation`.
 - **F0 Architectural Contract — State Safety vs. Command Invocation:**
   - The F0 contract requires **Zero-Document STATE SAFETY**, not zero-document interactive command-line availability.
   - **Zero-Document State Safety Contract:**
