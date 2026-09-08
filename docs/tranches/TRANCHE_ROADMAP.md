@@ -202,3 +202,41 @@ FROZEN ───────────── (Human Product Owner Authority Re
 > - `REVIEW -> FROZEN`
 > 
 > The implementation agent (Antigravity) must never self-approve or self-freeze these transitions.
+
+---
+
+## 7. Agent Continuity & Tranche Artifact Convention (TTC-GOV-002)
+
+To ensure reliable, multi-agent continuity without relying on chat history, each active tranche maintains the following artifacts as it enters each lifecycle stage:
+
+- `README.md` (Tranche-local front-door)
+- `INTAKE.md` (Intake and problem statement)
+- `DESIGN.md` (Architectural design and interaction states)
+- `SPEC.md` (Feature / capability contract)
+- `WORK_ORDER.md` (Authorized execution scope and paths)
+- `EXECUTION_LOG.md` (Append-only session history)
+- `ISSUES.md` (Structured problem registry)
+- `REVIEW.md` (Independent review results and freeze disposition)
+
+> [!NOTE]
+> **Creation Lifecycle Rule:**
+> Not every file must exist while a tranche is in `PLANNED` status. Artifacts are instantiated only as the tranche enters the corresponding lifecycle stage. Do NOT pre-create empty detailed F0 artifacts during governance initialization.
+
+### Tranche Front-Door Rule
+When a tranche transitions from `PLANNED` to active work (`DESIGN` or `SPEC`), create:
+```text
+docs/tranches/<TRANCHE_ID>/README.md
+```
+This serves as the fast local entry point for any incoming Agent. It must contain only:
+- Tranche ID & Capability Name
+- Current Status & Lifecycle Stage
+- Dependencies & Inherited Frozen Contracts
+- Current Spec Reference
+- Current Work Order Reference
+- Execution Log Reference (`EXECUTION_LOG.md`)
+- Issue Registry Reference (`ISSUES.md`)
+- Latest Review Reference (`REVIEW.md`)
+- Next Authorized Action & Forbidden Actions
+
+Do NOT duplicate the entire technical specification into the front-door `README.md`.
+

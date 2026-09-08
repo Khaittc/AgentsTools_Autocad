@@ -18,6 +18,9 @@ Status: ACTIVE_GOVERNANCE
 
 - **Governance Doctrine:** [ANTIGRAVITY_INSTRUCTIONS.md](./ANTIGRAVITY_INSTRUCTIONS.md) | Status: `FROZEN`
 - **Methodology Decision:** [DECISION_LOG.md](./DECISION_LOG.md) (`TTC-GOV-001`) | Status: `APPROVED_BY_OPERATOR_INSTRUCTION`
+- **Agent Continuity Protocol:** `ACTIVE` ([DECISION_LOG.md](./DECISION_LOG.md) `TTC-GOV-002` | Status: `APPROVED_BY_OPERATOR_INSTRUCTION`)
+- **Project Memory:** `Git Repository` (Authoritative continuity source)
+- **Current Handoff:** [AGENT_HANDOFF.md](./AGENT_HANDOFF.md) | Status: `ACTIVE`
 - **Architecture Roadmap:** [../docs/TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md](../docs/TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md) | Status: `APPROVED_BASELINE`
 - **Tranche Roadmap:** [../docs/tranches/TRANCHE_ROADMAP.md](../docs/tranches/TRANCHE_ROADMAP.md) | Status: `APPROVED_BY_OPERATOR_INSTRUCTION`
 - **Tranche Status Register:** [../docs/tranches/TRANCHE_STATUS.md](../docs/tranches/TRANCHE_STATUS.md) | Status: `ACTIVE_REGISTER`

@@ -105,7 +105,22 @@ If none: `NONE`.
 |---|---|---|---|---|
 | F-01 | BLOCKER/MAJOR/MINOR | | | BUILD/SPEC/DESIGN |
 
-## 12. Review Decision
+## 12. Continuity & Repository State Review
+
+> [!CAUTION]
+> **Continuity Freeze Gate:**
+> FREEZE must NOT occur if repository continuity state is stale or incomplete.
+
+- [ ] Execution Log updated (`docs/tranches/<TRANCHE_ID>/EXECUTION_LOG.md`);
+- [ ] Issue Registry truthful and current (`docs/tranches/<TRANCHE_ID>/ISSUES.md`);
+- [ ] Blocking issues dispositioned (zero open blockers);
+- [ ] Project Progress current (`governance/PROJECT_PROGRESS.md`);
+- [ ] Tranche Status current (`docs/tranches/TRANCHE_STATUS.md`);
+- [ ] Agent Handoff current (`governance/AGENT_HANDOFF.md`);
+- [ ] Review Result stored (`docs/tranches/<TRANCHE_ID>/REVIEW.md`);
+- [ ] Git commit reference recorded.
+
+## 13. Review Decision
 
 Choose one:
 
@@ -121,7 +136,7 @@ Rationale:
 
 <reviewer rationale>
 
-## 13. Freeze Record
+## 14. Freeze Record
 
 Complete only when Review Decision = `PASS_FOR_FREEZE`.
 
@@ -136,7 +151,7 @@ Freeze Status: `CLOSED_PASS / CLOSED_WITH_LIMITATIONS / NOT_FROZEN`
 - Date frozen: <YYYY-MM-DD>
 - Freezing authority: <human/reviewer>
 
-## 14. Reopen Conditions
+## 15. Reopen Conditions
 
 A frozen feature must be reopened if any of these occur:
 
@@ -151,7 +166,7 @@ Feature-specific reopen conditions:
 
 - <condition>
 
-## 15. Next Authorized Move
+## 16. Next Authorized Move
 
 - `NEXT_FEATURE / NEXT_TRANCHE / HOTFIX_WORK_ORDER / SPEC_AMENDMENT / NONE`
 

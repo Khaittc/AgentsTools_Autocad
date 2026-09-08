@@ -34,6 +34,40 @@ The project employs a **Spec-First Per Tranche** production model.
    - **SIMULATOR LANE (`src/`):** Rapid UX prototyping, workflow validation, and design evidence. Prohibits production AutoCAD APIs and C# plugin code.
    - **PRODUCTION AUTOCAD LANE (`production/`):** Governed AutoCAD 2023 Managed .NET implementation. Requires formal Spec Freeze and Work Order approval.
 
+### 2.2 Core Principle — Git is Project Memory (TTC-GOV-002)
+
+The Git repository is the **authoritative project continuity and handoff memory** for TTC CAD development.
+
+Agents MUST NOT depend on:
+- previous chat history;
+- model memory;
+- private scratchpads;
+- old conversation summaries;
+- assumed previous Agent knowledge.
+
+The expected continuity chain is:
+```text
+Git repository
+    ↓
+Governance (ANTIGRAVITY_INSTRUCTIONS.md)
+    ↓
+Project Progress (PROJECT_PROGRESS.md)
+    ↓
+Current Handoff (AGENT_HANDOFF.md)
+    ↓
+Tranche Status (TRANCHE_STATUS.md)
+    ↓
+Current Tranche README / Roadmap
+    ↓
+Spec / Work Order
+    ↓
+Issue Registry (ISSUES.md)
+    ↓
+Execution Log (EXECUTION_LOG.md)
+    ↓
+Reviewer Result (REVIEW.md)
+```
+
 ## 3. Hard Build Gate
 
 You MUST NOT create or modify production implementation code unless BOTH are true:
@@ -232,9 +266,113 @@ Freeze only after review disposition permits it and evidence is recorded.
 
 A later change to frozen behavior requires an explicit reopen/amendment path and a new version/decision record.
 
-## 14. Required Start-of-Task Report
+## 14. AGENT CONTINUITY — START OF TASK
 
-Before any BUILD task, output:
+Before beginning any material TTC CAD task, the Agent MUST read repository artifacts in this exact order:
+
+```text
+1. governance/ANTIGRAVITY_INSTRUCTIONS.md
+2. governance/PROJECT_PROGRESS.md
+3. governance/AGENT_HANDOFF.md
+4. governance/DECISION_LOG.md
+5. docs/tranches/TRANCHE_STATUS.md
+6. docs/tranches/TRANCHE_ROADMAP.md
+7. current tranche README / front-door if one exists (e.g. docs/tranches/<ID>/README.md)
+8. current Spec if applicable
+9. current Work Order if applicable
+10. current Issue Registry if applicable (ISSUES.md)
+11. recent Execution Log entries if applicable (EXECUTION_LOG.md)
+12. latest Review Result if applicable (REVIEW.md)
+```
+
+Then the Agent MUST produce internally or in its initial task report:
+
+```text
+CONTINUITY CHECK
+
+Repository:
+Branch:
+HEAD:
+
+Current Tranche:
+Lifecycle Stage:
+Current Status:
+
+Frozen Dependencies:
+
+Current Spec:
+Current Work Order:
+
+Build Authorization:
+
+Open Blocking Issues:
+
+Previous Agent Result:
+
+Reviewer Disposition:
+
+Authorized Scope:
+
+Forbidden Scope:
+
+Next Authorized Action:
+
+Gate Result:
+PASS / BLOCKED
+```
+
+> **Contradiction Rule:** If repository evidence is contradictory, output:
+> `Gate Result: BLOCKED_CONTINUITY_CONFLICT`
+> Identify the contradiction and stop. Do NOT guess which state is correct.
+
+## 15. AGENT CONTINUITY — DURING TASK
+
+The Agent must record material findings when they occur.
+
+Material findings include:
+- AutoCAD API behavior different from expectation;
+- unsupported host behavior or version quirks;
+- compile/runtime constraint relevant to future work;
+- reusable workaround or geometry insight;
+- architecture contradiction;
+- spec ambiguity or missing decision;
+- dependency conflict;
+- performance problem;
+- persistence problem;
+- COPY / MOVE / UNDO / REDO finding;
+- geometry / tolerance finding;
+- issue likely to affect another tranche;
+- failed test revealing project knowledge.
+
+Do not rely on chat history as the only record. Persist important findings to:
+- `EXECUTION_LOG.md` (session execution history);
+- `ISSUES.md` (unresolved / blocking problems);
+- `DECISION_LOG.md` (formal project decisions).
+
+## 16. AGENT CONTINUITY — END OF TASK
+
+Before declaring any task complete, the Agent MUST:
+
+1. Update current tranche `EXECUTION_LOG.md` if task execution occurred;
+2. Update `ISSUES.md` for any new, resolved, or deferred issues;
+3. Update `PROJECT_PROGRESS.md` if project state changed;
+4. Update `TRANCHE_STATUS.md` if tranche state changed;
+5. Update `DECISION_LOG.md` if an authorized decision was made;
+6. Update `AGENT_HANDOFF.md` with current operational state;
+7. Record reviewer state accurately (never forge independent review);
+8. Review `git diff` to verify scope compliance;
+9. Commit required documentation together with task changes;
+10. STOP at the authorized lifecycle boundary.
+
+> [!WARNING]
+> **Incomplete Continuity Gate:**
+> A task that modifies implementation or project state but does NOT update the required continuity artifacts is classified as:
+> `INCOMPLETE_CONTINUITY`
+> This applies even if all code compiles and unit tests pass.
+
+## 17. Required Start-of-Task Report (BUILD Gate)
+
+Before any production BUILD task, output:
 
 ```text
 Lifecycle Stage: BUILD
@@ -248,7 +386,7 @@ Gate Result: PASS / BLOCKED
 
 If Gate Result is `BLOCKED`, do not mutate production code.
 
-## 15. Required End-of-Task Report
+## 18. Required End-of-Task Report
 
 Return:
 
@@ -262,5 +400,6 @@ Acceptance Criteria: <AC-ID -> PASS/FAIL/NOT_RUN>
 Changed Files: <list>
 Deviations: <list or NONE>
 Known Limitations: <list or NONE>
+Continuity Updates: <list of updated continuity files>
 Required Next Stage: REVIEW / SPEC / DESIGN / NONE
 ```

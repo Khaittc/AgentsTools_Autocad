@@ -86,15 +86,32 @@ Authority boundary:
 
 Any required edit outside Allowed Paths => `BLOCKED_SCOPE_EXPANSION` unless the operator amends this Work Order.
 
-## 8. Required First Reads
+## 8. Continuity Requirements
 
-Read in order:
+Every executing Agent must follow the Start-of-Task, During-Task, and End-of-Task protocols in `governance/ANTIGRAVITY_INSTRUCTIONS.md`.
 
-1. `governance/ANTIGRAVITY_INSTRUCTIONS.md`
-2. <frozen Feature Spec path>
-3. <common contract path>
-4. <approved Design path>
-5. <relevant existing source files>
+- Required First Reads (in exact order):
+  1. `governance/ANTIGRAVITY_INSTRUCTIONS.md`
+  2. `governance/PROJECT_PROGRESS.md`
+  3. `governance/AGENT_HANDOFF.md`
+  4. `governance/DECISION_LOG.md`
+  5. `docs/tranches/TRANCHE_STATUS.md`
+  6. `docs/tranches/TRANCHE_ROADMAP.md`
+  7. <current tranche README path>
+  8. <frozen Feature Spec path>
+  9. <common contract paths>
+  10. <approved Design path>
+  11. <relevant existing source files>
+- Execution Log Path: `<docs/tranches/<TRANCHE_ID>/EXECUTION_LOG.md>`
+- Issue Registry Path: `<docs/tranches/<TRANCHE_ID>/ISSUES.md>`
+- Review Result Path: `<docs/tranches/<TRANCHE_ID>/REVIEW.md>`
+- Global Handoff Path: `governance/AGENT_HANDOFF.md`
+- Project Progress Path: `governance/PROJECT_PROGRESS.md`
+- Tranche Status Path: `docs/tranches/TRANCHE_STATUS.md`
+
+> [!IMPORTANT]
+> **Continuity Completion Condition:**
+> This Work Order CANNOT be reported complete until all required continuity artifacts have been updated and committed together with the code changes. Omitting continuity updates results in `INCOMPLETE_CONTINUITY`.
 
 ## 9. Source Verification / Pre-Flight
 
@@ -232,6 +249,11 @@ Known Limitations:
 - NONE / <limitation>
 Evidence:
 - <command/result/path>
+Continuity Updates:
+- Execution Log: <updated / path>
+- Issue Registry: <updated / path>
+- Global Handoff: <updated / governance/AGENT_HANDOFF.md>
+- Project Progress: <updated / governance/PROJECT_PROGRESS.md>
 Required Next Stage: REVIEW / SPEC / DESIGN
 ```
 
