@@ -1,6 +1,6 @@
 # TTC CAD — Agent Work Order: F0 AutoCAD Foundation
 
-Status: DRAFT / PENDING_PRODUCT_OWNER_APPROVAL<br>
+Status: APPROVED_FOR_EXECUTION<br>
 Work Order ID: WO-F0-001<br>
 Work Order Type: PRODUCTION<br>
 Tranche ID: F0<br>
@@ -12,9 +12,12 @@ Date: 2026-09-08<br>
 Frozen Spec: docs/tranches/F0/SPEC.md (v1.0.0, FROZEN)<br>
 Frozen Spec Commit: a1f9fd2672d6aa94b7bd2dee2b201edcfdce1733<br>
 Work Order Preparation Commit: 3ac81521c7ac3298c35e510bc64da25e2a03ef0b<br>
-Approved Execution Baseline: PENDING<br>
-Execution Authorization: NOT APPROVED<br>
-Build Authorization: NOT AUTHORIZED
+Approved Execution Baseline: b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515<br>
+Approval Authority: TTC CAD Product Owner / Operator Instruction<br>
+Approval Review: REV-WO-F0-001-002 (PASS_FOR_EXECUTION_APPROVAL)<br>
+Approval Authority Commit: Resolve via Git commit carrying Task: F0-WORK-ORDER-APPROVAL-001, Session: AG-F0-007, Work-Order: WO-F0-001, Stage: APPROVED_FOR_EXECUTION<br>
+Execution Authorization: APPROVED<br>
+Production Build Authorization: AUTHORIZED_FOR_F0_ONLY
 
 ---
 
@@ -33,7 +36,7 @@ You are authorized to execute **only** this bounded assignment.
 Hard prerequisites:
 - Target Tranche Feature Spec must be `FROZEN` (`docs/tranches/F0/SPEC.md` v1.0.0 — FROZEN).
 - All upstream dependencies must be `FROZEN` (F0 is the root technical tranche — NONE).
-- This Work Order must be `APPROVED_FOR_EXECUTION` (Current status: `DRAFT / PENDING_PRODUCT_OWNER_APPROVAL` — NOT APPROVED).
+- This Work Order must be `APPROVED_FOR_EXECUTION` (Current status: `APPROVED_FOR_EXECUTION` — APPROVED).
 - If any prerequisite is false, do not mutate production code. Production Build Authorization remains `NOT AUTHORIZED`.
 
 ---
@@ -146,12 +149,12 @@ The future approved BUILD task may create or modify files **only** within the fo
 
 | Path Pattern | Write Mode | Purpose |
 |---|---|---|
-| `production/TTC.CadTools.sln` | CREATE | Root Visual Studio solution file |
-| `production/TTC.CadTools.Core/**` | CREATE | Core interfaces, models, logging abstractions, settings contracts (zero CAD refs) |
-| `production/TTC.CadTools.Infrastructure/**` | CREATE | Logging and JSON settings repository implementation (zero CAD refs) |
-| `production/TTC.CadTools.AutoCAD/**` | CREATE | AutoCAD plugin entry point, commands, Ribbon/PaletteSet shells, WPF views |
-| `production/TTC.CadTools.Tests/**` | CREATE | Unit and static tests for Core and Infrastructure |
-| `production/TTC.CadTools.bundle/**` | CREATE | Bundle package directory and `PackageContents.xml` manifest |
+| `production/TTC.CadTools.sln` | CREATE / MODIFY | Root Visual Studio solution file |
+| `production/TTC.CadTools.Core/**` | CREATE / MODIFY | Core interfaces, models, logging abstractions, settings contracts (zero CAD refs) |
+| `production/TTC.CadTools.Infrastructure/**` | CREATE / MODIFY | Logging and JSON settings repository implementation (zero CAD refs) |
+| `production/TTC.CadTools.AutoCAD/**` | CREATE / MODIFY | AutoCAD plugin entry point, commands, Ribbon/PaletteSet shells, WPF views |
+| `production/TTC.CadTools.Tests/**` | CREATE / MODIFY | Unit and static tests for Core and Infrastructure |
+| `production/TTC.CadTools.bundle/**` | CREATE / MODIFY | Bundle package directory and `PackageContents.xml` manifest |
 | `production/README.md` | MODIFY / CREATE | Developer build, deployment, and NETLOAD documentation |
 | `docs/tranches/F0/WORK_ORDER.md` | MODIFY | Work Order status updates |
 | `docs/tranches/F0/EXECUTION_LOG.md` | MODIFY | Append execution log sessions and build/test evidence |
@@ -185,8 +188,8 @@ BUILD COMPLETE
 - `src/**` (Simulator lane — strictly forbidden for production work orders)
 - `public/**` (Simulator lane — strictly forbidden for production work orders)
 - `docs/tranches/F0/SPEC.md` (Frozen Feature Specification — requires explicit operator reopen authority)
-- `docs/tranches/F0/DESIGN.md` (Approved Design Evidence)
-- `docs/tranches/F0/INTAKE.md` (Approved Intake)
+- `docs/tranches/F0/DESIGN.md` (Supporting Design Evidence — DRAFT)
+- `docs/tranches/F0/INTAKE.md` (Supporting Intake Evidence — DRAFT)
 - `docs/tranches/F1/**` (Tranche F1 — Common CAD Contracts)
 - `docs/tranches/P1/**` (Tranche P1 — Component Library)
 - `docs/tranches/P2/**` (Tranche P2 — Component Placement)
@@ -237,7 +240,7 @@ Before BUILD execution verify:
 2. Work Order status is:
    - File: `docs/tranches/F0/WORK_ORDER.md`
    - Status: `APPROVED_FOR_EXECUTION` (signed by Product Owner)
-3. Current repository HEAD contains or descends from the Approved Execution Baseline recorded in this Work Order;
+3. Current repository HEAD contains or descends from the Approved Execution Baseline (`b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515`) and includes a valid Product Owner approval commit for WO-F0-001 (commit equality is not required);
 4. Target framework is `.NETFramework,Version=v4.8`;
 5. AutoCAD Managed reference baseline targets AutoCAD 2023 (Series `R24.2`);
 6. Frozen Spec has not been modified or reopened;
@@ -254,7 +257,7 @@ git log -1 --oneline
 
 > [!NOTE]
 > **Intervening Commits Policy:**
-> If current repository HEAD is newer than Approved Execution Baseline, do NOT automatically block. Inspect intervening commits. Block only when intervening changes materially conflict with execution authority. Use `BLOCKED_STALE_SOURCE_FACT` only for a real material mismatch.
+> If current repository HEAD is newer than Approved Execution Baseline, do NOT automatically block. Inspect intervening commits. Block only when intervening changes materially conflict with execution authority. Current HEAD must contain or descend from Approved Execution Baseline (`b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515`) and include a valid Product Owner approval commit. Use `BLOCKED_STALE_SOURCE_FACT` only for a real material mismatch.
 
 ---
 
@@ -489,24 +492,28 @@ TTC CAD — BUILD COMPLETION PACKET: WO-F0-001
 
 ```text
 Work Order Status:
-DRAFT / PENDING_PRODUCT_OWNER_APPROVAL
+APPROVED_FOR_EXECUTION
 
 Execution Authorization:
-NOT APPROVED
+APPROVED
 
 Production Build Authorization:
-NOT AUTHORIZED
+AUTHORIZED_FOR_F0_ONLY
 
-Reviewer / Product Owner Disposition:
-RETURN_TO_WORK_ORDER (Undergoing correction per REV-WO-F0-001-001)
+Reviewer Disposition:
+PASS_FOR_EXECUTION_APPROVAL (REV-WO-F0-001-002)
+
+Product Owner Disposition:
+APPROVED_FOR_EXECUTION
 
 Approved Execution Baseline:
-PENDING
+b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515
 
-Available Operator Choices:
-- APPROVED_FOR_EXECUTION
-- RETURNED_FOR_REWORK
-- BLOCKED
+Runtime Acceptance:
+NOT_RUN
+
+Implementation:
+NOT_STARTED
 ```
 
-> *Note: Production BUILD and source code mutation are strictly prohibited until the Product Owner changes Execution Authorization to `APPROVED_FOR_EXECUTION` and signs this section.*
+> *Note: Production BUILD is authorized strictly for the bounded F0 scope and paths defined by this approved Work Order. Downstream tranches remain NOT AUTHORIZED.*

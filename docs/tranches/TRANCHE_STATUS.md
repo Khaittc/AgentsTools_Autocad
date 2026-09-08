@@ -10,7 +10,7 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 
 | Tranche ID | Capability | Depends On | Spec Status | Work Order | Build Status | Frozen? | Current Disposition |
 |:---:|---|---|:---:|:---:|:---:|:---:|---|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `DRAFT / WO-F0-001` | `BLOCKED / AWAITING_WO_APPROVAL` | NO | **WORK_ORDER_REVIEW** (WO-F0-001 prepared; awaiting Product Owner approval; Tranche not frozen) |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `APPROVED / WO-F0-001` | `AUTHORIZED / NOT_STARTED` | NO | **BUILD_READY** (WO-F0-001 approved for execution; build authorized for F0 only; implementation not started; Tranche not frozen) |
 | **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F0) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` | `NONE` | `BLOCKED` | NO | **BLOCKED_BY_UPSTREAM** (Spec evidence exists in `docs/03_FEATURE_SPEC_TTCPANELPLACE.md`; awaiting F0/F1/P1) |
@@ -29,8 +29,8 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 
 ## 2. Hard Build Gate Summary
 
-- **Production Build Authorization:** `NOT AUTHORIZED`
+- **Production Build Authorization:** `AUTHORIZED_FOR_F0_ONLY`
 - **Frozen Specs:** `F0 — docs/tranches/F0/SPEC.md v1.0.0`
-- **Approved Active Work Orders:** `NONE`
-- **Draft Work Orders:** `WO-F0-001 (DRAFT / PENDING_PRODUCT_OWNER_APPROVAL)`
-- **Production Code Status:** `LOCKED` (0 `.cs` files exist)
+- **Approved Active Work Orders:** `WO-F0-001`
+- **Draft Work Orders:** `NONE`
+- **Production Code Status:** `NOT_STARTED` (0 `.cs` files exist)
