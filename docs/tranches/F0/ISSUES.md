@@ -23,7 +23,7 @@
 | `OQ-F0-03` (Design) | PaletteSet state persistence across sessions | `DESIGN.md` §13 | **ISSUE-F0-005** | `RUNTIME_ACCEPTANCE` | OPEN |
 | `OQ-F0-01` (ExecLog) | AutoCAD reference assembly resolution | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-001** | `BUILD` | OPEN |
 | `OQ-F0-02` (ExecLog) | Bundle deployment path vs NETLOAD debugging workflow | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-006** | `BUILD` | OPEN |
-| `OQ-F0-03` (ExecLog) | PaletteSet modeless threading & document switching | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-003** | `BUILD` | OPEN |
+| `OQ-F0-03` (ExecLog) | PaletteSet modeless threading & document switching | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-003** | `RUNTIME_ACCEPTANCE / BUILD` | OPEN |
 | `OQ-F0-04` (ExecLog) | Ribbon creation timing relative to Initialize() | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-007** | `BUILD` | OPEN |
 | `OQ-F0-05` (ExecLog) | Settings file resolution (bundle vs AppData) | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-008** | `BUILD` | OPEN |
 | `OQ-F0-06` (ExecLog) | Fallback log directory when bundle is read-only | `EXECUTION_LOG.md` AG-F0-001 | **ISSUE-F0-002** | `BUILD` | OPEN |
@@ -61,15 +61,19 @@
 
 ---
 
-### ISSUE-F0-003: Modeless PaletteSet Threading & Document Context Switching
+### ISSUE-F0-003: Modeless PaletteSet Threading, Document Context Switching & Zero-Document State Safety
 - **Status:** OPEN
 - **Severity:** MEDIUM
 - **Category:** CAD_API
 - **Owner:** Implementer / UI Engineer
-- **Blocked Gate:** `BUILD` (Contract defined in Spec; requires host event verification)
+- **Blocked Gate:** `RUNTIME_ACCEPTANCE / BUILD`
 - **Problem:** Modeless WPF views execute on the UI thread. Accessing `MdiActiveDocument` when zero drawings are open or during document switching may cause null references.
-- **Contract Defined:** Palette view is strictly diagnostic/read-only in F0 with zero DWG database transactions. It subscribes to `DocumentActivated` and checks `MdiActiveDocument != null` before reading document info.
-- **Evidence Required to Close:** Interactive host test opening, closing, and switching drawings while Palette is visible.
+- **Contract Defined:** Zero-document state safety. Palette view is strictly diagnostic/read-only in F0 with zero DWG database transactions. It subscribes to `DocumentActivated` and checks `MdiActiveDocument != null` before reading document info. When all drawings are closed (`MdiActiveDocument == null`), it displays "No Active Document" and remains stable without dereferencing `Editor` or creating dummy drawings. Opening a new drawing restores document status without plugin reload. F0 does not claim interactive command-line invocation is available in zero-doc state.
+- **Still Runtime-Unverified:**
+  - document close/switch events,
+  - palette stability in real AutoCAD 2023 host,
+  - restoring state when a document opens.
+- **Evidence Required to Close:** Interactive host test opening, closing, and switching drawings while Palette is visible (AC-F0-11).
 
 ---
 

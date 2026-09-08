@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-08 22:55:00 +07:00
+2026-09-08 23:10:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-90f1d30d2407850a653af277738dcfbefb30f378
+c59f85c894322e03043f83f66a7da2bf7f83d7d3
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
@@ -32,7 +32,7 @@ Production Build Authorization:
 NOT AUTHORIZED
 
 Current Spec:
-docs/tranches/F0/SPEC.md (Status: DRAFT / READY_FOR_REVIEW v0.1.1)
+docs/tranches/F0/SPEC.md (Status: DRAFT / READY_FOR_REVIEW v0.1.2)
 
 Current Work Order:
 NONE
@@ -40,29 +40,29 @@ NONE
 Frozen Dependencies:
 NONE
 
-Previous Review:
-REV-F0-001 = NEEDS_FIX / RETURN_TO_SPEC (Reviewer addendum recorded in docs/tranches/F0/REVIEW.md)
+Latest Review:
+REV-F0-001-R2 = NEEDS_FIX / RETURN_TO_SPEC (Finding 03 zero-doc command vs state safety)
 
 Last Completed Task:
-Resolved REV-F0-001 review findings (F0-SPEC-CORRECTION-001); authored API_VERIFICATION.md.
+F0-SPEC-PATCH-002
 
 Last Agent:
-Antigravity / AG-F0-002
+Antigravity / AG-F0-003
 
 Last Result:
-PASS / CORRECTION_ONLY
+PASS / SPEC_PATCH_ONLY
 
 Open Blocking Issues:
 NONE
 
 Open Non-Blocking Issues:
-8 (ISSUE-F0-001 to ISSUE-F0-008 in docs/tranches/F0/ISSUES.md; blocking BUILD/RUNTIME_ACCEPTANCE, non-blocking for SPEC)
+8 (ISSUE-F0-001 to ISSUE-F0-008 in docs/tranches/F0/ISSUES.md; blocking BUILD/RUNTIME_ACCEPTANCE, 0 blocking SPEC_FREEZE)
 
 Reviewer Disposition:
 PENDING_REVIEW
 
 Next Authorized Action:
-Independent reviewer verifies F0 correction commit (REV-F0-001 re-review).
+Independent reviewer verifies final F0 spec patch.
 
 Forbidden Next Actions:
 - Freeze Spec
@@ -91,4 +91,4 @@ Required First Reads:
 14. docs/tranches/F0/SPEC.md
 
 Handoff Notes:
-Tranche F0 has completed correction task F0-SPEC-CORRECTION-001 addressing REV-F0-001 findings. 3-param AddVisual resize behavior, startup loading rationale, zero-document command/dialog behavior, domain repository deferral to P1, canonical issue registry reconciliation (ISSUE-F0-001..008), and execution log continuity have all been updated and verified. Zero production code files exist. Production build authorization remains strictly NOT AUTHORIZED until F0 Spec is frozen by Product Owner and an approved Work Order exists.
+Tranche F0 has completed final spec patch task F0-SPEC-PATCH-002 addressing REV-F0-001-R2 findings. Zero-document state safety has been formally decoupled from interactive command-line invocation. AC-F0-11 has been rewritten for state safety, AC-F0-13 added for application-context commands, negative cases expanded, and source attribution clarified in API_VERIFICATION.md. Zero production code files exist. Production build authorization remains strictly NOT AUTHORIZED until F0 Spec is frozen by Product Owner and an approved Work Order exists.

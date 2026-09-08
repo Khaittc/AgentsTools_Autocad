@@ -11,8 +11,8 @@
 |---|---|---|---|---|
 | **SRC-01** | Autodesk Managed Reference: PaletteSet.AddVisual Overloads | AutoCAD 2022 / Managed API | `https://help.autodesk.com/cloudhelp/2022/ENU/OARX-ManagedRefGuide/files/OARX-ManagedRefGuide-__OVERLOADED_AddVisual_Autodesk_AutoCAD_Windows_PaletteSet.html` | Confirms PaletteSet exposes both 2-parameter and 3-parameter `AddVisual` overloads. |
 | **SRC-02** | Autodesk Managed Reference: PaletteSet.AddVisual(string, Visual, bool) | AutoCAD 2022 / Managed API | `https://help.autodesk.com/cloudhelp/2022/ENU/OARX-ManagedRefGuide/files/OARX-ManagedRefGuide-Autodesk_AutoCAD_Windows_PaletteSet_AddVisual_string_Visual__MarshalAsUnmanagedType_U1__bool.html` | Confirms 3rd parameter is `bool bResizeContentToPaletteSize` controlling whether child visual resizes with palette. |
-| **SRC-03** | AutoCAD 2023 Customization Guide: Components Element Reference | AutoCAD 2023 | `https://help.autodesk.com/cloudhelp/2023/ENU/AutoCAD-Customization/files/GUID-3C25E517-8660-4BB7-9447-2310462EF06F.htm` | Confirms `ComponentEntry` element supports `LoadOnAutoCADStartup="True"` and `LoadReasons` attribute. |
-| **SRC-04** | Autodesk Developer Blog: PackageContents.xml Manifest Examples | AutoCAD 2023–2025 | `https://blog.autodesk.io/autocad-2025-update-your-packagecontentsxml-with-runtimerequirements/` | Confirms valid XML structure, `RuntimeRequirements SeriesMin/Max="R24.2"`, and startup loading patterns. |
+| **SRC-03** | AutoCAD 2023 Customization Guide: Components Element Reference | AutoCAD 2023 | `https://help.autodesk.com/cloudhelp/2023/ENU/AutoCAD-Customization/files/GUID-3C25E517-8660-4BB7-9447-2310462EF06F.htm` | Defines component element structure, load-reason semantics, and supported load parameters. |
+| **SRC-04** | Autodesk Developer Blog: PackageContents.xml Manifest Examples | AutoCAD 2023–2025 | `https://blog.autodesk.io/autocad-2025-update-your-packagecontentsxml-with-runtimerequirements/` | Demonstrates standalone `LoadOnAutoCADStartup="True"` usage in PackageContents.xml examples and series requirements. |
 | **SRC-05** | Autodesk Managed Reference: CommandFlags Enum | AutoCAD 2022 / Managed API | `https://help.autodesk.com/cloudhelp/2022/ENU/OARX-ManagedRefGuide/files/OARX-ManagedRefGuide-Autodesk_AutoCAD_Runtime_CommandFlags.html` | Confirms `CommandFlags.Session` runs in application context (enabling zero-document execution); `CommandFlags.Modal` default. |
 | **SRC-06** | AutoCAD Managed DevGuide: Application Initialization & Command Discovery | AutoCAD 2022 / Managed API | `https://help.autodesk.com/cloudhelp/2022/ENU/OARX-DevGuide-Managed/files/GUID-FA3B4125-F7BD-4E89-969F-9DCC90AC6977.htm` | Confirms AutoCAD runtime reflects on `[CommandMethod]` upon assembly load; manual command registration in `Initialize()` is unnecessary. |
 
@@ -45,34 +45,41 @@
 - **Finding ID:** FINDING-02
 - **Target Element / Attribute:** `<ComponentEntry LoadOnAutoCADStartup="True">`
 - **Source:** SRC-03 (AutoCAD 2023 Documentation), SRC-04 (Autodesk Developer Blog)
-- **Source Verification Content:**
-  - `LoadOnAutoCADStartup="True"` is an officially supported attribute on `ComponentEntry`.
-  - Alternative `LoadReasons` attribute allows demand loading on command invocation (`LoadReasons="CommandInvoke"`).
+- **Source Attribution Clarification:**
+  - **SRC-03:** Official AutoCAD 2023 Customization Guide for the `Components` element. Defines supported parameters, load mechanisms, and load-reason semantics (`LoadReasons`).
+  - **SRC-04:** Autodesk Developer Blog documentation demonstrating standalone `LoadOnAutoCADStartup="True"` usage within `PackageContents.xml` examples.
+  - *Distinction:* SRC-03 defines the component element framework and parameters, while SRC-04 provides the direct developer sample illustrating standalone `LoadOnAutoCADStartup="True"`.
 - **Verification Finding:** The original reviewer claim that `LoadOnAutoCADStartup="True"` is invalid and must be replaced by `LoadReasons` is **WITHDRAWN** by the reviewer.
 - **Architectural Policy Chosen for F0:**
   - **Proposed Policy:** Startup Loading (`LoadOnAutoCADStartup="True"`).
   - **Rationale:** Tranche F0 aims to display the `TTC CAD` Ribbon tab shell immediately upon AutoCAD startup. If command demand-loading were used instead, the user would be forced to type a command (e.g. `TTCINFO`) before the Ribbon tab ever appears.
   - **Commands Element Role:** The nested `<Commands>` element remains present to register command aliases in AutoCAD's command index, ensuring autocomplete and command routing work seamlessly.
-- **Verification Status:** `DOC_VERIFIED` (AutoCAD 2023 Components Element Reference).
+- **Verification Status:** `DOC_VERIFIED` (AutoCAD 2023 Components Element Reference & Developer Samples).
 - **Runtime Status:** `NOT_RUN` (Autoloader deployment test requires real AutoCAD 2023).
 
 ---
 
-### FINDING-03: Zero-Document Execution & Command Context
+### FINDING-03: Zero-Document State Safety & Command Context
 
 - **Finding ID:** FINDING-03
 - **Target APIs:** `CommandFlags.Session`, `Application.DocumentManager.MdiActiveDocument`, `Editor.WriteMessage`, `Application.ShowAlertDialog`
 - **Source:** SRC-05, SRC-06
 - **Source Verification Content:**
-  - `CommandFlags.Session` executes the command method in the application context rather than the document context.
-  - In zero-document state (`Application.DocumentManager.MdiActiveDocument == null`), `Editor` does NOT exist. Calling `doc.Editor` throws `NullReferenceException`.
-- **Verification Finding:**
-  `TTCINFO` and `TTCPALETTE` must decouple output channels based on active document presence:
-  - **Document Present:** Send diagnostic text via `Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage()`.
-  - **Zero-Document (`MdiActiveDocument == null`):** Output to active file log and display summary modal dialog via `Application.ShowAlertDialog("TTC CAD ...")`. Under no circumstances may a dummy document be created or `Editor` dereferenced when null.
-- **Command Discovery:** AutoCAD automatically discovers `[CommandMethod]` upon assembly load. Manual registration in `Initialize()` is unnecessary and removed from design descriptions.
-- **Verification Status:** `DOC_VERIFIED`.
-- **Runtime Status:** `NOT_RUN`.
+  - **Verified:**
+    - `CommandFlags.Session` establishes application execution context rather than document execution context.
+    - Active document (`Application.DocumentManager.MdiActiveDocument`) can be `null` when all drawings are closed or during document switching.
+    - `Editor` is strictly document-associated; accessing `MdiActiveDocument.Editor` when no document is open throws `NullReferenceException`.
+  - **Not Proven / Not Claimed:**
+    - Normal interactive command-line invocation after the last drawing is closed is NOT proven and is NOT guaranteed by F0.
+- **F0 Architectural Contract — State Safety vs. Command Invocation:**
+  - The F0 contract requires **Zero-Document STATE SAFETY**, not zero-document interactive command-line availability.
+  - **Zero-Document State Safety Contract:**
+    - The plugin runtime and initialized `PaletteSet` must remain completely stable when zero documents are open (`MdiActiveDocument == null`).
+    - The `PaletteSet` shows "No Active Document" or equivalent diagnostic state; performs zero DWG transactions; dereferences no null `Editor`; creates no dummy document; and restores document awareness when a new drawing is opened.
+    - If `TTCINFO` is invoked through a valid application-context mechanism while no document exists, it must use document-independent channels: it writes to the file log and may optionally display a modal dialog via `Application.ShowAlertDialog()`. Under no circumstances may code dereference `Editor` when null or create a dummy document.
+- **Command Discovery:** AutoCAD automatically discovers `[CommandMethod]` upon assembly load. Manual registration in `Initialize()` is unnecessary.
+- **Verification Status:** `DOC_VERIFIED` (Contract formally scoped to Zero-Document State Safety).
+- **Runtime Status:** `NOT_RUN` (Requires real AutoCAD 2023 host).
 
 ---
 

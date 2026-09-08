@@ -7,7 +7,7 @@ Capability: AutoCAD Foundation
 Feature ID: SPEC-FOUNDATION-F0-001
 Feature Name: AutoCAD 2023 Managed .NET Plugin Shell & Diagnostic Infrastructure
 Command(s): `TTCINFO`, `TTCPALETTE`
-Version: 0.1.1
+Version: 0.1.2
 
 Depends On: Product Baseline
 Inherits From: None (Root Technical Tranche)
@@ -33,7 +33,7 @@ Work Order: NONE
 
 - Intake: `docs/tranches/F0/INTAKE.md` (`INTAKE-FOUNDATION-F0`)
 - Design Evidence: `docs/tranches/F0/DESIGN.md` (`DESIGN-FOUNDATION-F0`)
-- Review Result & Addendum: `docs/tranches/F0/REVIEW.md` (`REV-F0-001`)
+- Review Result & Addendum: `docs/tranches/F0/REVIEW.md` (`REV-F0-001`, `REV-F0-001-R2`)
 - API Verification Evidence: `docs/tranches/F0/API_VERIFICATION.md` (SRC-01 to SRC-06)
 - Canonical Issue Registry: `docs/tranches/F0/ISSUES.md` (`ISSUE-F0-001` to `ISSUE-F0-008`)
 - Architecture Roadmap: `docs/TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md` (Sections 4, 5, 6, 7, 8, 41)
@@ -71,11 +71,13 @@ Provide the precise technical contracts for compiling, packaging, loading, and v
 - Foundation repository interface: `ISettingsRepository` (`IComponentRepository` and `ICabinetRepository` are deferred to P1).
 - Autoloader bundle: `TTC.CadTools.bundle` with valid `PackageContents.xml`.
 - Structured negative-case error handling preventing AutoCAD host crashes.
+- Zero-document state safety ensuring host and UI stability when zero drawings are open.
 
 ---
 
 ## 5. Out of Scope / Non-Goals
 
+- **NO Guaranteed Zero-Document Command-Line Invocation:** F0 requires zero-document state safety, not a guarantee that AutoCAD keeps an interactive command prompt available after all drawings are closed.
 - **NO Domain Repositories in F0:** Component Library repository (`IComponentRepository`), Cabinet Library repository (`ICabinetRepository`), and Cable Tray repository (`ITrayLibraryRepository`) are strictly deferred to owning tranches (P1, M1).
 - **NO Panel Engineering Features:** Device placement (`TTCPANELPLACE`), DIN rails (`TTCRAIL`), ducts (`TTCDUCT`), alignment (`TTCALIGN`), clearance checks (`TTCPANELCHECK`), depth verification, cabinet sizing (`TTCPANELSIZE`).
 - **NO M&E Engineering Features:** Cable tray routing, fittings, elevation, supports, tray-to-panel connections.
@@ -117,15 +119,24 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
 
 | Command | Context / Flags | Active Document? | Output Channel | Drawing Mutation | Failure Behavior | Verification |
 |---|---|---|---|---|---|---|
-| `TTCINFO` | `CommandFlags.Session \| CommandFlags.Modal` | Optional (YES / NO) | Active Doc: `Editor.WriteMessage`<br>Zero-Doc: File Log + `Application.ShowAlertDialog` | None (0) | Trapped, fallback dialog, log error | AC-F0-02, AC-F0-11 |
+| `TTCINFO` | `CommandFlags.Session \| CommandFlags.Modal` | Optional (YES / NO) | Active Doc: `Editor.WriteMessage`<br>Zero-Doc: File Log + `Application.ShowAlertDialog` | None (0) | Trapped, fallback dialog, log error | AC-F0-02, AC-F0-11, AC-F0-13 |
 
 - **Method:** `[CommandMethod("TTCINFO", CommandFlags.Session | CommandFlags.Modal)]`
 - **Class:** `TTC.CadTools.AutoCAD.Commands.InfoCommand`
-- **Requires Active Document:** NO (`CommandFlags.Session` allows execution in zero-document state).
+- **Execution Context:** Application context / Session (`CommandFlags.Session`).
+- **Normal Interactive Invocation:** Expected through an available AutoCAD command surface when an active drawing document is present.
 - **Prompt Sequence:** None (parameterless execution).
-- **Output Channel Strategy (FINDING-03):**
-  - **Case A: Active Document Present (`MdiActiveDocument != null`):** Output formatted report text directly to AutoCAD command window via `Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage()`.
-  - **Case B: Zero-Document State (`MdiActiveDocument == null`):** `Editor` does not exist. The command writes the full diagnostic report to the active log file, and displays a summary dialog to the user via `Autodesk.AutoCAD.ApplicationServices.Application.ShowAlertDialog()`. The command **never** creates a dummy drawing just to output text, and **never** dereferences `Editor` when null.
+- **Output Channel Strategy & Zero-Document Semantics (FINDING-03 R2):**
+  - **Case A: Active Document Present (`MdiActiveDocument != null`):**
+    - Output formatted diagnostic report directly to AutoCAD command window via `Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage()`.
+    - Record summary to structured file log.
+  - **Case B: Zero-Document State (`MdiActiveDocument == null`):**
+    - **Invocation Scope:** There is **no contract** that the user can type or invoke `TTCINFO` from a normal command line when zero drawings are open.
+    - **State Safety:** The plugin must remain completely stable. Code must **never** dereference `MdiActiveDocument.Editor` when active document is null.
+    - **Application-Context Fallback:** If `TTCINFO` is triggered through a valid application-context mechanism while no document exists:
+      - Diagnostic summary is recorded in the active file log.
+      - A modal alert dialog (`Application.ShowAlertDialog`) may be displayed as an alternative output channel if supported by host context.
+      - **Zero DWG Creation:** Under no circumstances is a dummy drawing created.
   - **Integrity Rule:** The report must only state the log file was written if the file write actually succeeded.
 - **Report Template:**
   ```text
@@ -153,7 +164,7 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
 
 - **Method:** `[CommandMethod("TTCPALETTE", CommandFlags.Session | CommandFlags.Modal)]`
 - **Class:** `TTC.CadTools.AutoCAD.Commands.PaletteCommand`
-- **Requires Active Document:** NO (enabled in zero-document state).
+- **Execution Context:** Application context (`CommandFlags.Session`).
 - **Singleton Lifecycle:**
   1. If `PaletteHost.Instance` is null, instantiate `PaletteSet` with deterministic GUID `{4A7A779F-9C3D-4A42-A862-2D5392D6D3A0}` and Title `"TTC CAD Tools"`.
   2. Set styles: `ShowAutoHideButton | ShowCloseButton | Snappable`.
@@ -165,11 +176,16 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
   - Contract: `paletteSet.AddVisual(string name, Visual visual, bool bResizeContentToPaletteSize)`
   - Parameter values: `name = "Status"`, `visual = new StatusControl()`, `bResizeContentToPaletteSize = true`.
   - **Resize Behavior:** When `bResizeContentToPaletteSize` is `true`, the child WPF element automatically scales with palette container resizing and docking, preventing clipped controls without custom Win32 resize messages.
-- **Document Switching & Zero-Document Behavior:**
-  - Subscribes to `DocumentManager.DocumentActivated`.
-  - If a drawing is active, the status view displays the active drawing title.
-  - If all drawings are closed (`MdiActiveDocument == null`), the status view displays "No Active Document" without throwing null reference exceptions.
-  - Zero drawing database transactions are executed.
+- **Zero-Document State Safety & Document Switching Contract (FINDING-03 R2):**
+  - **Palette Lifetime:** `PaletteSet` may remain alive while documents are opened, switched, or all closed.
+  - **Zero-Document State (`MdiActiveDocument == null`):**
+    - The `PaletteSet` remains completely stable.
+    - Status view displays "No Active Document" or equivalent state.
+    - Performs zero drawing database transactions.
+    - Never dereferences a null active document or Editor.
+    - Does not require or create a dummy document.
+  - **Document Restoration:** Opening a new drawing restores document-aware status dynamically without reloading the plugin.
+  - **Invocation Scope:** F0 does NOT claim user interactive command-line invocation is guaranteed after the last drawing is closed. The requirement is strictly **zero-document state safety**.
 
 ### 6.5 Configuration Contract (`settings.json`)
 
@@ -249,13 +265,15 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
 | NEG-F0-03 | `settings.json` has missing/invalid required fields | NO | "TTC CAD: Invalid configuration values; standard defaults applied." | `WARN: Validation failed: {field}. Applied defaults.` | Load default settings; continue plugin execution |
 | NEG-F0-04 | `%APPDATA%\TTC_CadTools\Logs\` is read-only / unauthorized | NO | None (silent fallback) | None in primary log; record in fallback log | Fallback to `%TEMP%\TTC_CadTools\Logs\` |
 | NEG-F0-05 | AutoCAD Ribbon not yet loaded when plugin initializes | NO | None (deferred creation) | `INFO: Ribbon not ready; deferred to ComponentManager.ItemInitialized.` | Subscribes to event; builds ribbon when ready |
-| NEG-F0-06 | `TTCINFO` executed with zero drawings open | NO | Modal alert dialog (`Application.ShowAlertDialog`) | `INFO: TTCINFO executed in zero-document state; dialog displayed` | Executes cleanly via `CommandFlags.Session`; no Editor access |
+| NEG-F0-06 | `TTCINFO` triggered via application context with zero drawings open | NO | Modal alert dialog (`Application.ShowAlertDialog`) + File Log | `INFO: TTCINFO executed in application context; zero documents open` | Output written to log & dialog; no Editor access; no dummy drawing |
 | NEG-F0-07 | Duplicate `Initialize()` call triggered | NO | None | `WARN: Initialize() called on already initialized plugin instance.` | Ignore second call; idempotent return |
 | NEG-F0-08 | Unhandled exception inside `Initialize()` | NO | "TTC CAD failed to start cleanly. Diagnostic log written." | `FATAL: Unhandled exception during plugin startup: {ex}` | Traps exception; prevents AutoCAD host crash |
 | NEG-F0-09 | Plugin loaded into unsupported AutoCAD version (< R24.2) | NO | "TTC CAD is certified for AutoCAD 2023 only." | `ERROR: Unsupported host version detected: {version}.` | Package autoloader rejects; manual load logs error |
-| NEG-F0-10 | `TTCPALETTE` executed with zero drawings open | NO | Palette window opens displaying "No Active Document" | `INFO: TTCPALETTE toggled in zero-document state` | Executes cleanly; zero DWG transactions |
-| NEG-F0-11 | Active drawing closed while PaletteSet is visible | NO | Palette view updates to "No Active Document" | `INFO: Active document closed; palette updated` | Handled via DocumentDestroyed event; 0 crash |
-| NEG-F0-12 | Repeated execution of `TTCPALETTE` command | NO | Toggles visibility of existing palette window | `INFO: TTCPALETTE toggled existing instance visibility` | Singleton instance preserved; no duplicate windows |
+| NEG-F0-10 | Last drawing closed while Palette visible | NO | Palette window updates to "No Active Document" | `INFO: Last document closed; PaletteSet transitioned to zero-document state` | Palette remains open and stable; zero DWG transactions; no null Editor access |
+| NEG-F0-11 | Active document becomes null during document switch | NO | Palette view maintains neutral diagnostic state | `DEBUG: Document switch transient null; event handler bypassed DWG calls` | Guard checks prevent null Editor access |
+| NEG-F0-12 | Palette callback occurs while no active document exists | NO | Status view displays "No Active Document" | `DEBUG: Palette callback handled in zero-document state; no DWG access` | Read-only diagnostic state preserved; 0 crash |
+| NEG-F0-13 | Document reopened after zero-document state | NO | Palette view updates to show new drawing name | `INFO: Document activated: {docName}; PaletteSet state restored` | Status restored dynamically; no plugin reload required |
+| NEG-F0-14 | Repeated execution of `TTCPALETTE` command | NO | Toggles visibility of existing palette window | `INFO: TTCPALETTE toggled existing instance visibility` | Singleton instance preserved; no duplicate windows |
 
 ---
 
@@ -276,7 +294,7 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
 | AC ID | Acceptance Criterion | Verification Method | Status |
 |---|---|---|---|
 | **AC-F0-01** | **Plugin Bootstrap:** Plugin assembly loads into AutoCAD 2023 without unhandled exceptions via `.bundle` autoloader or manual `NETLOAD`. | AutoCAD Manual Test / Host Inspection | `NOT_RUN` |
-| **AC-F0-02** | **Diagnostic Command (`TTCINFO`):** Executing `TTCINFO` outputs host version, assembly version, CLR runtime, configuration status, log file path (to Command Line when active doc present, or via Alert Dialog and file log when zero-doc). | AutoCAD Integration Test / Output Inspection | `NOT_RUN` |
+| **AC-F0-02** | **Diagnostic Command (`TTCINFO`):** Executing `TTCINFO` outputs host version, assembly version, CLR runtime, configuration status, log file path (to Command Line when active doc present, or via file log / alert dialog in application context). | AutoCAD Integration Test / Output Inspection | `NOT_RUN` |
 | **AC-F0-03** | **Ribbon Shell:** `TTC CAD` tab and `General` panel appear in the AutoCAD ribbon with clickable `TTCINFO` and `TTCPALETTE` buttons. | AutoCAD Manual UI Inspection | `NOT_RUN` |
 | **AC-F0-04** | **PaletteSet Shell:** Executing `TTCPALETTE` opens a modeless, dockable `PaletteSet` hosting the WPF `StatusControl` view using 3-parameter `AddVisual(name, visual, true)` with automatic content resizing. | AutoCAD Manual UI Inspection | `NOT_RUN` |
 | **AC-F0-05** | **Valid Configuration:** A well-formed `settings.json` deserializes cleanly and reflects `VALID` in `TTCINFO`. | Unit Test / Integration Test | `NOT_RUN` |
@@ -285,8 +303,9 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
 | **AC-F0-08** | **Package Manifest Validation:** `TTC.CadTools.bundle/PackageContents.xml` conforms to Autodesk Application Package schema with SeriesMin/SeriesMax `R24.2` and startup load policy. | Static Manifest Inspection | `NOT_RUN` |
 | **AC-F0-09** | **Decoupling Integrity:** `TTC.CadTools.Core.dll` contains ZERO references to Autodesk assemblies (`AcCoreMgd`, `AcDbMgd`, `AcMgd`). | Static Assembly Reference Inspection | `NOT_RUN` |
 | **AC-F0-10** | **Strict Scope Containment:** Zero Panel or M&E production features exist in the F0 codebase; domain repositories deferred to P1/M1. | Static Codebase Audit | `NOT_RUN` |
-| **AC-F0-11** | **Zero-Document & Context Switching Safety:** `TTCINFO` and `TTCPALETTE` execute cleanly without exceptions when zero drawings are open and during document switching. | AutoCAD Manual Test / Zero-Doc Host Test | `NOT_RUN` |
+| **AC-F0-11** | **Zero-Document State Safety:**<br>**Given:** The TTC plugin is loaded and its PaletteSet has been initialized.<br>**When:** The user closes the last open drawing so that `Application.DocumentManager.MdiActiveDocument == null`.<br>**Then:** The TTC plugin remains stable; the PaletteSet remains stable; the status UI represents "No Active Document" or equivalent; no active Editor is dereferenced; no drawing database transaction is attempted; no dummy drawing is created; opening a new drawing restores document-aware status without reloading the plugin. | AutoCAD 2023 Manual Host Test | `NOT_RUN` |
 | **AC-F0-12** | **Palette Idempotency & Singleton Lifecycle:** Repeated execution of `TTCPALETTE` toggles visibility of the single palette instance without creating duplicate windows. | AutoCAD Manual UI Test | `NOT_RUN` |
+| **AC-F0-13** | **Application-Context Command Safety:**<br>**Given:** The TTC plugin is loaded into AutoCAD 2023 with zero open drawings.<br>**When:** An application-context command (e.g. `TTCINFO`) is triggered via a valid application mechanism without an active drawing.<br>**Then:** The command does not assume a valid active document; never dereferences `MdiActiveDocument.Editor`; writes output to structured file log and/or modal alert dialog; creates zero dummy drawings. | AutoCAD 2023 Host Integration Test | `NOT_RUN` |
 
 ---
 
@@ -295,7 +314,7 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
 | AC ID | Verification Method | Test Environment | Expected Artifact / Evidence |
 |---|---|---|---|
 | AC-F0-01 | Host Startup / `NETLOAD` | AutoCAD 2023 | Command line output, loaded assembly list |
-| AC-F0-02 | Command Line Execution (Active Doc & Zero-Doc) | AutoCAD 2023 | Editor text screen capture, dialog capture, log entry |
+| AC-F0-02 | Command Line Execution (Active Doc) / Log Inspection | AutoCAD 2023 | Editor text screen capture, log file entry |
 | AC-F0-03 | Visual Inspection | AutoCAD 2023 | Screenshot of AutoCAD Ribbon tab |
 | AC-F0-04 | Interactive Docking / Toggle / Resize | AutoCAD 2023 | Screenshot of floating, docked, and resized PaletteSet |
 | AC-F0-05 | xUnit Test Suite | .NET 4.8 / CI | Test Runner output: `SettingsRepositoryTests.cs` PASS |
@@ -304,8 +323,9 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
 | AC-F0-08 | XML Schema Check | Static / CI | `PackageContents.xml` validation against Autodesk XSD |
 | AC-F0-09 | Assembly Reflection / ILSpy | Static / CI | Assembly reference list showing zero Autodesk DLLs |
 | AC-F0-10 | Directory Scan | Static / CI | 0 classes matching Component, Rail, Duct, or Tray |
-| AC-F0-11 | Zero-Doc & Multi-Doc Execution | AutoCAD 2023 | Host behavior when closing last drawing and switching drawings |
+| AC-F0-11 | Zero-Doc Host State Safety Test | AutoCAD 2023 | PaletteSet remains stable on closing last document; shows "No Active Document"; restores on new doc |
 | AC-F0-12 | Repeated Invocation Test | AutoCAD 2023 | Single palette instance verified in AutoCAD UI inspector |
+| AC-F0-13 | Application-Context Invocation Test | AutoCAD 2023 | Command execution with 0 drawings; verify log written, 0 null Editor dereference |
 
 ---
 
@@ -329,8 +349,9 @@ TTC.CadTools.Tests.dll            -> Targets .NET 4.8. xUnit unit tests for Core
 - [x] Autoloader manifest and startup load policy documented (FINDING-02).
 - [x] Configuration schema, resolution order, and fallback defined.
 - [x] Structured file logging and directory failover specified.
-- [x] Complete negative-case error handling matrix defined (NEG-F0-01 to NEG-F0-12).
-- [x] Acceptance criteria and verification matrix established (AC-F0-01 to AC-F0-12, all `NOT_RUN`).
+- [x] Complete negative-case error handling matrix defined (NEG-F0-01 to NEG-F0-14).
+- [x] Acceptance criteria and verification matrix established (AC-F0-01 to AC-F0-13, all `NOT_RUN`).
+- [x] Zero-document state safety explicitly defined and decoupled from command-line availability (FINDING-03 R2).
 - [x] AutoCAD reality boundary explicitly acknowledged.
 - [x] No engineering domain feature creep; domain repositories deferred to P1/M1.
 

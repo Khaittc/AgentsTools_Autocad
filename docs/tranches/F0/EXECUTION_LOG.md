@@ -220,3 +220,88 @@ PASS
 ### Next Action
 
 Independent technical reviewer verifies correction commit and updates `REVIEW.md` disposition.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F0-002
+- **Actual Result Commit:** `c59f85c894322e03043f83f66a7da2bf7f83d7d3`
+- **Resolution Date:** 2026-09-08
+- **Reason:** Commit was successfully generated and pushed in task F0-SPEC-CORRECTION-001; this addendum links the session record to its permanent Git commit SHA in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-08 / AG-F0-003
+
+### Identity
+
+Agent:
+Antigravity
+
+Session ID:
+AG-F0-003
+
+Task ID:
+F0-SPEC-PATCH-002
+
+Lifecycle Stage:
+SPEC_PATCH
+
+Tranche:
+F0 — AutoCAD Foundation
+
+Work Order:
+NONE (Specification Patch and Review Persistence Only)
+
+Starting Commit:
+c59f85c894322e03043f83f66a7da2bf7f83d7d3
+
+Review:
+REV-F0-001-R2
+
+Result Commit Resolution:
+Trailed via Git commit trailer `Session: AG-F0-003`.
+
+---
+
+### Objective
+
+1. Persist external independent review result `REV-F0-001-R2` (`NEEDS_FIX / RETURN_TO_SPEC`).
+2. Correct Finding 03 zero-document semantics across `DESIGN.md`, `SPEC.md`, `API_VERIFICATION.md`, and `ISSUES.md`:
+   - Decouple **zero-document state safety** from **zero-document command invocation**.
+   - Clarify `TTCINFO` execution context and eliminate any requirement or claim of normal interactive command-line invocation in zero-doc state.
+   - Clarify `TTCPALETTE` zero-document state safety (neutral display, zero transactions, dynamic document restoration).
+   - Rewrite `AC-F0-11` strictly as a Zero-Document State Safety test.
+   - Add separate `AC-F0-13` for Application-Context Command Safety.
+   - Add comprehensive negative cases for closing last document, switching documents, and reopening documents.
+3. Correct source attribution for Finding 02 in `API_VERIFICATION.md` distinguishing SRC-03 (Components schema) and SRC-04 (blog standalone sample).
+4. Update `ISSUES.md`, `TRANCHE_STATUS.md`, `PROJECT_PROGRESS.md`, and `AGENT_HANDOFF.md`.
+5. Maintain zero production C# code files; keep Production Build Authorization strictly `NOT AUTHORIZED`.
+
+---
+
+### Work Completed
+
+- Persisted review `REV-F0-001-R2` in `docs/tranches/F0/REVIEW.md`.
+- Corrected source attribution between SRC-03 and SRC-04 in `docs/tranches/F0/API_VERIFICATION.md`.
+- Documented verified vs not-proven status for zero-document command/state semantics in `API_VERIFICATION.md`.
+- Updated `docs/tranches/F0/DESIGN.md` (v0.1.2) workflows, palette zero-doc safety, `TTCINFO` contract, and negative cases.
+- Updated `docs/tranches/F0/SPEC.md` (v0.1.2) contracts, rewritten AC-F0-11, added AC-F0-13, and expanded negative cases matrix.
+- Clarified zero-document state safety contract in `docs/tranches/F0/ISSUES.md` (`ISSUE-F0-003`).
+- Updated continuity artifacts: `docs/tranches/F0/README.md`, `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, and `governance/AGENT_HANDOFF.md`.
+
+---
+
+### Production Code Check
+
+- Production code created: NONE (0 `.cs`, 0 `.csproj`, 0 `.sln`, 0 `.bundle`).
+- Compile: NOT_RUN
+- AutoCAD Runtime: NOT_RUN
+- Production Build Authorization: NOT AUTHORIZED
+
+---
+
+### Next Action
+
+Independent reviewer verifies final F0 spec patch (`F0-SPEC-PATCH-002`).

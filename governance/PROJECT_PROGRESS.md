@@ -50,14 +50,16 @@ Status: ACTIVE_GOVERNANCE
 
 ## 3.1. Tranche F0 Review State
 
-- **Review ID:** `REV-F0-001` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md))
-- **Reviewed Commit:** `90f1d30d2407850a653af277738dcfbefb30f378`
+- **Review History:**
+  - Round 1: `REV-F0-001` (`NEEDS_FIX / RETURN_TO_SPEC`, Commit `90f1d30d2407850a653af277738dcfbefb30f378`)
+  - Round 1 Correction: `F0-SPEC-CORRECTION-001` (Session `AG-F0-002`, Commit `c59f85c894322e03043f83f66a7da2bf7f83d7d3`)
+  - Round 2: `REV-F0-001-R2` (`NEEDS_FIX / RETURN_TO_SPEC`, Commit `c59f85c894322e03043f83f66a7da2bf7f83d7d3`)
 - **Reviewer:** ChatGPT / Independent Technical Reviewer
-- **Historical Review Disposition:** `NEEDS_FIX / RETURN_TO_SPEC` (6 findings)
-- **Reviewer Addendum:** Withdrew compile-error claims for `AddVisual` (Finding 01) and invalid-syntax claims for `LoadOnAutoCADStartup` (Finding 02).
-- **Correction Task:** `F0-SPEC-CORRECTION-001` (Session `AG-F0-002`)
-- **Agent Correction Status:** `CORRECTED_PENDING_REVIEW` (FINDING-01 to FINDING-06 addressed; API verification documented in [docs/tranches/F0/API_VERIFICATION.md](../docs/tranches/F0/API_VERIFICATION.md))
-- **Re-Review Status:** `PENDING_REVIEW`
+- **Latest Review ID:** `REV-F0-001-R2` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md))
+- **Latest Review Disposition:** `NEEDS_FIX / RETURN_TO_SPEC` (Finding 03 zero-doc command vs state safety)
+- **Latest Correction Task:** `F0-SPEC-PATCH-002` (Session `AG-F0-003`)
+- **Correction Status:** `CORRECTED_PENDING_REVIEW` (Zero-doc state safety decoupled from command-line invocation, AC-F0-11 rewritten, AC-F0-13 added, source attribution clarified in `API_VERIFICATION.md`)
+- **Independent Re-Review Status:** `PENDING_REVIEW`
 
 ---
 
@@ -65,7 +67,7 @@ Status: ACTIVE_GOVERNANCE
 
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `DRAFT / READY_FOR_REVIEW (v0.1.1)` | `NONE` | `BLOCKED` (SPEC_REVIEW / PENDING_RE_REVIEW) |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `DRAFT / READY_FOR_REVIEW (v0.1.2)` | `NONE` | `BLOCKED` (SPEC_REVIEW / PENDING_RE_REVIEW) |
 | **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F0) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F0_F1_P1) |
@@ -103,7 +105,7 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent reviewer verifies F0 correction commit (`F0-SPEC-CORRECTION-001`, addressing `REV-F0-001`).
+Independent reviewer verifies final F0 patch (`F0-SPEC-PATCH-002`, addressing `REV-F0-001-R2`).
 
 **Subsequent Action (gated behind reviewer PASS + Product Owner approval):**
 If reviewer disposition = `PASS`:

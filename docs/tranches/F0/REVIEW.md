@@ -88,17 +88,66 @@ Overall Review Disposition remains: **NEEDS_FIX / RETURN_TO_SPEC**.
 
 ---
 
-## 4. Current Status
+---
 
-- **F0 Lifecycle Stage:** `SPEC_REVIEW`
-- **F0 Spec Status:** `DRAFT / READY_FOR_REVIEW` (Version 0.1.1)
-- **Work Order:** `NONE`
-- **Production Build Authorization:** `NOT AUTHORIZED`
-- **Agent Correction Status:** `CORRECTED_PENDING_REVIEW`
-- **Independent Re-Review Status:** `PENDING_REVIEW`
+## 4. Independent Review Round 2: REV-F0-001-R2
+
+> [!IMPORTANT]
+> **Independent Review Persistence Rule:**
+> Antigravity is acting solely as the recording agent persisting external reviewer findings for commit `c59f85c894322e03043f83f66a7da2bf7f83d7d3`.
+> Antigravity did NOT perform this independent review.
+
+- **Review ID:** `REV-F0-001-R2`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Review Date:** 2026-09-08
+- **Reviewed Commit:** `c59f85c894322e03043f83f66a7da2bf7f83d7d3`
+- **Reviewed Scope:** Tranche F0 correction commit artifacts (F0-SPEC-CORRECTION-001)
+- **Result:** `NEEDS_FIX`
+- **Disposition:** `RETURN_TO_SPEC`
+
+### Summary of Round 2 Review Findings
+
+| Item | Finding / Topic | Reviewer Assessment | Disposition |
+|---|---|---|---|
+| **Finding 01** | `AddVisual` 3-parameter overload & resize | Verified. Documentation accurately reflects Managed API overloads and auto-resize behavior. | **PASS** |
+| **Finding 02** | PackageContents.xml startup load policy | Verified. Retains `LoadOnAutoCADStartup="True"`. Requires source attribution clarification between SRC-03 and SRC-04. | **PASS_WITH_MINOR_SOURCE_CLEANUP** |
+| **Finding 03** | Zero-Document command vs. state semantics | Spec overclaims guaranteed interactive command-line invocation in zero-doc state. Contract must distinguish zero-document state safety from command invocation. AC-F0-11 must be re-scoped to state safety. | **NEEDS_FIX** |
+| **Finding 04** | Domain repository scope deferral | Verified. `IComponentRepository` and `ICabinetRepository` deferred to P1/M1; F0 only contains `ISettingsRepository`. | **PASS** |
+| **Finding 05** | Canonical issue registry (`ISSUES.md`) | Verified. Single source of truth established with 8 canonical issues; collisions resolved. | **PASS** |
+| **Finding 06** | Execution log continuity | Verified. Session `AG-F0-001` addendum resolves commit `90f1d30d2407850a653af277738dcfbefb30f378`; `AG-F0-002` logged cleanly. | **PASS** |
+| **Scope Compliance** | No production code, no M&E features | Zero `.cs` files; production build locked. | **PASS** |
+| **Continuity** | Git & governance traceability | Traceability verified across artifacts. | **PASS** |
+| **Production Build Gate** | Production authorization | Locked. | **PASS / LOCKED** |
 
 ---
 
-## 5. Next Authorized Action
+## 5. Agent Patch & Resolution Matrix (Task: F0-SPEC-PATCH-002)
 
-Independent technical reviewer verifies this correction commit.
+| Finding ID | Reviewer Evaluation | Current Disposition | Files / Sections Changed | Patch Details & Evidence |
+|---|---|---|---|---|
+| **FINDING-01** | PASS | **PASS** | Preserved from `c59f85c` | 3-parameter `AddVisual("Status", control, true)` retained with explicit resize contract. |
+| **FINDING-02** | PASS_WITH_MINOR_SOURCE_CLEANUP | **PASS** | `docs/tranches/F0/API_VERIFICATION.md` | Source attribution clarified: SRC-03 defines components element schema; SRC-04 provides standalone `LoadOnAutoCADStartup="True"` blog sample. |
+| **FINDING-03** | NEEDS_FIX | **CORRECTED_PENDING_REVIEW** | `docs/tranches/F0/DESIGN.md`, `SPEC.md`, `API_VERIFICATION.md`, `ISSUES.md` | Formally decoupled **zero-document state safety** from **command invocation**. Spec no longer claims command-line invocation is guaranteed with zero drawings open. AC-F0-11 rewritten to test state safety. Added AC-F0-13 for application-context command safety. Negative cases updated. |
+| **FINDING-04** | PASS | **PASS** | Preserved from `c59f85c` | Domain repositories remain strictly deferred to P1/M1. |
+| **FINDING-05** | PASS | **PASS** | `docs/tranches/F0/ISSUES.md` | Issue registry updated: clarified zero-document state safety contract in `ISSUE-F0-003`; 0 blocking SPEC_FREEZE issues. |
+| **FINDING-06** | PASS | **PASS** | `docs/tranches/F0/EXECUTION_LOG.md` | AG-F0-001 & AG-F0-002 preserved; new session `AG-F0-003` logged for task `F0-SPEC-PATCH-002`. |
+
+---
+
+## 6. Review & Lifecycle Status Summary
+
+- **Historical REV-F0-001:** `NEEDS_FIX / RETURN_TO_SPEC`
+- **REV-F0-001-R2:** `NEEDS_FIX / RETURN_TO_SPEC`
+- **Agent Patch Status (F0-SPEC-PATCH-002):** `CORRECTED_PENDING_REVIEW`
+- **Correction Re-Review Status:** `PENDING_REVIEW`
+- **F0 Lifecycle Stage:** `SPEC_REVIEW`
+- **F0 Spec Status:** `DRAFT / READY_FOR_REVIEW` (Version 0.1.2)
+- **Work Order:** `NONE`
+- **Production Build Authorization:** `NOT AUTHORIZED`
+
+---
+
+## 7. Next Authorized Action
+
+Independent reviewer verifies final F0 spec patch (`F0-SPEC-PATCH-002`).

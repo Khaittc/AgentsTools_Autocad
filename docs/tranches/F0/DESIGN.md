@@ -2,7 +2,7 @@
 
 Status: DRAFT
 Design ID: DESIGN-FOUNDATION-F0
-Version: 0.1.1
+Version: 0.1.2
 Owner: TTC CAD Project Owner
 Reviewer: Independent Technical Reviewer
 Date: 2026-09-08
@@ -14,7 +14,7 @@ Date: 2026-09-08
 - Intake: `docs/tranches/F0/INTAKE.md` (`INTAKE-FOUNDATION-F0`)
 - Architecture Roadmap: `docs/TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md` (Sections 4, 5, 6, 7, 8, 41)
 - Governance Doctrine: `governance/ANTIGRAVITY_INSTRUCTIONS.md` (Sections 2.1, 3, 14–16)
-- Review & Addendum: `docs/tranches/F0/REVIEW.md` (`REV-F0-001`)
+- Review & Addendum: `docs/tranches/F0/REVIEW.md` (`REV-F0-001`, `REV-F0-001-R2`)
 - Technical Verification: `docs/tranches/F0/API_VERIFICATION.md` (SRC-01 to SRC-06)
 - Decisions Inherited:
   - `TTC-GOV-001`: Spec-First Per Tranche Production Development (`governance/DECISION_LOG.md`)
@@ -36,6 +36,7 @@ Define the minimal, robust, decoupled production architecture for the AutoCAD 20
 3. **CopyLocal Discipline:** AutoCAD runtime assemblies must have `Private=False` (`CopyLocal=False`) to prevent DLL version conflicts inside the AutoCAD process memory space.
 4. **Standard Package Compliance:** Deployment uses the native Autodesk Application Package format (`.bundle`) with `PackageContents.xml` for clean, multi-user discovery and loading without manual registry hacks.
 5. **Deterministic Diagnostics:** Every startup step, configuration read, and command dispatch must be auditable via the diagnostic command `TTCINFO` and structured file logging.
+6. **Zero-Document State Safety:** The plugin architecture must distinguish **zero-document state safety** from **zero-document command invocation**. The plugin and PaletteSet must remain stable when all drawings are closed (`MdiActiveDocument == null`), performing zero drawing transactions and dereferencing no null `Editor`, without requiring or claiming that interactive command-line invocation remains available when zero drawings are open.
 
 ---
 
@@ -61,31 +62,41 @@ IExtensionApplication.Initialize() invoked
 ### 4.2 Diagnostic Inspection Workflow (`TTCINFO`)
 
 ```text
-User enters TTCINFO at command line
+User executes TTCINFO via available AutoCAD command surface (when document open)
     ↓
-CommandMethod adapter handles execution in Session context
+CommandMethod adapter dispatches in Session execution context
     ↓
 Query Host Version, Assembly Version, Config Status, Log Path
     ↓
-Check Document State:
-    ├─ If Active Document != null:
-    │    Print diagnostic report to Command Line (ed.WriteMessage)
-    └─ If Zero-Document (Active Document == null):
-         Display diagnostic dialog (Application.ShowAlertDialog)
-    ↓
-Write diagnostic summary to File Log
+Document State Check:
+    ├─ Active Document Present (MdiActiveDocument != null):
+    │    Write diagnostic report to AutoCAD Command Line (ed.WriteMessage)
+    │    Write execution summary to File Log
+    └─ Zero-Document State (MdiActiveDocument == null) [Application-Context Invocations]:
+         Write full diagnostic report to File Log
+         Display fallback summary dialog (Application.ShowAlertDialog)
+         NEVER dereference active Editor; NEVER create a dummy DWG
 ```
 
-### 4.3 PaletteSet Shell Interaction Workflow
+### 4.3 PaletteSet Shell Interaction & Zero-Doc Workflow
 
 ```text
-User executes TTCPALETTE (or clicks Ribbon button)
+User invokes TTCPALETTE (or clicks Ribbon button while document is open)
     ↓
 Check if PaletteSet instance exists
     ├─ If null: Instantiate PaletteSet, set style/dock flags, add WPF Status Control Visual
     └─ If exists: Toggle Visible property (Show / Hide)
     ↓
 PaletteSet renders modeless WPF view displaying plugin readiness
+    ↓
+Event Handling & Zero-Document State Safety:
+    ├─ User switches drawing: DocumentActivated updates view to active document info
+    ├─ User closes last drawing (zero documents open):
+    │    PaletteSet remains open and stable
+    │    View updates to "No Active Document"
+    │    Zero DWG transactions attempted; no null Editor accessed; no dummy DWG created
+    └─ User opens new drawing:
+         View dynamically updates to active drawing status without plugin reload
 ```
 
 ---
@@ -208,7 +219,14 @@ namespace TTC.CadTools.AutoCAD.Entry
     - Parameter 3: `bResizeContentToPaletteSize: true`.
   - **Expected User Resize Behavior:** When the user docks, undocks, or stretches the PaletteSet window, setting `bResizeContentToPaletteSize: true` ensures the hosted WPF UserControl automatically expands to match the palette dimensions, preventing clipped UI elements.
 - **Modeless Safety Rule:** In Tranche F0, the Palette view is strictly diagnostic / read-only. It queries in-memory status and displays loaded configuration. It executes **zero** AutoCAD database transactions.
-- **Document Switching Behavior:** The palette subscribes to `DocumentManager.DocumentActivated`. If the active drawing changes or if all drawings are closed (`MdiActiveDocument == null`), the status view displays "No Active Document" without attempting any drawing access or throwing null reference exceptions.
+- **Zero-Document State Safety (FINDING-03 R2):**
+  - **Lifetime:** The `PaletteSet` may remain alive while documents are opened, switched, or all closed.
+  - **Zero-Document State:** When the user closes the last open drawing (`Application.DocumentManager.MdiActiveDocument == null`):
+    - The `PaletteSet` remains completely stable.
+    - The hosted view displays "No Active Document" or equivalent diagnostic state.
+    - The palette executes zero DWG transactions, never dereferences a null active document or Editor, and never creates a dummy drawing.
+  - **Document Reopen / Switch:** When a new drawing is opened or documents are switched, `DocumentActivated` automatically restores document-aware status without requiring a plugin reload.
+  - **Interactive Invocation Scope:** F0 does NOT claim or guarantee that the user can type `TTCPALETTE` on a command line after the last drawing is closed. The requirement is strictly **zero-document state safety**.
 
 ---
 
@@ -270,12 +288,19 @@ namespace TTC.CadTools.AutoCAD.Entry
 ### 9.1 Specification
 
 - **Command:** `TTCINFO`
-- **Flags:** `CommandFlags.Modal | CommandFlags.Session`
-- **Requires Active Document:** NO (enabled in zero-document state via `CommandFlags.Session`).
-- **Output Channel Strategy (FINDING-03):**
-  - **Case A: Active Document Present (`MdiActiveDocument != null`):** Output formatted report text directly to AutoCAD command window via `Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage()`.
-  - **Case B: Zero-Document State (`MdiActiveDocument == null`):** `Editor` does not exist. The command writes the full diagnostic report to the active log file, and displays a summary dialog to the user via `Autodesk.AutoCAD.ApplicationServices.Application.ShowAlertDialog()`. The plugin **never** creates a dummy drawing just to output text, and **never** dereferences `Editor` when null.
-  - **Integrity Rule:** The report must only state the log file was written if the file write actually succeeded.
+- **Execution Context:** Application context / Session (`CommandFlags.Modal | CommandFlags.Session`).
+- **Normal Interactive Invocation:** Expected through an available AutoCAD command surface when an active drawing document is present.
+- **Active Document Present (`MdiActiveDocument != null`):**
+  - Command writes formatted diagnostic report directly through the active Editor (`Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage()`).
+  - File logger simultaneously records the diagnostic execution.
+- **Zero-Document State (`MdiActiveDocument == null`):**
+  - **Invocation Scope:** There is **no contract** that the user can type or invoke `TTCINFO` from a normal command line when zero drawings are open.
+  - **State Safety:** The plugin remains completely stable. No code may dereference `MdiActiveDocument.Editor` when active document is null.
+  - **Application-Context Execution Fallback:** If `TTCINFO` is invoked through a valid application-context mechanism while no document exists, output must use document-independent channels:
+    - Diagnostic summary written to structured file log.
+    - Fallback modal dialog via `Application.ShowAlertDialog()` as an output channel (if supported).
+    - Under no circumstances is a dummy drawing created.
+- **Integrity Rule:** The report must only state the log file was written if the file write actually succeeded.
 
 ### 9.2 Output Format
 
@@ -372,8 +397,12 @@ TTC.CadTools.bundle/
 | F-F0-02 | `settings.json` corrupt JSON | None | "Warning: Configuration corrupt; defaults applied." | `ERROR: JSON deserialization error: {details}` | Fallback to in-memory configuration |
 | F-F0-03 | Log directory write-protected | None | None | Attempt stderr / Temp log | Fallback to `%TEMP%\TTC_CadTools\Logs\` |
 | F-F0-04 | Ribbon Manager uninitialized | None | Ribbon button delayed | `INFO: Ribbon uninitialized; subscribed to ItemInitialized` | Deferred ribbon construction on event |
-| F-F0-05 | No active document on `TTCINFO` | None | Modal alert dialog (`Application.ShowAlertDialog`) | `INFO: TTCINFO executed in zero-doc state; dialog displayed` | Executes cleanly via `CommandFlags.Session`; no Editor access |
+| F-F0-05 | Zero-document invocation of `TTCINFO` | None | Fallback dialog (`Application.ShowAlertDialog`) + File Log | `INFO: TTCINFO executed in application context; zero documents open` | Output routed to file log & dialog; no Editor access; no dummy drawing |
 | F-F0-06 | `IExtensionApplication.Initialize()` unhandled exception | Trapped | "TTC CAD failed to initialize. See log for details." | `FATAL: Unhandled startup exception: {stackTrace}` | Aborts plugin init without crashing AutoCAD |
+| F-F0-07 | Last drawing closed while Palette visible | None | Palette displays "No Active Document" | `INFO: Last document closed; PaletteSet transitioned to zero-document state` | Palette remains open and stable; zero DWG transactions; no null Editor access |
+| F-F0-08 | Active document becomes null during document switch | None | Transient neutral display | `DEBUG: Document switch transient null; event handler bypassed DWG calls` | Guard check prevents null dereference |
+| F-F0-09 | Palette callback occurs while no active document exists | None | "No Active Document" | `DEBUG: Palette callback handled in zero-document state; no DWG access` | Read-only diagnostic state preserved |
+| F-F0-10 | Document reopened after zero-document state | None | Status view reflects new document | `INFO: Document activated: {docName}; PaletteSet state restored` | Dynamic refresh; no plugin reload required |
 
 ---
 
@@ -384,7 +413,7 @@ TTC.CadTools.bundle/
 | D-F0-01 | Assembly References | NuGet `AutoCAD.NET 24.2.0` with `Private=False` | Portable build on all workstations without local AutoCAD directory path dependencies. | **PROPOSED** |
 | D-F0-02 | Logging Implementation | Custom lightweight file logger in `TTC.Infrastructure` | Zero external third-party dependencies (eliminates assembly binding redirect headaches inside AutoCAD). | **PROPOSED** |
 | D-F0-03 | Palette UI Stack | Modeless WPF hosted in `PaletteSet` via `AddVisual(name, visual, true)` | Matches Roadmap tech stack; clean MVVM separation; automatic resizing enabled. | **PROPOSED** |
-| D-F0-04 | Command Flags | `CommandFlags.Session` for `TTCINFO` & `TTCPALETTE` | Allows execution even when no drawing document is open (zero-doc state). | **PROPOSED** |
+| D-F0-04 | Command Flags | `CommandFlags.Session` for `TTCINFO` & `TTCPALETTE` | Establishes application execution context for state safety and decoupled logging; does not claim interactive command-line is available in zero-doc state. | **PROPOSED** |
 | D-F0-05 | Load Policy | Startup loading (`LoadOnAutoCADStartup="True"`) | Guarantees Ribbon tab presence upon AutoCAD startup without prior command execution. | **PROPOSED** |
 
 ---
@@ -410,7 +439,7 @@ All open investigations and host quirks for Tranche F0 are canonically managed i
 - [x] Host lifecycle (`IExtensionApplication`, Ribbon, PaletteSet) defined with graceful degradation.
 - [x] PaletteSet `AddVisual` 3-parameter contract and resize behavior specified (FINDING-01).
 - [x] Package autoloader manifest and startup load policy documented and justified (FINDING-02).
-- [x] Command execution context and zero-document output channels decoupled without null Editor access (FINDING-03).
+- [x] Zero-document state safety decoupled from command-line availability; Editor never dereferenced when document is null (FINDING-03 R2).
 - [x] Domain repositories deferred to Tranche P1/M1; F0 limited to `ISettingsRepository` (FINDING-04).
 - [x] Canonical registry in `ISSUES.md` referenced without drifting IDs (FINDING-05).
 - [x] Zero engineering domain logic included.

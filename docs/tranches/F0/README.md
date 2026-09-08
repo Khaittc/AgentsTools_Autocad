@@ -10,7 +10,7 @@ Lifecycle Stage:
 SPEC
 
 Status:
-SPEC_DRAFT / READY_FOR_REVIEW (v0.1.1)
+SPEC_DRAFT / READY_FOR_REVIEW (v0.1.2)
 
 Dependencies:
 Product Baseline
@@ -35,7 +35,7 @@ Build Authorization:
 NOT AUTHORIZED
 
 Next Authorized Action:
-Independent reviewer verifies F0 correction commit (REV-F0-001 re-review).
+Independent reviewer verifies final F0 spec patch (REV-F0-001-R2 re-review).
 
 Forbidden Actions:
 - Freeze F0 Spec without explicit human Product Owner instruction
