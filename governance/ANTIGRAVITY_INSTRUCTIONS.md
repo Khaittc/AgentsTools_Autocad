@@ -20,11 +20,25 @@ INTAKE -> DESIGN -> SPEC -> WORK ORDER -> BUILD -> REVIEW -> FREEZE
 
 Do not collapse `DESIGN` into `SPEC`. Do not collapse `SPEC` into `BUILD`.
 
+### 2.1 Spec-First Per Tranche Methodology (TTC-GOV-001)
+
+The project employs a **Spec-First Per Tranche** production model.
+
+1. **Incremental Tranche Delivery:** Real AutoCAD production development may begin before every future TTC CAD feature is specified. The product is developed in small, bounded, testable tranches (e.g. `F0 -> F1 -> P1 -> P2 -> ...`).
+2. **Current Tranche Prerequisite:** For the CURRENT active tranche to be implemented, it must strictly satisfy the Hard Build Gate:
+   - Target Tranche Spec = `FROZEN`;
+   - Active Work Order = `APPROVED_FOR_EXECUTION`.
+3. **Upstream Inheritance:** Later tranches may inherit approved and frozen upstream contracts without re-inventing cross-cutting architecture. A downstream tranche must never silently redefine or contradict an upstream frozen contract.
+4. **Future Tranches Unauthorized:** Future tranches remain strictly planned/blocked. One Work Order authorizes only one bounded tranche.
+5. **Lane Separation:**
+   - **SIMULATOR LANE (`src/`):** Rapid UX prototyping, workflow validation, and design evidence. Prohibits production AutoCAD APIs and C# plugin code.
+   - **PRODUCTION AUTOCAD LANE (`production/`):** Governed AutoCAD 2023 Managed .NET implementation. Requires formal Spec Freeze and Work Order approval.
+
 ## 3. Hard Build Gate
 
 You MUST NOT create or modify production implementation code unless BOTH are true:
 
-- relevant Feature Spec status = `FROZEN`;
+- relevant Feature / Tranche Spec status = `FROZEN`;
 - active Work Order status = `APPROVED_FOR_EXECUTION`.
 
 If either condition is missing, you may work only on permitted planning/spec/review artifacts.

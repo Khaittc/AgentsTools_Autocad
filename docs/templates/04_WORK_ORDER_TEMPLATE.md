@@ -2,6 +2,7 @@
 
 Status: DRAFT
 Work Order ID: WO-<MODULE>-<FEATURE>-<NNN>
+Tranche ID: <F0 / F1 / P1 / etc.>
 Owner/Dispatcher: <human/orchestrator>
 Implementer: Antigravity
 Reviewer: <reviewer>
@@ -14,11 +15,18 @@ Read this Work Order and every artifact in `Required First Reads` before editing
 
 You are authorized to execute **only** this bounded assignment.
 
+> [!IMPORTANT]
+> **Single-Tranche Authorization Rule:**
+> One Work Order normally authorizes exactly **one bounded tranche**.
+> Do not bundle future tranches merely because implementation is convenient.
+> A downstream tranche must never begin until its upstream dependencies are `FROZEN`.
+
 Hard prerequisites:
 
-- Feature Spec must be `FROZEN`.
+- Target Tranche Feature Spec must be `FROZEN`.
+- All upstream dependencies must be `FROZEN`.
 - This Work Order must be `APPROVED_FOR_EXECUTION`.
-- If either prerequisite is false, do not mutate production code.
+- If any prerequisite is false, do not mutate production code.
 
 ## 1. Mission
 
@@ -28,8 +36,9 @@ Describe one bounded implementation mission and what success means.
 
 - Operator instruction: <reference/date>
 - Intake: <path/version/status>
-- Approved Design: <path/version/status>
+- Design Evidence: <path/version/status>
 - Frozen Feature Spec: <path/version/status>
+- Frozen Upstream Dependencies: <list of Tranche IDs & frozen spec paths>
 - Decision records: <IDs/paths>
 - Roadmap item: <reference>
 

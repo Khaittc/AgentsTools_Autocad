@@ -1,6 +1,9 @@
 # TTC CAD — Feature Specification: TTCPANELPLACE (Smart Component Insert)
 
-Status: DRAFT  
+Status: DRAFT (PROPOSED_FOR_FREEZE)  
+Tranche ID: P2  
+Module: PANEL  
+Capability: Component Placement / TTCPANELPLACE  
 Feature ID: SPEC-PANEL-PLACE-001  
 Feature Name: Smart Component Insert  
 Command(s): `TTCPANELPLACE`, `PANELPLACE`, `TTCPLACE`  
@@ -8,22 +11,43 @@ Version: 0.1.0
 Owner: Electrical / M&E Engineering Lead & AI Architectural Specialist  
 Reviewer: TTC CAD Project Owner  
 Date: 2026-09-08  
+Depends On: Tranche F0 (AutoCAD Foundation), Tranche F1 (Common CAD Contracts), Tranche P1 (Component Library)  
+Dependency State: BLOCKED_BY_F0_F1_P1  
+Build Status: BLOCKED  
 
-> **HARD BUILD GATE:** This document grants **NO implementation authority** until Status = `FROZEN` and an approved Work Order exists. Modifying production code without both gates is strictly forbidden under Section 3 of `ANTIGRAVITY_INSTRUCTIONS.md`.
+> **HARD BUILD GATE:** This document grants **NO implementation authority** until:
+> 1. Upstream dependencies (F0, F1, P1) are `FROZEN`;
+> 2. This Tranche Spec status = `FROZEN`;
+> 3. An approved Work Order exists (`APPROVED_FOR_EXECUTION`).
+> Modifying production code without all gates satisfied is strictly forbidden under Section 3 of `ANTIGRAVITY_INSTRUCTIONS.md`.
 
 ---
 
 ## 1. Authority / Traceability
 
-- **Intake:** [`docs/01_INTAKE_TTCPANELPLACE.md`](file:///f:/OneDrive/001_RealGroup/Z1005_TranQuocKhai/0012_Agent_Tools/00_Tools_Autocad/TTC-AutoCAD-Simulator/docs/01_INTAKE_TTCPANELPLACE.md) (Version 1.0, Status: `APPROVED_INTAKE`).
-- **Approved Design:** [`docs/02_DESIGN_TTCPANELPLACE.md`](file:///f:/OneDrive/001_RealGroup/Z1005_TranQuocKhai/0012_Agent_Tools/00_Tools_Autocad/TTC-AutoCAD-Simulator/docs/02_DESIGN_TTCPANELPLACE.md) (Version 1.0, Status: `PROPOSED_DESIGN`).
-- **Decision IDs:** `D-PANEL-001`, `D-PANEL-002`, `D-PANEL-003`, `D-PANEL-004`, `D-PANEL-005`, `D-PANEL-006`.
-- **Common Specs Inherited:**
-  - CAD Object Contract: Roadmap Section 5.4, 8 (`BlockReference` on `TTC-PANEL-EQUIP`, `XRecord` metadata).
-  - Layer Spec: Roadmap Section 34.1 (`TTC-PANEL-EQUIP`, `TTC-PANEL-CLEARANCE`).
-  - Units/Tolerance Spec: Roadmap Section 42 (Metric mm, `INSUNITS = 4`, tolerance $\varepsilon = 1.0 \times 10^{-4}\text{ mm}$).
-  - AutoCAD Host Behavior Spec: Roadmap Section 40, 41 (Transactions, Document Locking, Clean Cancel).
-- **Roadmap Item:** Section 13 (`Smart Component Insert`), Section 14 (`Clearance Envelope`).
+- **Intake:** [`01_INTAKE_TTCPANELPLACE.md`](./01_INTAKE_TTCPANELPLACE.md) (Version 1.0, Status: `PENDING_HUMAN_CONFIRMATION`).
+- **Design Evidence:** [`02_DESIGN_TTCPANELPLACE.md`](./02_DESIGN_TTCPANELPLACE.md) (Version 1.0, Status: `PROPOSED_DESIGN`).
+- **Tranche Roadmap:** [`TRANCHE_ROADMAP.md`](./tranches/TRANCHE_ROADMAP.md) (Tranche P2).
+- **Tranche Status Register:** [`TRANCHE_STATUS.md`](./tranches/TRANCHE_STATUS.md).
+- **Decision Records:** `D-PANEL-001` through `D-PANEL-006` (Status: `PROPOSED`), `TTC-GOV-001` (`APPROVED_BY_OPERATOR_INSTRUCTION` in [`../governance/DECISION_LOG.md`](../governance/DECISION_LOG.md)).
+- **Governance Doctrine:** [`../governance/ANTIGRAVITY_INSTRUCTIONS.md`](../governance/ANTIGRAVITY_INSTRUCTIONS.md).
+- **Architecture Roadmap:** [`TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md`](./TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md) — Sections 13 (`Smart Component Insert`), 14 (`Clearance Envelope`).
+
+### 1.1. Cross-Feature Technical Values Classification (F1 Audit)
+
+Per governance migration doctrine, cross-feature technical assumptions in this P2 specification are audited and classified as follows:
+
+| Technical Parameter | Current Proposed Value | Classification | Authority Ownership & Status |
+|---|---|---|---|
+| **Drawing Units** | Millimeters (`INSUNITS = 4`) | `F1-COMMON-CONTRACT` | **PROPOSED** — Authority belongs to Tranche F1 (Units & Tolerance Contract). P2 must inherit final F1 value. |
+| **Geometric Tolerance** | $\varepsilon = 1.0 \times 10^{-4}\text{ mm}$ | `F1-COMMON-CONTRACT` | **PROPOSED** — Authority belongs to Tranche F1 (Units & Tolerance Contract). P2 must inherit final F1 value. |
+| **Metadata Storage** | `ExtensionDictionary` (`XRecord`) | `F1-COMMON-CONTRACT` | **PROPOSED** — Authority belongs to Tranche F1 (Metadata Lifecycle Contract). P2 inherits F1 schema. |
+| **Native COPY Identity Repair** | Generate fresh GUID on copy | `F1-COMMON-CONTRACT` | **PROPOSED** — Authority belongs to Tranche F1 (CAD Object Identity Contract). |
+| **Standard Layers & Non-Plot** | `TTC-PANEL-EQUIP`, `TTC-PANEL-CLEARANCE` (`IsPlottable=false`) | `F1-COMMON-CONTRACT` / `C1-CAD-STANDARDS` | **PROPOSED** — Authority belongs to F1/C1 Layer Management. |
+| **DIN Rail Snap Capture Radius** | $R_{snap} = 25.0\text{ mm}$ | `P2-SPECIFIC` | Bounded to component placement behavior. |
+| **5-Sided Clearance Boundary** | `Top, Bottom, Left, Right, Front` | `P2-SPECIFIC` | Bounded to component footprint definition. |
+| **Procedural Block Fallback** | Generate from $W \times H$ if DWG missing | `PROPOSED_PRODUCT_DECISION` | P2-specific resilience fallback. |
+| **External Block Path Structure** | `assets/blocks/components/{id}.dwg` | `PROPOSED_PRODUCT_DECISION` | Pending F1/Admin library path convention. |
 
 ---
 

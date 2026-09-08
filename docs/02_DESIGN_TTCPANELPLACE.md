@@ -1,6 +1,9 @@
 # TTC CAD — Design: TTCPANELPLACE (Smart Component Insert)
 
 Status: PROPOSED_DESIGN  
+Tranche ID: P2  
+Module: PANEL  
+Capability: Component Placement / TTCPANELPLACE  
 Design ID: DESIGN-PANEL-001  
 Version: 1.0  
 Owner: Electrical / M&E Engineering Lead & AI Architectural Specialist  
@@ -11,11 +14,12 @@ Date: 2026-09-08
 
 ## 1. Authority / Inputs
 
-- **Intake:** [`docs/01_INTAKE_TTCPANELPLACE.md`](file:///f:/OneDrive/001_RealGroup/Z1005_TranQuocKhai/0012_Agent_Tools/00_Tools_Autocad/TTC-AutoCAD-Simulator/docs/01_INTAKE_TTCPANELPLACE.md) (Version 1.0, Status: `APPROVED_INTAKE`).
-- **Architecture Roadmap:** [`docs/TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md`](file:///f:/OneDrive/001_RealGroup/Z1005_TranQuocKhai/0012_Agent_Tools/00_Tools_Autocad/TTC-AutoCAD-Simulator/docs/TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md) — Sections 2 (Scope Boundaries), 4 (Technology Baseline), 5 (Architectural Principles), 6 (Solution Structure), 8 (Metadata Strategy), 10 (Component Library Schema), 11 (Component Palette), 13 (Smart Component Insert), 14 (Clearance Envelope), 34 (Layer Management), 40 (Error Handling), 41 (AutoCAD Transactions), 42 (Geometry Rules).
-- **Previous Decisions:** [`governance/DECISION_LOG.md`](file:///f:/OneDrive/001_RealGroup/Z1005_TranQuocKhai/0012_Agent_Tools/00_Tools_Autocad/TTC-AutoCAD-Simulator/governance/DECISION_LOG.md).
-- **Simulator Reference & Scenarios:** `TTC-AutoCAD-Simulator` (`src/shell/Palette/ComponentPalette.tsx`, `src/drawing/DrawingCanvas/DrawingCanvas.tsx`) and [`docs/scenarios.md`](file:///f:/OneDrive/001_RealGroup/Z1005_TranQuocKhai/0012_Agent_Tools/00_Tools_Autocad/TTC-AutoCAD-Simulator/docs/scenarios.md) (Scenarios S01, S02, S03, S05).
-- **Governance Doctrine:** [`governance/ANTIGRAVITY_INSTRUCTIONS.md`](file:///f:/OneDrive/001_RealGroup/Z1005_TranQuocKhai/0012_Agent_Tools/00_Tools_Autocad/TTC-AutoCAD-Simulator/governance/ANTIGRAVITY_INSTRUCTIONS.md) and [`.CVF/CVF_AUTOCAD_GOVERNANCE_RULES.md`](file:///f:/OneDrive/001_RealGroup/Z1005_TranQuocKhai/0012_Agent_Tools/00_Tools_Autocad/.CVF/CVF_AUTOCAD_GOVERNANCE_RULES.md).
+- **Intake:** [`01_INTAKE_TTCPANELPLACE.md`](./01_INTAKE_TTCPANELPLACE.md) (Version 1.0, Status: `PENDING_HUMAN_CONFIRMATION`).
+- **Tranche Roadmap:** [`TRANCHE_ROADMAP.md`](./tranches/TRANCHE_ROADMAP.md) (Tranche P2, Depends on F0, F1, P1).
+- **Architecture Roadmap:** [`TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md`](./TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md) — Sections 2 (Scope Boundaries), 4 (Technology Baseline), 5 (Architectural Principles), 6 (Solution Structure), 8 (Metadata Strategy), 10 (Component Library Schema), 11 (Component Palette), 13 (Smart Component Insert), 14 (Clearance Envelope), 34 (Layer Management), 40 (Error Handling), 41 (AutoCAD Transactions), 42 (Geometry Rules).
+- **Previous Decisions:** [`../governance/DECISION_LOG.md`](../governance/DECISION_LOG.md) — Decision `TTC-GOV-001`.
+- **Simulator Reference & Scenarios:** `TTC-AutoCAD-Simulator` (`src/shell/Palette/ComponentPalette.tsx`, `src/drawing/DrawingCanvas/DrawingCanvas.tsx`) and [`scenarios.md`](./scenarios.md) (Scenarios S01, S02, S03, S05).
+- **Governance Doctrine:** [`../governance/ANTIGRAVITY_INSTRUCTIONS.md`](../governance/ANTIGRAVITY_INSTRUCTIONS.md). *(Note: External `.CVF` template reference exists outside repository; in-repo governance authority is `ANTIGRAVITY_INSTRUCTIONS.md`).*
 
 ---
 
@@ -380,7 +384,7 @@ Dependencies flow **strictly inward** toward `Core`. `Core` is 100% platform-agn
 
 ## 21. Design Gate
 
-- [x] Intake is approved (`docs/01_INTAKE_TTCPANELPLACE.md`).
+- [x] Intake submitted ([01_INTAKE_TTCPANELPLACE.md](./01_INTAKE_TTCPANELPLACE.md), Status: `PENDING_HUMAN_CONFIRMATION`).
 - [x] Primary workflow is complete.
 - [x] Simulator observations affecting behavior are dispositioned (S01, S02, S03, S05).
 - [x] Interaction states are defined.
@@ -391,7 +395,7 @@ Dependencies flow **strictly inward** toward `Core`. `Core` is 100% platform-agn
 - [x] Critical alternatives have decisions.
 - [x] No unresolved question is being silently delegated to the coding agent (all marked in OQ / KU table).
 
-**Gate Result:** `PASS` (Proceed to FEATURE SPEC)
+**Gate Result:** `PASS` (Proceed to FEATURE SPEC; no build authority granted)
 
 ---
 
@@ -400,4 +404,4 @@ Dependencies flow **strictly inward** toward `Core`. `Core` is 100% platform-agn
 Reviewer: TTC CAD Project Owner  
 Disposition: `PENDING_HUMAN_REVIEW`  
 Date: 2026-09-08  
-Approved Decision IDs: `D-PANEL-001`, `D-PANEL-002`, `D-PANEL-003`, `D-PANEL-004`, `D-PANEL-005`, `D-PANEL-006`
+Proposed Decision IDs: `D-PANEL-001`, `D-PANEL-002`, `D-PANEL-003`, `D-PANEL-004`, `D-PANEL-005`, `D-PANEL-006`

@@ -1,20 +1,38 @@
 # TTC CAD — Feature Specification Template
 
 Status: DRAFT
+Tranche ID: <F0 / F1 / P1 / P2 / etc.>
+Module: <PANEL / ME / STANDARDS>
+Capability: <capability name>
 Feature ID: SPEC-<MODULE>-<FEATURE>-<NNN>
 Feature Name: <name>
 Command(s): <AutoCAD command names or N/A>
 Version: 0.1.0
-Owner: <spec owner>
+
+Depends On: <Tranche IDs / upstream specs>
+Inherits From: <Frozen upstream contract paths>
+
+Entry Stage: <DESIGN / INTAKE>
+Previous Frozen Baseline: <commit / version / N/A>
+
+Product Owner: <human name>
 Reviewer: <reviewer>
 Date: <YYYY-MM-DD>
 
+Open Questions: <count or NONE>
+
 > BUILD GATE: This document grants no implementation authority until Status = `FROZEN` and an approved Work Order exists.
+
+### Dependency Rules:
+- A Feature Spec may inherit frozen upstream contracts without redefining them.
+- A Feature Spec must not redefine or contradict a frozen dependency silently.
+- If a dependency conflict is discovered during specification or AutoCAD testing:
+  STOP and return to the earliest affected DESIGN/SPEC stage.
 
 ## 1. Authority / Traceability
 
 - Intake: <path + version/status>
-- Approved Design: <path + version/status>
+- Design Evidence: <path + version/status>
 - Decision IDs: <list>
 - Common Specs inherited:
   - CAD Object Contract: <path/version or N/A>

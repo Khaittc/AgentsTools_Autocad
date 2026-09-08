@@ -2,14 +2,22 @@
 
 Status: DRAFT
 Review ID: REVIEW-<MODULE>-<FEATURE>-<NNN>
-Feature: <Feature ID / name>
+Tranche ID: <F0 / F1 / P1 / etc.>
+Feature / Capability: <Feature ID / name>
 Reviewer: <reviewer>
+Product Owner: <human/owner>
 Date: <YYYY-MM-DD>
+
+> [!IMPORTANT]
+> **Tranche Closure Principle:**
+> Only a `FROZEN` tranche may be treated as stable dependency evidence for downstream tranches.
+> Closure requires verified Build evidence, Acceptance Criteria verification, Negative-case verification,
+> Regression verification, AutoCAD manual/integration verification, Scope-diff verification, and explicit Product Owner Freeze.
 
 ## 1. Reviewed Authority Chain
 
 - Intake: <path/version/status>
-- Design: <path/version/status>
+- Design Evidence: <path/version/status>
 - Feature Spec: <path/version/status>
 - Work Order: <path/ID/status>
 - Implementation commit/range: <commit/range>

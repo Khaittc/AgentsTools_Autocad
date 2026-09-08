@@ -2,7 +2,7 @@
 
 > **Document Status:** Approved Architecture Plan for Simulator v0.1  
 > **Target:** Browser-based UX/Workflow Simulator (`TTC AutoCAD Simulator`)  
-> **Source Reference:** [TTC AutoCAD Architecture & Development Roadmap](file:///f:/OneDrive/001_RealGroup/Z1005_TranQuocKhai/0012_Agent_Tools/00_Tools_Autocad/TTC-AutoCAD-Simulator/docs/TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md)  
+> **Source Reference:** [TTC AutoCAD Architecture & Development Roadmap](./TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md)  
 > **Implementation Scope:** Module A (Panel Layout Designer) — Slice v0.1  
 
 ---
