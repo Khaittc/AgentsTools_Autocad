@@ -2,4 +2,9 @@
 
 | Decision ID | Date | Stage | Scope | Decision | Rationale | Evidence/Source | Status |
 |---|---|---|---|---|---|---|---|
-| D-001 | <YYYY-MM-DD> | DESIGN/SPEC | <scope> | <decision> | <why> | <path/scenario> | PROPOSED/APPROVED/FROZEN |
+| D-PANEL-001 | 2026-09-08 | DESIGN/SPEC | TTCPANELPLACE CAD Object | Use standard AutoCAD `BlockReference` on layer `TTC-PANEL-EQUIP` for component footprint linework. | Preserves standard DWG usability; zero ObjectARX proxy entities. | Roadmap Sec. 5.4, CVF Doctrine | PROPOSED |
+| D-PANEL-002 | 2026-09-08 | DESIGN/SPEC | TTCPANELPLACE Clearance | Generate clearance envelope as closed 2D `Polyline` on dedicated non-plot layer `TTC-PANEL-CLEARANCE`. | Keeps clearance visible during drafting while preventing accidental plotting to PDF/paper. | Roadmap Sec. 14, 34; Simulator S02/S03 | PROPOSED |
+| D-PANEL-003 | 2026-09-08 | DESIGN/SPEC | TTCPANELPLACE Metadata | Persist canonical metadata in `ExtensionDictionary` (`XRecord`) under key `TTC_PANEL_DATA`. | Native DWG persistence that survives copy/paste/save/reopen and cannot be accidentally edited in properties window. | Roadmap Sec. 8, CVF Doctrine | PROPOSED |
+| D-PANEL-004 | 2026-09-08 | DESIGN/SPEC | TTCPANELPLACE Block Resolution | Procedural block generation from dimensions ($W \times H$) with fallback/override to external `.dwg` file if present. | Eliminates plugin crashes when external block files are missing; guarantees dimensional accuracy. | KU-02 Analysis, Design Sec. 17 | PROPOSED |
+| D-PANEL-005 | 2026-09-08 | DESIGN/SPEC | TTCPANELPLACE Snapping | Interactive dynamic snap to DIN rail centerline within $25.0\text{ mm}$ capture threshold for rail-mounted devices. | Provides immediate visual feedback and locks elevation accurately without manual coordinate calculation. | Simulator S01, Roadmap Sec. 15 | PROPOSED |
+| D-PANEL-006 | 2026-09-08 | DESIGN/SPEC | TTCPANELPLACE Units | Enforce 1:1 metric millimeter scale ($INSUNITS = 4$, scale factor $= (1.0, 1.0, 1.0)$). | Prevents distorted footprints and guarantees true physical dimensional fidelity. | Roadmap Sec. 42, CVF Rule 1 | PROPOSED |
