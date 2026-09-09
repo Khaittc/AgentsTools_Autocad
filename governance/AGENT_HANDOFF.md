@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-09 23:45:00 +07:00
+2026-09-09 23:58:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-f3f679ac8946c13c08f461f6ecc0e8dba6d91e2f
+b9911a6f0985b71a689ef858f9ed383a48e73e41
 
 Approved Execution Baseline:
 NONE (F1 Build NOT AUTHORIZED; F0 Baseline: 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf)
@@ -20,7 +20,7 @@ Frozen Implementation Baseline:
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD contains or descends from F1 DESIGN CORRECTION commit of task F1-DESIGN-CORRECTION-001.
+Current HEAD contains or descends from F1 DESIGN CORRECTION commit of task F1-DESIGN-CORRECTION-002.
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -38,10 +38,10 @@ Intake Status:
 INTAKE-FOUNDATION-F1-001 — COMPLETE / PASS_TO_DESIGN (REV-F1-INTAKE-001-R3 PASS)
 
 Current Design Document:
-DESIGN-FOUNDATION-F1-001 (v0.2.0) (DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING)
+DESIGN-FOUNDATION-F1-001 (v0.3.0) (DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING)
 
 Latest Design Review:
-REV-F1-DESIGN-001 (NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION)
+REV-F1-DESIGN-001-R2 (NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION)
 
 Current Frozen Authority:
 docs/tranches/F0/SPEC.md — FROZEN v1.0.0
@@ -74,16 +74,16 @@ F1 DESIGN:
 CORRECTED / PENDING_INDEPENDENT_RE_REVIEW
 
 Last Completed Task:
-F1-DESIGN-CORRECTION-001
+F1-DESIGN-CORRECTION-002
 
 Last Agent:
-Antigravity / AG-F1-005
+Antigravity / AG-F1-006
 
 Last Result:
 DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
 
 Open Blocking Issues:
-10 blocking BUILD entry (0 blocking DESIGN correction; 4 DESIGN_RESOLVED_PENDING_SPEC, 5 DESIGN_PROPOSED, 1 HOST_TEST_REQUIRED in docs/tranches/F1/ISSUES.md)
+10 blocking BUILD entry (0 blocking DESIGN correction; 4 DESIGN_RESOLVED_PENDING_SPEC, 6 DESIGN_PROPOSED in docs/tranches/F1/ISSUES.md)
 
 Open Non-Blocking Issues:
 0
@@ -92,7 +92,7 @@ Next Tranche:
 P1 — Component Library (BLOCKED by F1)
 
 Next Authorized Action:
-Independent technical re-review of Tranche F1 DESIGN (`REV-F1-DESIGN-001-R2`). F1 SPEC authoring and BUILD remain strictly NOT AUTHORIZED until independent review disposition is issued.
+Independent technical re-review of Tranche F1 DESIGN (`REV-F1-DESIGN-001-R3`). F1 SPEC authoring and BUILD remain strictly NOT AUTHORIZED until independent review disposition is issued.
 
 F1 Production Build:
 NOT AUTHORIZED
@@ -125,4 +125,4 @@ Required First Reads:
 16. docs/tranches/F0/REVIEW.md
 
 Handoff Notes:
-Task F1-DESIGN-CORRECTION-001 (Session AG-F1-005) corrected the architectural design and host API verification evidence for Tranche F1 (Common CAD Contracts) following independent review REV-F1-DESIGN-001 (NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION). Persisted REV-F1-DESIGN-001 in docs/tranches/F1/REVIEW.md (marked read-only). Corrected unitless drawing design (D01) by removing silent millimeter assumptions, establishing unit resolution precedence, and clarifying MEASUREMENT and LUNITS semantics. Corrected tolerance model (D02) by removing invented angular tolerance candidates and retaining only linear epsilon = 1e-4 mm as the sole authorized candidate. Established a canonical metadata-location matrix (D03) defining ExtensionDictionary / XRecord as primary authoritative source of truth, XData as secondary query index/cache, and resynchronization rules. Corrected TTC_OBJECT_ID scope (D04) to uniquely identify one drawing object instance, strictly separating from catalog (TTC_LIBRARY_ID) and EPLAN IDs, and evaluating UUIDv4 vs prefixed slug. Redesigned clone identity repair (D05) into two states (State A: provenance known -> new ID; State B: duplicate discovered / provenance unknown -> COLLISION_UNRESOLVED, no silent guessing of original), classified pre-save BeginSave mutation as HOST_TEST_REQUIRED, and defined generic IEntityIdentityAuditService. Upgraded API_VERIFICATION.md (D06) with exact Autodesk 2023 documentation URLs, corrected ~16 KB total XData limit across all applications, and cleanly separated host notification guidelines from TTC stability policy. Audited native lifecycle matrix (D07) correcting MIRROR conditional handle semantics and separating host facts from design policies. Aligned namespaces (D08) with frozen F0 assembly TTC.CadTools.AutoCAD. Replaced trailing-fields assumption (D12) with a keyed/tagged record schema preserving unknown fields anywhere. Distinguished Common F1 Block Contract from Panel P1/P2 asset recommendations (D13). Updated all 10 canonical issues in docs/tranches/F1/ISSUES.md. Preserved 100% frozen integrity of Tranche F0 and production code paths (zero production changes). Next authorized action is independent technical re-review REV-F1-DESIGN-001-R2. F1 SPEC and BUILD remain strictly NOT AUTHORIZED.
+Task F1-DESIGN-CORRECTION-002 (Session AG-F1-006) resolved all residual findings from independent re-review REV-F1-DESIGN-001-R2 (NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION). Persisted REV-F1-DESIGN-001-R2 in docs/tranches/F1/REVIEW.md (marked read-only). Resolved gate deadlock on ISSUE-F1-005 (R2-D01) by separating architectural spec invariants from runtime host validation evidence (BUILD_VALIDATION), removing circular lifecycle dependencies. Corrected MIRROR semantics everywhere (R2-D02) to reflect that deepClone is used only when source objects are preserved, while in-place transformation occurs when source is erased. Completed API verification (R2-D03) with direct citation of Autodesk DevGuide "AutoCAD Commands That Use Deep Clone and Wblock Clone" (SRC-F1-09) and grounded XRecord capacity in Autodesk-supported 2 GB limits. Cleaned up identity wording (R2-D04) to strictly separate EPLAN 2022 toolchain from C2 export and properly describe UUIDv4 uniqueness. Added explicit UNIT_CONFIGURATION_CONFLICT state (R2-D05) when project units contradict non-zero drawing INSUNITS. Completed comprehensive 12-domain Common CAD Block Contract in DESIGN.md Section J (R2-D06), treating 1-level nesting as candidate recommendation pending SPEC. Corrected event/cache invalidation mechanism (R2-D07) by removing unsupported transaction sequence/timestamp wording and clarifying BeginSave safety. Synchronized canonical issue registry docs/tranches/F1/ISSUES.md and all continuity artifacts. Preserved 100% frozen integrity of Tranche F0 and production code paths (zero production changes). Next authorized action is independent technical re-review REV-F1-DESIGN-001-R3. F1 SPEC and BUILD remain strictly NOT AUTHORIZED.

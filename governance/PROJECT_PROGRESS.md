@@ -90,8 +90,8 @@ Status: ACTIVE_GOVERNANCE
 - **Status:** `DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
 - **Intake Status:** `COMPLETE / PASS_TO_DESIGN` ([docs/tranches/F1/INTAKE.md](../docs/tranches/F1/INTAKE.md))
 - **Latest Intake Review:** `REV-F1-INTAKE-001-R3` (`PASS / PASS_TO_DESIGN` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
-- **Latest Design Review:** `REV-F1-DESIGN-001` (`NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
-- **Design Document:** `DESIGN-FOUNDATION-F1-001` (v0.2.0) ([docs/tranches/F1/DESIGN.md](../docs/tranches/F1/DESIGN.md))
+- **Latest Design Review:** `REV-F1-DESIGN-001-R2` (`NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
+- **Design Document:** `DESIGN-FOUNDATION-F1-001` (v0.3.0) ([docs/tranches/F1/DESIGN.md](../docs/tranches/F1/DESIGN.md))
 - **API Verification:** Host Evidence Updated ([docs/tranches/F1/API_VERIFICATION.md](../docs/tranches/F1/API_VERIFICATION.md))
 - **F1 DESIGN:** `CORRECTED / PENDING_INDEPENDENT_RE_REVIEW`
 - **F1 SPEC:** `NOT_STARTED / NOT AUTHORIZED`
@@ -99,7 +99,7 @@ Status: ACTIVE_GOVERNANCE
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
 - **P1/P2/M&E:** `BLOCKED`
-- **Next Authorized Action:** Independent technical re-review of F1 DESIGN (`REV-F1-DESIGN-001-R2`)
+- **Next Authorized Action:** Independent technical re-review of F1 DESIGN (`REV-F1-DESIGN-001-R3`)
 
 ---
 

@@ -369,3 +369,77 @@ Independent technical review of Tranche F1 DESIGN (`DESIGN-FOUNDATION-F1-001`). 
 
 ### Next Required Action
 Independent technical re-review: `REV-F1-DESIGN-001-R2`. F1 SPEC and BUILD remain strictly NOT AUTHORIZED until independent reviewer approval.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F1-005
+- **Task ID:** F1-DESIGN-CORRECTION-001
+- **Resolved Ending Commit:** `b9911a6f0985b71a689ef858f9ed383a48e73e41`
+- **Resolution Date:** 2026-09-09
+- **Recorded In:** Session `AG-F1-006` (`F1-DESIGN-CORRECTION-002`)
+- **Reason:** Reconciled historical completion commit `b9911a6f0985b71a689ef858f9ed383a48e73e41` in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-09 / AG-F1-006
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-006`
+- **Task ID:** `F1-DESIGN-CORRECTION-002`
+- **Lifecycle Stage:** `DESIGN_CORRECTION`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Design Review:** `REV-F1-DESIGN-001-R2` (`NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION`)
+- **Work Order:** `NONE` (Architectural Design Correction Stage Only)
+- **Starting Commit:** `b9911a6f0985b71a689ef858f9ed383a48e73e41`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+1. Persist independent re-review `REV-F1-DESIGN-001-R2` (`NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION`) in `docs/tranches/F1/REVIEW.md`.
+2. Close residual findings R2-D01 through R2-D07:
+   - `R2-D01`: Remove issue gate deadlock on `ISSUE-F1-005`. Separate architectural spec invariant from runtime test evidence (`BUILD_VALIDATION`), removing circular lifecycle dependency.
+   - `R2-D02`: Correct `MIRROR` semantics everywhere: `deepClone` is used only when source objects are preserved; when source objects are erased, `deepClone` is NOT used and original objects are mirrored in place.
+   - `R2-D03`: Directly reference Autodesk DevGuide *"AutoCAD Commands That Use Deep Clone and Wblock Clone"* (SRC-F1-09). Ground XRecord capacity in Autodesk-supported 2 GB limit; keep TTC metadata compact; do not describe as unlimited.
+   - `R2-D04`: Clean up identity wording: EPLAN Device Tag management belongs exclusively to separate EPLAN 2022 toolchain (C2 owns clean DWG/DXF export only); UUIDv4 provides practical global uniqueness with negligibly small collision probability.
+   - `R2-D05`: Add explicit `UNIT_CONFIGURATION_CONFLICT` state when project configuration contradicts non-zero `INSUNITS`.
+   - `R2-D06`: Complete comprehensive 12-domain Common CAD Block Contract in §J; treat 1-level nesting limit as candidate recommendation pending SPEC, not an established invariant.
+   - `R2-D07`: Correct event/cache mechanism by removing unsupported transaction sequence/timestamp wording; clarify BeginSave safety and prohibit interactive prompts or SendStringToExecute inside callbacks.
+3. Update canonical issue registry `docs/tranches/F1/ISSUES.md` (`ISSUE-F1-001` through `ISSUE-F1-010`).
+4. Reconcile execution continuity for `AG-F1-005` (commit `b9911a6f0985b71a689ef858f9ed383a48e73e41`) and append `AG-F1-006`.
+5. Update front-door `README.md` and master continuity artifacts (`docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, `governance/AGENT_HANDOFF.md`).
+6. Maintain strict immutability: zero production code changes (`production/**`), zero F0 changes, no `SPEC.md`, no `WORK_ORDER.md`.
+7. Prepare for independent re-review `REV-F1-DESIGN-001-R3`.
+
+---
+
+### Execution Details
+- **Review Persisted:** `REV-F1-DESIGN-001-R2` recorded in `docs/tranches/F1/REVIEW.md` (marked read-only).
+- **API Verification Updated:** `docs/tranches/F1/API_VERIFICATION.md` updated with SRC-F1-09, corrected XRecord capacity, and policy distinctions.
+- **Design Updated:** `docs/tranches/F1/DESIGN.md` updated to v0.3.0 addressing R2-D01 through R2-D07.
+- **Issue Registry Updated:** `docs/tranches/F1/ISSUES.md` updated across all 10 canonical issues with gate decoupling.
+- **Front-Door Updated:** `docs/tranches/F1/README.md` updated.
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Spec / Work Order:** NOT created (strictly NOT AUTHORIZED).
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent technical re-review: `REV-F1-DESIGN-001-R3`. F1 SPEC and BUILD remain strictly NOT AUTHORIZED until independent reviewer approval.

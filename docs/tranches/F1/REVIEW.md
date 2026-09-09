@@ -13,13 +13,14 @@
 
 - **Tranche:** F1 — Common CAD Contracts
 - **Lifecycle Stage:** DESIGN_CORRECTION
-- **Current Review:** `REV-F1-DESIGN-001`
+- **Current Review:** `REV-F1-DESIGN-001-R2`
 - **Current Result:** `NEEDS_FIX`
 - **Current Disposition:** `RETURN_TO_DESIGN_CORRECTION`
 - **F1 DESIGN:** `CORRECTION_IN_PROGRESS`
 - **F1 SPEC:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
-- **Expected Next Review:** `REV-F1-DESIGN-001-R2`
+- **Expected Next Review:** `REV-F1-DESIGN-001-R3`
+
 
 
 ---
@@ -146,3 +147,36 @@
 6. Resubmit for independent re-review: `REV-F1-DESIGN-001-R2`.
 
 After recording, this file is READ-ONLY for the remainder of task `F1-DESIGN-CORRECTION-001`.
+
+---
+
+## 6. Independent Re-Review: REV-F1-DESIGN-001-R2
+
+- **Review ID:** `REV-F1-DESIGN-001-R2`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Date:** 2026-09-09
+- **Reviewed Commit:** `b9911a6f0985b71a689ef858f9ed383a48e73e41`
+- **Reviewed Scope:** `docs/tranches/F1/DESIGN.md`, `docs/tranches/F1/API_VERIFICATION.md`, `docs/tranches/F1/ISSUES.md`, `docs/tranches/F1/README.md`, `docs/tranches/F1/EXECUTION_LOG.md`, continuity artifacts.
+- **Result:** `NEEDS_FIX`
+- **Disposition:** `RETURN_TO_DESIGN_CORRECTION`
+
+### Findings
+
+- **R2-D01 — Issue gate deadlock:** `ISSUE-F1-005` created a circular lifecycle dependency by requiring host tests scheduled in BUILD as a prerequisite for `SPEC_FREEZE`. Architectural spec invariant must be separated from runtime test evidence.
+- **R2-D02 — MIRROR/API contradiction:** Unconditional statements claiming `COPY`, `ARRAY`, `MIRROR` always invoke deepClone contradicted host facts. MIRROR uses deepClone only when original objects are preserved; if original objects are erased, deepClone is not used and the original objects are mirrored.
+- **R2-D03 — API verification residual accuracy/traceability:** Lacked direct reference to Autodesk documentation *"AutoCAD Commands That Use Deep Clone and Wblock Clone"*. XRecord capacity was not grounded in Autodesk-supported reference (up to 2 GB per XRecord).
+- **R2-D04 — Identity wording residuals:** Claimed EPLAN device tagging belongs to C2 (it belongs exclusively to separate EPLAN 2022 toolchain; C2 owns only DWG/DXF export). Described UUIDv4 as "100% collision-free" (should be practical global uniqueness with negligibly small collision probability).
+- **R2-D05 — Unit configuration conflict missing:** Lacked explicit conflict handling when project configuration and non-zero `INSUNITS` contradict (e.g. Project = Millimeters, INSUNITS = Inches). A distinct `UNIT_CONFIGURATION_CONFLICT` state is required.
+- **R2-D06 — Block Asset Contract incomplete:** Section J lacked coverage for several required block concerns (mounting reference, drawing units, rotation, attributes, definition versioning, redefinition, missing assets) and arbitrary 1-nesting level was presented as established invariant rather than candidate.
+- **R2-D07 — Event/cache mechanism needs correction:** Unsubstantiated claims regarding "compare database transaction sequence or timestamp" must be removed. `BeginSave` must not depend on interactive prompts or SendStringToExecute.
+
+### Reviewer Directives
+1. Close residual findings R2-D01 through R2-D07 in `DESIGN.md`, `API_VERIFICATION.md`, `ISSUES.md`, and continuity files.
+2. Authoring F1 SPEC is **NOT AUTHORIZED**.
+3. Work Order creation is **NOT AUTHORIZED**.
+4. Production code mutation is **NOT AUTHORIZED** (`production/**` remains untouched).
+5. Tranche F0 remains **FROZEN** (`docs/tranches/F0/**` untouched).
+6. Resubmit for independent re-review: `REV-F1-DESIGN-001-R3`.
+
+After recording, this file is READ-ONLY for the remainder of task `F1-DESIGN-CORRECTION-002`.
