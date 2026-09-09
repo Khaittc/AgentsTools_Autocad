@@ -79,7 +79,7 @@ Status: ACTIVE_GOVERNANCE
 - **F0 Production Mutation:** `CLOSED / REQUIRES REOPEN AUTHORITY`
 - **Current Production Focus:** `F1 — INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
 - **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
-- **Next Lifecycle Action:** `Independent Re-Review REV-F1-INTAKE-001-R2`
+- **Next Lifecycle Action:** `Independent Re-Review REV-F1-INTAKE-001-R3`
 
 ---
 
@@ -88,18 +88,18 @@ Status: ACTIVE_GOVERNANCE
 - **Tranche:** F1 — Common CAD Contracts
 - **Lifecycle Stage:** INTAKE
 - **Status:** `INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
-- **Current Review:** `REV-F1-INTAKE-001` ([docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
+- **Current Review:** `REV-F1-INTAKE-001-R2` ([docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
 - **Reviewer:** ChatGPT / Independent Technical Reviewer
 - **Review Result:** `NEEDS_FIX`
-- **Disposition:** `RETURN_TO_INTAKE`
-- **Correction Task:** `F1-INTAKE-CORRECTION-001` (Session `AG-F1-002`)
+- **Disposition:** `RETURN_TO_INTAKE_CORRECTION`
+- **Correction Task:** `F1-INTAKE-CORRECTION-002` (Session `AG-F1-003`)
 - **F1 DESIGN:** `NOT AUTHORIZED`
 - **F1 SPEC:** `NOT_STARTED`
 - **Work Order:** `NONE`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
 - **P1/P2/M&E:** `BLOCKED`
-- **Next Authorized Action:** Independent re-review `REV-F1-INTAKE-001-R2`
+- **Next Authorized Action:** Independent re-review `REV-F1-INTAKE-001-R3`
 
 ---
 
@@ -126,7 +126,7 @@ Status: ACTIVE_GOVERNANCE
 
 ### Downstream Scope Controls:
 1. F0 is complete, 13/13 AC verified PASS, reviewed PASS (`REV-F0-002-R3`), and FROZEN.
-2. Tranche F1 is in INTAKE stage (`INTAKE-FOUNDATION-F1-001` corrected, `REV-F1-INTAKE-001` persisted in `docs/tranches/F1/REVIEW.md`, 10 canonical issues in `docs/tranches/F1/ISSUES.md`, pending independent re-review `REV-F1-INTAKE-001-R2`). F1 DESIGN, SPEC, and BUILD remain strictly unauthorized.
+2. Tranche F1 is in INTAKE stage (`INTAKE-FOUNDATION-F1-001` corrected, `REV-F1-INTAKE-001-R2` persisted in `docs/tranches/F1/REVIEW.md`, 10 canonical issues in `docs/tranches/F1/ISSUES.md`, pending independent re-review `REV-F1-INTAKE-001-R3`). F1 DESIGN, SPEC, and BUILD remain strictly unauthorized.
 3. Downstream tranches (P1, P2, M&E) remain strictly locked and BLOCKED.
 
 ---
@@ -145,6 +145,6 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent Technical Re-Review of Tranche F1 Intake (`REV-F1-INTAKE-001-R2`). Authoring of F1 DESIGN is NOT AUTHORIZED until independent review disposition is issued.
+Independent Technical Re-Review of Tranche F1 Intake (`REV-F1-INTAKE-001-R3`). Authoring of F1 DESIGN is NOT AUTHORIZED until independent review disposition is issued.
 
 Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED for build. Production code mutation outside frozen F0 baseline requires explicit reopen authority.

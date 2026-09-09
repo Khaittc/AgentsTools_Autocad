@@ -148,3 +148,75 @@ Independent technical review of `INTAKE-FOUNDATION-F1-001`. F1 DESIGN is NOT AUT
 
 ### Next Required Action
 Independent technical re-review: `REV-F1-INTAKE-001-R2`. F1 DESIGN remains strictly NOT AUTHORIZED until independent reviewer approval.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F1-002
+- **Task ID:** F1-INTAKE-CORRECTION-001
+- **Resolved Ending Commit:** `fe79da7fb1ac71568c53732e9e7b4c0be04deef4`
+- **Resolution Date:** 2026-09-09
+- **Recorded In:** Session `AG-F1-003` (`F1-INTAKE-CORRECTION-002`)
+- **Reason:** Reconciled historical completion commit `fe79da7fb1ac71568c53732e9e7b4c0be04deef4` in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-09 / AG-F1-003
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-003`
+- **Task ID:** `F1-INTAKE-CORRECTION-002`
+- **Lifecycle Stage:** `INTAKE_CORRECTION`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Review:** `REV-F1-INTAKE-001-R2` (`NEEDS_FIX / RETURN_TO_INTAKE_CORRECTION`)
+- **Work Order:** `NONE` (Intake Correction Stage Only)
+- **Starting Commit:** `fe79da7fb1ac71568c53732e9e7b4c0be04deef4`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+1. Persist external re-review `REV-F1-INTAKE-001-R2` into `docs/tranches/F1/REVIEW.md`.
+2. Correct `INTAKE.md` Handle semantics:
+   - Remove wording claiming AutoCAD Handle is duplicated when entities are copied.
+   - Clarify that Handle is persistent across save/reopen and uniquely identifies an AutoCAD database object within a database, but is not the TTC cross-DWG / semantic object identity contract.
+   - Clarify that ObjectId is a database-load / in-memory locator and must not be used as persistent TTC identity.
+   - Clarify that when an entity is cloned/copied, the clone is a distinct AutoCAD database object with a distinct Handle; the F1 concern is whether TTC metadata (`TTC_OBJECT_ID`) is cloned unchanged, causing TTC logical identity duplication.
+   - Phrase exact clone behavior and repair policy as an F1 DESIGN and SPEC investigation.
+3. Audit `ISSUE-F1-005` and Risk `RSK-F1-01`:
+   - State the risk that `TTC_OBJECT_ID` metadata can be duplicated during cloning without conflating with Handle duplication.
+   - Phrase native COPY/XRecord behavior as `HOST BEHAVIOR TO VERIFY IN DESIGN` rather than an established baseline fact.
+4. Resolve execution continuity by reconciling `AG-F1-002` ending commit (`fe79da7fb1ac71568c53732e9e7b4c0be04deef4`) and appending `AG-F1-003`.
+5. Preserve 10 open issues, zero production mutations, F0 frozen status, and strict build lock (`NONE`).
+6. Update continuity records (`docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, `governance/AGENT_HANDOFF.md`).
+7. Prepare for independent re-review `REV-F1-INTAKE-001-R3`.
+
+---
+
+### Execution Details
+- **Review Persisted:** `REV-F1-INTAKE-001-R2` recorded in `docs/tranches/F1/REVIEW.md`.
+- **Intake Corrected:** `docs/tranches/F1/INTAKE.md` Section 2, Section 9, Section 13, and Section 16 updated with accurate Handle/clone semantics.
+- **Issues Updated:** `docs/tranches/F1/ISSUES.md` `ISSUE-F1-005` updated to frame native clone behavior as `HOST BEHAVIOR TO VERIFY IN DESIGN`.
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Design / Spec / Work Order:** NOT created (strictly NOT AUTHORIZED).
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent technical re-review: `REV-F1-INTAKE-001-R3`. F1 DESIGN remains strictly NOT AUTHORIZED until independent reviewer approval.

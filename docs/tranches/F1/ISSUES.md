@@ -102,11 +102,12 @@
 - **Owner:** AutoCAD Specialist
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `SPEC_FREEZE`
-- **Problem:** When an entity is copied via native AutoCAD `COPY`, `ARRAY`, `MIRROR`, or Windows clipboard (`COPYCLIP`/`PASTECLIP`), AutoCAD performs a deep clone of the entity and its `ExtensionDictionary`. Both original and clone then possess the *identical* `TTC_OBJECT_ID`, violating the uniqueness contract.
+- **Problem:** When an entity is copied via native AutoCAD commands (`COPY`, `ARRAY`, `MIRROR`) or Windows clipboard (`COPYCLIP`/`PASTECLIP`), the resulting clone is a distinct database object with its own new, distinct AutoCAD `Handle`. However, there is a risk that AutoCAD deeply clones the entity's `ExtensionDictionary` and its `XRecord`s unchanged, causing `TTC_OBJECT_ID` metadata to be duplicated and violating the TTC identity uniqueness contract. The exact cloning behavior of extension dictionaries and XRecords across various native commands and host operations is a **HOST BEHAVIOR TO VERIFY IN DESIGN** rather than an established baseline fact.
 - **Questions for Design & Spec:**
-  1. How are duplicate IDs detected? (On-demand audit, database save reactor, or custom copy command wrapper?)
-  2. When detected, does the system automatically re-assign a new GUID to the copy?
-  3. How does the system distinguish the original from the duplicate?
+  1. Verify host behavior: Under AutoCAD 2023 Managed .NET, does native cloning (`COPY`, `ARRAY`, `MIRROR`, clipboard) clone the `ExtensionDictionary` and its `XRecord`s intact, strip them, or require custom cloning reactors?
+  2. How are duplicate `TTC_OBJECT_ID`s detected? (On-demand audit, database save reactor, command-boundary audit, or custom copy command wrapper?)
+  3. When duplicate TTC identities are detected, does the system automatically re-assign a new identifier to the copy?
+  4. How does the system distinguish the original from the duplicate entity?
 
 ---
 

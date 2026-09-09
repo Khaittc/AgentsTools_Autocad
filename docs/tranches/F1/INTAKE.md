@@ -40,7 +40,12 @@ F1 inherits F0 contracts without re-opening, modifying, or re-implementing them.
 AutoCAD is an open, unconstrained drafting environment. Users may draw at arbitrary scales, use mixed units, manipulate geometry via standard commands (`MOVE`, `COPY`, `ARRAY`, `MIRROR`, `ERASE`, `UNDO`, `WBLOCK`), and copy linework between disparate DWGs.
 
 In earlier development phases, engineering features (such as `TTCPANELPLACE`) were drafted assuming that drawing entities would automatically preserve identity, true physical millimeter scale, and structured metadata. However:
-1. **No Shared Cross-Feature / Clone-Safe Identity Contract:** While an AutoCAD `Handle` is persistent across sessions and unique within a single database, it is not globally unique across databases and is duplicated when entities are copied. An AutoCAD `ObjectId` is merely a transient, in-memory session locator. Neither provides an immutable, globally unique, or clone-safe identifier across native `COPY`, `WBLOCK`, or inter-drawing copy-paste, necessitating a dedicated `TTC_OBJECT_ID` contract.
+1. **No Shared Cross-Feature / Semantic Identity Contract:**
+   - An AutoCAD `Handle` is persistent across save/reopen and uniquely identifies an AutoCAD database object within a single `Database`. However, `Handle` is not the TTC cross-DWG or semantic object identity contract.
+   - An AutoCAD `ObjectId` is merely a database-load / in-memory locator and must not be used as persistent TTC identity.
+   - When a TTC entity is cloned or copied via native AutoCAD commands (`COPY`, `ARRAY`, `MIRROR`, clipboard), the clone is a distinct AutoCAD database object with its own new, distinct AutoCAD `Handle`. The F1 architectural concern is whether TTC metadata, especially `TTC_OBJECT_ID` stored in dictionaries, is cloned unchanged and therefore causes TTC identity duplication.
+   - Exact host clone behavior, duplicate detection, and repair policy remain an F1 DESIGN and SPEC investigation.
+   - Therefore, a dedicated `TTC_OBJECT_ID` contract and lifecycle management strategy are necessary.
 2. **No Standardized Metadata Strategy:** Without an authoritative convention for XData versus Extension Dictionary / `XRecord` storage, downstream features risk writing fragmented, conflicting, or unversioned metadata.
 3. **No Drawing Unit or Tolerance Standard:** If one module assumes millimeters while a drawing is set to Inches (`INSUNITS=1`) or Unitless (`INSUNITS=0`), or if geometric algorithms use different floating-point tolerances ($\varepsilon$), physical dimensions and collision detection fail silently.
 4. **No Native Edit Lifecycle Management:** Normal user drafting actions (`COPY`, `ERASE`, `UNDO`, `REDO`, `SAVE`, `REOPEN`) can duplicate entity IDs, orphan associated clearance geometry, or corrupt metadata caches unless host transaction and event boundaries are explicitly defined.
@@ -229,8 +234,8 @@ F1 must determine the expected behavior when a user performs standard AutoCAD ed
 | **MOVE** | Native `MOVE` command or grip edit | Geometry moves. Does associated clearance move? Are cached coordinates invalidated? | `REQUIRED_FOR_F1` |
 | **ROTATE** | Native `ROTATE` command or grip edit | Component orientation changes. Does clearance rotate? Are mounting rules affected? | `REQUIRED_FOR_F1` |
 | **SCALE** | Native `SCALE` command | Mechanical equipment cannot be physically scaled. Should non-uniform/arbitrary scale be prevented or flagged? | `REQUIRED_FOR_F1` |
-| **COPY** | Native `COPY` command | Duplicates entity and its extension dictionary. Results in duplicate `TTC_OBJECT_ID`. | `REQUIRED_FOR_F1` |
-| **ARRAY** | Native `ARRAY` (Rectangular/Polar/Path) | Creates multiple copies. How and when are new unique IDs assigned? | `REQUIRED_FOR_F1` |
+| **COPY** | Native `COPY` command | Clones entity into a distinct database object with a new Handle. If extension dictionary metadata is cloned unchanged (host behavior to verify in DESIGN), duplicate `TTC_OBJECT_ID` results. | `REQUIRED_FOR_F1` |
+| **ARRAY** | Native `ARRAY` (Rectangular/Polar/Path) | Creates multiple cloned entities with distinct Handles. How and when are new unique TTC IDs assigned if metadata is cloned? | `REQUIRED_FOR_F1` |
 | **MIRROR** | Native `MIRROR` command | Electrical components (e.g. VFDs) cannot be mirrored physically. How is mirror handled? | `REQUIRED_FOR_F1` |
 | **ERASE** | Native `ERASE` or `Delete` key | Primary entity deleted. What happens to associated clearance envelope or downstream references? | `REQUIRED_FOR_F1` |
 | **OOPS / UNDO** | Native `OOPS` or `U` / `UNDO` | Entity restored after erase. Must restore valid identity and linkages. | `REQUIRED_FOR_F1` |
@@ -303,7 +308,7 @@ The following ten questions are registered for resolution during the `DESIGN` an
 
 | Risk ID | Risk Description | Qualitative Priority | Investigation Direction in F1 Design |
 |:---|:---|:---:|:---|
-| **RSK-F1-01** | **Duplicate IDs via Native Copy:** Native `COPY` duplicates `ExtensionDictionary` without mutating `TTC_OBJECT_ID`, causing duplicate keys. | High | Investigate duplicate detection and ID regeneration mechanisms during save, audit, or clone events. |
+| **RSK-F1-01** | **TTC Identity Duplication via Native Clone:** Native `COPY` / cloning assigns distinct AutoCAD Handles, but if `ExtensionDictionary` metadata is cloned unchanged (host behavior to verify in DESIGN), duplicate `TTC_OBJECT_ID`s will result. | High | Investigate and verify native clone/XRecord behavior in Managed .NET; investigate duplicate detection and ID regeneration mechanisms during save, audit, or clone events. |
 | **RSK-F1-02** | **Metadata Stripping via WBLOCK:** `WBLOCK` or external export may drop application-specific dictionaries if not properly configured. | High | Investigate `WBLOCK` / `INSERT` object cloning behavior in Managed .NET and evaluate persistence rules. |
 | **RSK-F1-03** | **Drawing Unit Distortion:** Components inserted into non-metric drawings appear with wrong physical dimensions if units are assumed. | High | Investigate drawing unit inspection, configuration gates, and normalization strategies before placing geometry. |
 | **RSK-F1-04** | **Reactor Re-entrancy & Crash:** Database reactors reacting to entity modification invoke transactions recursively, risking AutoCAD fatal crashes. | High | Investigate deferred validation and command-boundary audits as alternatives to complex live reactors. |
@@ -348,7 +353,7 @@ Tranche F1 may exit `INTAKE` and transition to `DESIGN` only when all of the fol
 ## 16. Next Lifecycle Gate
 
 - **Current Status:** `INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
-- **Prior Review:** `REV-F1-INTAKE-001` (`NEEDS_FIX / RETURN_TO_INTAKE`)
-- **Next Required Action:** Independent technical re-review `REV-F1-INTAKE-001-R2`.
+- **Prior Review:** `REV-F1-INTAKE-001-R2` (`NEEDS_FIX / RETURN_TO_INTAKE_CORRECTION`)
+- **Next Required Action:** Independent technical re-review `REV-F1-INTAKE-001-R3`.
 - **Next Stage Upon Approval:** `DESIGN` (Authoring `docs/tranches/F1/DESIGN.md`).
 - **Production Build Authorization:** `NONE` (Remains strictly unauthorized).

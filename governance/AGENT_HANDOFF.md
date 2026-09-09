@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-09 23:05:00 +07:00
+2026-09-09 23:20:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-660a0b9bd8036978dd85097c4bdd16698ec52bd4
+fe79da7fb1ac71568c53732e9e7b4c0be04deef4
 
 Approved Execution Baseline:
 NONE (F1 Build NOT AUTHORIZED; F0 Baseline: 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf)
@@ -20,7 +20,7 @@ Frozen Implementation Baseline:
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD contains or descends from F1 INTAKE correction commit of task F1-INTAKE-CORRECTION-001.
+Current HEAD contains or descends from F1 INTAKE correction commit of task F1-INTAKE-CORRECTION-002.
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -35,7 +35,7 @@ Current Status:
 INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
 
 Current Review:
-REV-F1-INTAKE-001 (NEEDS_FIX / RETURN_TO_INTAKE)
+REV-F1-INTAKE-001-R2 (NEEDS_FIX / RETURN_TO_INTAKE_CORRECTION)
 
 Current Frozen Authority:
 docs/tranches/F0/SPEC.md — FROZEN v1.0.0
@@ -68,10 +68,10 @@ F1 DESIGN:
 NOT AUTHORIZED
 
 Last Completed Task:
-F1-INTAKE-CORRECTION-001
+F1-INTAKE-CORRECTION-002
 
 Last Agent:
-Antigravity / AG-F1-002
+Antigravity / AG-F1-003
 
 Last Result:
 INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
@@ -86,7 +86,7 @@ Next Tranche:
 P1 — Component Library (BLOCKED by F1)
 
 Next Authorized Action:
-Independent technical re-review REV-F1-INTAKE-001-R2. F1 DESIGN authoring is NOT AUTHORIZED until independent review disposition is issued.
+Independent technical re-review REV-F1-INTAKE-001-R3. F1 DESIGN authoring is NOT AUTHORIZED until independent review disposition is issued.
 
 F1 Production Build:
 NOT AUTHORIZED
@@ -116,4 +116,4 @@ Required First Reads:
 13. docs/tranches/F0/REVIEW.md
 
 Handoff Notes:
-Task F1-INTAKE-CORRECTION-001 (Session AG-F1-002) resolved all findings from independent review REV-F1-INTAKE-001 (NEEDS_FIX / RETURN_TO_INTAKE). Persisted review in docs/tranches/F1/REVIEW.md (marked read-only). Corrected F01 (drawing unit strategy aligned with Architecture Roadmap §42: panel = mm assumption, M&E = configurable, Core = normalized units where practical, INSUNITS=4 candidate only). Corrected F02 (F0 logging path aligned to %APPDATA%\TTC_CadTools\Logs\ with %TEMP% fallback). Corrected F03 (AutoCAD Handle vs ObjectId distinction accurately stated). Corrected F04 (removed unverified tolerances from ISSUE-F1-003, removed premature Slug+UUID recommendation from ISSUE-F1-004, neutralized legacy drawing phrasing in ISSUE-F1-002). Corrected F05 (unchecked exit gate criterion #10 in INTAKE.md). Corrected F06 (reconciled AG-F1-001 ending commit to 660a0b9bd8036978dd85097c4bdd16698ec52bd4 and appended session AG-F1-002). Corrected F07 (distinguished managed transactions from context-appropriate explicit DocumentLocking). Cleaned Risk Register in INTAKE.md to qualitative triage. Preserved 100% frozen integrity of Tranche F0 and production code paths (zero production changes). Next authorized action is independent technical re-review REV-F1-INTAKE-001-R2. F1 DESIGN authoring remains strictly NOT AUTHORIZED.
+Task F1-INTAKE-CORRECTION-002 (Session AG-F1-003) resolved two residual findings from independent re-review REV-F1-INTAKE-001-R2 (NEEDS_FIX / RETURN_TO_INTAKE_CORRECTION). Persisted review in docs/tranches/F1/REVIEW.md. Corrected INTAKE.md Section 2 (Handle semantics: removed statement claiming Handle is duplicated on copy; clarified Handle identifies AutoCAD database objects within a database, distinct from TTC semantic identity; ObjectId is transient locator; clone gets distinct Handle, risk is whether TTC metadata is cloned unchanged; exact clone behavior is to be verified in DESIGN). Audited ISSUE-F1-005 and RSK-F1-01 to separate Handle from TTC identity and phrase native clone/XRecord behavior as HOST BEHAVIOR TO VERIFY IN DESIGN rather than an already proven universal fact. Resolved execution continuity by reconciling AG-F1-002 ending commit (fe79da7fb1ac71568c53732e9e7b4c0be04deef4) and appending session AG-F1-003. Preserved 100% frozen integrity of Tranche F0 and production code paths (zero production changes). Next authorized action is independent technical re-review REV-F1-INTAKE-001-R3. F1 DESIGN authoring remains strictly NOT AUTHORIZED.
