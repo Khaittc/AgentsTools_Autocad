@@ -1,6 +1,7 @@
 using System;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.Windows;
+using TTC.CadTools.Core.Commands;
 using TTC.CadTools.Core.Logging;
 
 namespace TTC.CadTools.AutoCAD.UI
@@ -165,32 +166,54 @@ namespace TTC.CadTools.AutoCAD.UI
 
             public void Execute(object? parameter)
             {
-                if (parameter is string cmd && !string.IsNullOrWhiteSpace(cmd))
+                string? candidate = null;
+                string paramTypeName = parameter?.GetType().FullName ?? "null";
+
+                if (parameter is RibbonCommandItem ribbonItem)
                 {
-                    try
+                    candidate = ribbonItem.CommandParameter as string;
+                    if (string.IsNullOrWhiteSpace(candidate))
                     {
-                        var doc = Application.DocumentManager.MdiActiveDocument;
-                        if (doc != null)
+                        candidate = ribbonItem.Id;
+                    }
+                }
+                else if (parameter is string directString)
+                {
+                    candidate = directString;
+                }
+
+                if (!RibbonCommandResolver.TryResolveCommand(candidate ?? parameter, out string command))
+                {
+                    _logger?.Warn($"Ribbon command dispatch rejected: parameter type '{paramTypeName}', candidate '{candidate}'. Supported commands: TTCINFO, TTCPALETTE.");
+                    return;
+                }
+
+                _logger?.Info($"Ribbon command requested: '{command}' (source type: {paramTypeName}).");
+
+                try
+                {
+                    var doc = Application.DocumentManager.MdiActiveDocument;
+                    if (doc != null)
+                    {
+                        _logger?.Info($"Dispatching '{command}' to active document context.");
+                        doc.SendStringToExecute(command + " ", true, false, false);
+                    }
+                    else
+                    {
+                        _logger?.Info($"Dispatching '{command}' to zero-document application context.");
+                        if (string.Equals(command, RibbonCommandResolver.TtcInfo, StringComparison.OrdinalIgnoreCase))
                         {
-                            doc.SendStringToExecute(cmd, true, false, false);
+                            Commands.InfoCommand.ExecuteApplicationContextInfo();
                         }
-                        else
+                        else if (string.Equals(command, RibbonCommandResolver.TtcPalette, StringComparison.OrdinalIgnoreCase))
                         {
-                            // In zero-doc state, invoke command directly if possible
-                            if (cmd.Trim().Equals("TTCINFO", StringComparison.OrdinalIgnoreCase))
-                            {
-                                Commands.InfoCommand.ExecuteApplicationContextInfo();
-                            }
-                            else if (cmd.Trim().Equals("TTCPALETTE", StringComparison.OrdinalIgnoreCase))
-                            {
-                                PaletteHost.ToggleVisibility();
-                            }
+                            PaletteHost.ToggleVisibility();
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        _logger?.Warn($"Error executing ribbon command {parameter}: {ex.Message}");
-                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger?.Error($"Exception dispatching ribbon command '{command}': {ex.Message}", ex);
                 }
             }
         }

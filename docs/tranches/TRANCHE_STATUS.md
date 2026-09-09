@@ -10,7 +10,7 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 
 | Tranche ID | Capability | Depends On | Spec Status | Work Order | Build Status | Frozen? | Current Disposition |
 |:---:|---|---|:---:|:---:|:---:|:---:|---|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `APPROVED / WO-F0-001` | `COMPLETE / BLOCKED_PENDING_OPERATOR_VALIDATION` | NO | **BLOCKED_PENDING_OPERATOR_VALIDATION** (WO-F0-001 executed; build correction complete; 20/20 automated tests pass; 5/5 cold restarts pass; REV-F0-002-R2 persisted as BLOCKED; awaiting Product Owner desktop validation for AC-F0-13) |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `APPROVED / WO-F0-001` | `COMPLETE / OPERATOR_VALIDATION_PENDING` | NO | **RIBBON_DISPATCH_CORRECTED / OPERATOR_VALIDATION_PENDING** (WO-F0-001 executed; Ribbon dispatch corrected; 45/45 automated tests pass; APPDATA deployment updated; awaiting Product Owner desktop validation for Ribbon clicks, AC-F0-13, and cold restart stability) |
 | **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F0) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` | `NONE` | `BLOCKED` | NO | **BLOCKED_BY_UPSTREAM** (Spec evidence exists in `docs/03_FEATURE_SPEC_TTCPANELPLACE.md`; awaiting F0/F1/P1) |
@@ -31,6 +31,6 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 
 - **Production Build Authorization:** `AUTHORIZED_FOR_F0_ONLY`
 - **Frozen Specs:** `F0 — docs/tranches/F0/SPEC.md v1.0.0`
-- **Approved Active Work Orders:** `WO-F0-001 (EXECUTION_COMPLETE / BLOCKED_PENDING_OPERATOR_VALIDATION)`
+- **Approved Active Work Orders:** `WO-F0-001 (EXECUTION_COMPLETE / OPERATOR_VALIDATION_PENDING)`
 - **Draft Work Orders:** `NONE`
-- **Production Code Status:** `COMPLETE_PENDING_VALIDATION` (`production/TTC.CadTools.sln` implemented, 20/20 automated tests passing, AutoCAD 2023 host verified, 5/5 cold restarts passed, AC-F0-13 pending desktop run)
+- **Production Code Status:** `COMPLETE_PENDING_VALIDATION` (`production/TTC.CadTools.sln` implemented, 45/45 automated tests passing, AutoCAD 2023 host verified, Ribbon dispatch corrected, awaiting Product Owner desktop validation)

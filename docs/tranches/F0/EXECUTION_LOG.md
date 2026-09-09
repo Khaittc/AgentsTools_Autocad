@@ -1186,3 +1186,93 @@ Handoff to ChatGPT / Independent Technical Reviewer for re-review `REV-F0-002-R2
 
 ### Next Action
 Awaiting Product Owner desktop execution of `AC-F0-13` procedure in AutoCAD 2023 Desktop UI to unlock final re-review `REV-F0-002-R3`.
+
+---
+
+## Session 2026-09-09 / AG-F0-011
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F0-011`
+- **Task ID:** `F0-RIBBON-DISPATCH-CORRECTION-001`
+- **Lifecycle Stage:** `BUILD_CORRECTION`
+- **Tranche:** `F0 — AutoCAD Foundation`
+- **Work Order:** `WO-F0-001`
+- **Starting Commit:** `9b8bb0693772b4af628f7fa308bf37d977c5b754`
+- **Prior Review:** `REV-F0-002-R2` (Disposition: `BLOCKED_PENDING_OPERATOR_VALIDATION`)
+- **Review Addendum:** `REV-F0-002-R2-ADDENDUM-001` (Finding `F08 — Ribbon Command Dispatch Failure`)
+- **Purpose:** Resolve Ribbon button click command dispatch defect, rebuild solution, expand automated test coverage, deploy deterministically to `%APPDATA%`, and prepare desktop verification procedure.
+
+### 1. Root Cause Analysis
+- **Observed Symptom:** In desktop AutoCAD 2023, typing `TTCINFO` and `TTCPALETTE` at the command prompt works normally, and the `TTC CAD` ribbon tab is visible. However, clicking the `TTCINFO` ribbon button produced no observable action.
+- **Root Cause Identified:** Autodesk's WPF Ribbon framework passes the `RibbonButton` (or `RibbonCommandItem`) instance itself as `parameter` to `ICommand.Execute(object parameter)`. The prior implementation in `RibbonHost.cs` checked `if (parameter is string cmd)`, which evaluated to `false` and silently aborted dispatch without error or log output.
+- **Corrective Action:**
+  1. Created `TTC.CadTools.Core.Commands.RibbonCommandResolver` to provide pure, host-decoupled parameter resolution and strict command whitelisting (`TTCINFO`, `TTCPALETTE`).
+  2. Updated `RibbonCommandHandler.Execute` in `production/TTC.CadTools.AutoCAD/UI/RibbonHost.cs` to inspect `RibbonCommandItem` (`CommandParameter` / `Id`), direct strings, and reflection fallback.
+  3. Integrated active-doc (`doc.SendStringToExecute(command + " ")`) and zero-doc (`InfoCommand.ExecuteApplicationContextInfo()` / `PaletteHost.ToggleVisibility()`) safe dispatch with comprehensive diagnostic logging.
+  4. Added 8 new unit tests in `RibbonCommandResolverTests.cs`.
+
+### 2. Files Changed
+- `production/TTC.CadTools.Core/Commands/RibbonCommandResolver.cs` (NEW: pure command resolver seam)
+- `production/TTC.CadTools.AutoCAD/UI/RibbonHost.cs` (MODIFIED: Ribbon button command dispatch & diagnostic logging)
+- `production/TTC.CadTools.Tests/Commands/RibbonCommandResolverTests.cs` (NEW: 8 unit test methods)
+- `production/TTC.CadTools.Tests/run_host_verify.scr` (MODIFIED: updated NETLOAD path to APPDATA bundle)
+
+### 3. Build & Automated Test Results
+- **Build:** `dotnet build production/TTC.CadTools.sln -c Release` -> **0 Warnings, 0 Errors**.
+- **Automated Tests:** `dotnet test production/TTC.CadTools.sln -c Release` -> **Total: 45, Passed: 45, Failed: 0, Skipped: 0**.
+- **Architecture Integrity:** `DecouplingTests` (Core and Infrastructure zero AutoCAD references) -> **PASS**.
+- **Scope Containment:** `ScopeContainmentTests` (Zero downstream engineering types) -> **PASS**.
+
+### 4. Bundle Deployment & Deterministic Identity
+- **Primary Deployment Target:** `%APPDATA%\Autodesk\ApplicationPlugins\TTC.CadTools.bundle\Contents\`
+- **Binaries Deployed:**
+  - `TTC.CadTools.AutoCAD.dll` (SHA256: `086CC7619A5D61E8871EE5D0A99E2E90E07F020543DBC06AEF714C0E1E56D801`)
+  - `TTC.CadTools.Core.dll`
+  - `TTC.CadTools.Infrastructure.dll`
+  - `Newtonsoft.Json.dll`
+  - `Resources/settings.json`
+  - `PackageContents.xml`
+- **Host Packaging Check:** Zero Autodesk assemblies packaged (**PASS**).
+- **Duplicate Handling:** Renamed `%ProgramData%\Autodesk\ApplicationPlugins\TTC.CadTools.bundle` to `.disabled` to eliminate duplicate loading ambiguity and guarantee deterministic loading from `%APPDATA%`.
+
+### 5. Headless Host Execution Verification
+- AutoCAD 2023 Core Engine console (`accoreconsole.exe`) verified via `run_host_verify.scr`:
+  - `NETLOAD` of `%APPDATA%` bundle: **PASS**
+  - `TTCINFO` command-line execution: **PASS** (output diagnostic banner)
+  - `TTCPALETTE` command-line execution: **PASS** (deferred in headless mode)
+  - Clean exit code: **0**
+
+### 6. Security Baseline Preserved
+- `SECURELOAD`, `TRUSTEDPATHS`, `LEGACYCODESEARCH` were NOT modified.
+- Observed `SECURELOAD=0` remains an environment note only.
+
+---
+
+### Acceptance Criteria Status Matrix (Session AG-F0-011)
+
+| AC ID | Frozen Acceptance Criterion | Verification Source | Status |
+|:---|:---|:---|:---|
+| **AC-F0-01** | **Plugin Bootstrap:** Assembly loads without unhandled exceptions. | `AUTOMATED_TEST` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-02** | **Diagnostic Command (`TTCINFO`):** Outputs versions, config, log path. | `HEADLESS_AUTOCAD` + `OPERATOR_MANUAL_DESKTOP_EVIDENCE` | **PASS** |
+| **AC-F0-03** | **Ribbon Shell:** `TTC CAD` tab and buttons appear in ribbon on cold start. | Desktop Operator Execution | **CORRECTED_PENDING_OPERATOR_VALIDATION** |
+| **AC-F0-04** | **PaletteSet Shell:** `TTCPALETTE` opens modeless dockable WPF palette. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` | **PASS** |
+| **AC-F0-05** | **Valid Configuration:** Well-formed `settings.json` deserializes cleanly. | `AUTOMATED_TEST` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-06** | **Invalid / Missing Configuration:** Emits structured warning, safe fallback. | `AUTOMATED_TEST` (`ConfigurationWarningTests.cs`) | **PASS** |
+| **AC-F0-07** | **Structured File Logging:** `FileLogger` generates daily rolling log. | `AUTOMATED_TEST` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-08** | **Package Manifest Validation:** Conforms to schema with Series R24.2. | `AUTOMATED_TEST` (`ManifestValidationTests.cs`) | **PASS** |
+| **AC-F0-09** | **Decoupling Integrity:** Zero CAD references in Core and Infrastructure. | `AUTOMATED_TEST` (`DecouplingTests.cs`) | **PASS** |
+| **AC-F0-10** | **Strict Scope Containment:** Zero Panel or M&E features in codebase. | `AUTOMATED_TEST` (`ScopeContainmentTests.cs`) | **PASS** |
+| **AC-F0-11** | **Zero-Document State Safety:** Stable palette on close-all; restores on open. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-12** | **Palette Idempotency & Singleton:** Repeated `TTCPALETTE` toggles instance. | Desktop Operator Execution | **REVERIFY_PENDING** |
+| **AC-F0-13** | **Application-Context Command Safety:** TTCINFO executes safely with 0 drawings open. | Desktop Operator Execution | **NOT_RUN / REVERIFY_PENDING** |
+
+---
+
+### Next Action
+Product Owner executes desktop validation procedure:
+1. Test A: Active drawing Ribbon TTCINFO and TTCPALETTE.
+2. Test B: Repeat clicking TTCPALETTE (singleton/toggle verification).
+3. Test C: Zero-document Ribbon TTCINFO (AC-F0-13 verification).
+4. Cold-start regression: 5 consecutive AutoCAD restarts to re-verify Ribbon stability.
+Following operator verification, submit for independent re-review REV-F0-002-R3.

@@ -7,10 +7,10 @@ Capability:
 AutoCAD Foundation
 
 Lifecycle Stage:
-REVIEW
+REVIEW_VALIDATION
 
 Status:
-BLOCKED_PENDING_OPERATOR_VALIDATION
+RIBBON_DISPATCH_CORRECTED / OPERATOR_VALIDATION_PENDING
 
 Dependencies:
 Product Baseline
@@ -25,6 +25,7 @@ Inherited Authority:
 - Operator Instruction for `F0-BUILD-001`
 - Operator Instruction for `F0-BUILD-CORRECTION-001`
 - Operator Instruction for `F0-VALIDATION-CLOSEOUT-001`
+- Operator Instruction for `F0-RIBBON-DISPATCH-CORRECTION-001`
 
 Artifacts:
 - Intake: [./INTAKE.md](./INTAKE.md)
@@ -32,8 +33,8 @@ Artifacts:
 - Spec: [./SPEC.md](./SPEC.md) — FROZEN v1.0.0
 - Work Order: [./WORK_ORDER.md](./WORK_ORDER.md) — APPROVED_FOR_EXECUTION (BUILD_CORRECTION_COMPLETE)
 - Execution Log: [./EXECUTION_LOG.md](./EXECUTION_LOG.md)
-- Issue Registry: [./ISSUES.md](./ISSUES.md) — ALL 8 ISSUES RESOLVED / VERIFIED
-- Review: [./REVIEW.md](./REVIEW.md) — REV-F0-002-R2 (BLOCKED_PENDING_OPERATOR_VALIDATION)
+- Issue Registry: [./ISSUES.md](./ISSUES.md) — 9 ISSUES RECORDED (8 RESOLVED/VERIFIED, 1 PENDING_DESKTOP_VERIFICATION)
+- Review: [./REVIEW.md](./REVIEW.md) — REV-F0-002-R2 (BLOCKED_PENDING_OPERATOR_VALIDATION), REV-F0-002-R2-ADDENDUM-001 (BUILD_CORRECTION_REQUIRED)
 - API Verification: [./API_VERIFICATION.md](./API_VERIFICATION.md)
 
 Implementation:
@@ -43,7 +44,7 @@ Production Build Authorization:
 AUTHORIZED_FOR_F0_ONLY
 
 Next Authorized Action:
-Product Owner desktop execution of AC-F0-13 (zero-document application context safety), followed by independent final re-review REV-F0-002-R3.
+Product Owner desktop validation of Ribbon TTCINFO, TTCPALETTE, AC-F0-13, and 5 cold-start restarts, followed by independent final re-review REV-F0-002-R3.
 
 Forbidden:
 - F1

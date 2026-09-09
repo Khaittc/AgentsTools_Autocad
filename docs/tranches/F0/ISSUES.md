@@ -142,3 +142,16 @@
 - **Problem:** Resolving configuration when user configuration in `%APPDATA%` does not exist yet.
 - **Resolution:** `JsonSettingsRepository` implements 3-tier precedence: (1) `%APPDATA%\TTC_CadTools\settings.json`, (2) `<BundleRoot>\Contents\Resources\settings.json`, (3) In-memory hardcoded defaults.
 - **Closure Evidence:** Verified by 7 passing unit tests in `SettingsRepositoryTests.cs`, 4 tests in `ConfigurationWarningTests.cs`, and real AutoCAD 2023 host execution log confirming `Configuration Status: VALID (Source: Bundle)`.
+
+---
+
+### ISSUE-F0-009: Ribbon Button Click Callback Parameter Type Mismatch
+- **Status:** RESOLVED_PENDING_DESKTOP_VERIFICATION (BUILD_CORRECTION)
+- **Severity:** HIGH
+- **Category:** UI / CAD_API
+- **Owner:** Implementer
+- **Blocks Entry To BUILD:** NO
+- **Required Closure Gate:** `RUNTIME_ACCEPTANCE`
+- **Problem:** Clicking Ribbon `TTCINFO` or `TTCPALETTE` button in desktop AutoCAD 2023 produced no observable action. In `RibbonHost.cs`, `RibbonCommandHandler.Execute(object parameter)` checked `if (parameter is string cmd)`, but Autodesk's Ribbon framework passes the `RibbonButton` (or `RibbonCommandItem`) instance as `parameter`, causing the check to evaluate to `false` and silently fail.
+- **Resolution:** Introduced pure `RibbonCommandResolver` in Core whitelisting `TTCINFO` and `TTCPALETTE`. Updated `RibbonCommandHandler.Execute` in `RibbonHost.cs` to handle `RibbonCommandItem` (reading `CommandParameter` / `Id`), direct strings, and reflection fallback. Implemented active-doc and zero-doc dispatch with diagnostic logging. Added 8 unit tests in `RibbonCommandResolverTests.cs`.
+- **Closure Evidence:** 45/45 automated unit tests pass. AutoCAD 2023 host verified direct command line dispatch. Awaiting Product Owner desktop UI verification of Ribbon click.

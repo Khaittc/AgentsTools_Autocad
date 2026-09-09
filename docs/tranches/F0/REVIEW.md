@@ -379,15 +379,36 @@ All runtime-dependent acceptance criteria (AC-F0-01 through AC-F0-13) remain: **
 - **Approved Execution Baseline:** `b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515`
 - **Implementation Review (REV-F0-002):** `NEEDS_FIX / RETURN_TO_BUILD_CORRECTION`
 - **Re-Review (REV-F0-002-R2):** `BLOCKED / BLOCKED_PENDING_OPERATOR_VALIDATION`
-- **Current Lifecycle Stage:** `REVIEW_VALIDATION`
-- **Current Status:** `VALIDATION_PENDING`
-- **Implementation:** `IMPLEMENTED_PENDING_OPERATOR_VALIDATION`
+- **Review Addendum (REV-F0-002-R2-ADDENDUM-001):** `BUILD_CORRECTION_REQUIRED`
+- **Current Lifecycle Stage:** `BUILD_CORRECTION`
+- **Current Status:** `BUILD_CORRECTION_IN_PROGRESS`
+- **Implementation:** `BUILD_CORRECTION_IN_PROGRESS`
 - **Production Build Authorization:** `AUTHORIZED_FOR_F0_ONLY`
 - **Expected Next Review:** `REV-F0-002-R3`
 
 ---
 
-## 13. Next Authorized Action
+## 13. Independent Review Addendum: REV-F0-002-R2-ADDENDUM-001
 
-Execute Product Owner desktop application-context validation for `AC-F0-13`, then submit for independent final re-review `REV-F0-002-R3`.
+> [!IMPORTANT]
+> **Independent Review Persistence Rule:**
+> Antigravity is acting solely as the recording agent persisting external reviewer findings.
+> Antigravity did NOT perform this independent review. Antigravity is recording external reviewer evidence only.
+
+- **Review Addendum ID:** `REV-F0-002-R2-ADDENDUM-001`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Date:** 2026-09-09
+- **Finding:** `F08 — Ribbon Command Dispatch Failure`
+- **Evidence Source:** `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023`
+- **Observation:** Direct AutoCAD command-line invocation of TTCINFO and TTCPALETTE works. TTC CAD Ribbon is visible. Clicking TTCINFO Ribbon button produces no observable command execution.
+- **Disposition:** `BUILD_CORRECTION_REQUIRED`
+- **AC-F0-03:** `FAIL_PENDING_CORRECTION`
+- **F0 Freeze:** `NOT AUTHORIZED`
+
+---
+
+## 14. Next Authorized Action
+
+Perform build correction for Ribbon command dispatch (`F0-RIBBON-DISPATCH-CORRECTION-001`), rebuild, test, update bundle staging, and verify in desktop AutoCAD 2023 prior to `REV-F0-002-R3`.
 Downstream tranches (`F1`, `P1`, `P2`, `M&E`) remain strictly `NOT AUTHORIZED`.

@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-09 21:18:00 +07:00
+2026-09-09 22:00:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-c9a9ec4e182e32aa86be126c77a32e76f40c7413
+9b8bb0693772b4af628f7fa308bf37d977c5b754
 
 Approved Execution Baseline:
 b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515
@@ -26,10 +26,10 @@ Current Tranche:
 F0 — AutoCAD Foundation
 
 Current Lifecycle Stage:
-REVIEW
+REVIEW_VALIDATION
 
 Current Status:
-BLOCKED_PENDING_OPERATOR_VALIDATION
+RIBBON_DISPATCH_CORRECTED / OPERATOR_VALIDATION_PENDING
 
 Current Frozen Authority:
 docs/tranches/F0/SPEC.md — FROZEN v1.0.0
@@ -61,32 +61,35 @@ REV-WO-F0-001-002 = PASS_FOR_EXECUTION_APPROVAL
 Latest Implementation Review:
 REV-F0-002-R2 = BLOCKED / BLOCKED_PENDING_OPERATOR_VALIDATION
 
+Latest Review Addendum:
+REV-F0-002-R2-ADDENDUM-001 = BUILD_CORRECTION_REQUIRED
+
 Expected Next Review:
 REV-F0-002-R3
 
 Last Completed Task:
-F0-VALIDATION-CLOSEOUT-001
+F0-RIBBON-DISPATCH-CORRECTION-001
 
 Last Agent:
-Antigravity / AG-F0-010
+Antigravity / AG-F0-011
 
 Last Result:
-BLOCKED_PENDING_OPERATOR_VALIDATION
+PASS / RIBBON_DISPATCH_CORRECTED
 
 Open Blocking Issues:
-1 blocking verification (AC-F0-13 operator desktop procedure NOT_RUN; 0 code defects)
+1 blocking verification (Product Owner desktop validation for Ribbon clicks, AC-F0-13, and 5 cold-start restarts; 0 code defects)
 
 Open Non-Blocking Issues:
-0 (All 8 issues in docs/tranches/F0/ISSUES.md resolved / verified)
+0 (9 issues recorded: 8 resolved/verified, 1 resolved pending desktop verification)
 
 Reviewer Disposition:
-BLOCKED_PENDING_OPERATOR_VALIDATION (REV-F0-002-R2)
+BUILD_CORRECTION_REQUIRED (REV-F0-002-R2-ADDENDUM-001)
 
 Product Owner Approval:
 APPROVED_FOR_EXECUTION
 
 Next Authorized Action:
-Product Owner desktop execution of AC-F0-13 (zero-document application context safety), followed by independent final re-review REV-F0-002-R3.
+Product Owner desktop validation of Ribbon TTCINFO, TTCPALETTE, AC-F0-13, and 5 cold-start restarts, followed by independent final re-review REV-F0-002-R3.
 
 Forbidden Next Actions:
 - F1 (BLOCKED)
@@ -115,4 +118,4 @@ Required First Reads:
 15. docs/tranches/F0/WORK_ORDER.md
 
 Handoff Notes:
-Task F0-VALIDATION-CLOSEOUT-001 (Session AG-F0-010) persisted independent re-review REV-F0-002-R2 (ChatGPT / Independent Technical Reviewer: BLOCKED / BLOCKED_PENDING_OPERATOR_VALIDATION) into REVIEW.md along with SECURELOAD policy clarification (environment setting, not AC blocker). Recorded Product Owner manual desktop cold-start stability evidence (5/5 consecutive full restarts passed with TTC CAD ribbon visible; AC-F0-03 upgraded to PASS — STABILITY VERIFIED; ISSUE-F0-007 marked RESOLVED_DESKTOP_VERIFIED). Presented 5-step desktop procedure for AC-F0-13 (zero-document application-context command safety) to Product Owner. The operator was unable to execute the desktop test at this time, selecting NOT_RUN. Per Section 7 and 15 directives, AC-F0-13 remains NOT_RUN / BLOCKING, and Tranche F0 status transitions to BLOCKED_PENDING_OPERATOR_VALIDATION. Workstation SECURELOAD=0 observed and preserved untouched as an operational security note. Zero production C# code or packaging was modified. Tranche F0 remains NOT FROZEN. Next authorized action is Product Owner desktop execution of AC-F0-13, followed by independent re-review REV-F0-002-R3. Downstream tranches remain strictly locked.
+Task F0-RIBBON-DISPATCH-CORRECTION-001 (Session AG-F0-011) resolved the Ribbon button click command dispatch failure identified by the Product Owner (finding F08 / REV-F0-002-R2-ADDENDUM-001). The root cause was identified: Autodesk's WPF Ribbon framework passes the RibbonButton (RibbonCommandItem) instance to ICommand.Execute, where previous code expected a direct string. Created pure `RibbonCommandResolver` in Core whitelisting `TTCINFO` and `TTCPALETTE` with defensive parameter extraction (CommandParameter/Id via reflection or direct string) and whitespace trimming. Updated `RibbonCommandHandler.Execute` in `RibbonHost.cs` to handle `RibbonCommandItem`, direct string, and fallback, dispatching to active-doc (`doc.SendStringToExecute`) or zero-doc (`InfoCommand.ExecuteApplicationContextInfo()` / `PaletteHost.ToggleVisibility()`) with diagnostic logging. Added 8 unit tests in `RibbonCommandResolverTests.cs` (45/45 automated unit tests pass). Rebuilt solution and updated `%APPDATA%\Autodesk\ApplicationPlugins\TTC.CadTools.bundle`. Disabled duplicate in ProgramData (`.disabled`) to ensure deterministic loading. Verified direct command-line regression in AutoCAD 2023 `accoreconsole.exe`. Awaiting Product Owner desktop UI verification of Ribbon buttons, AC-F0-13, and 5 cold restarts before independent re-review REV-F0-002-R3.
