@@ -283,23 +283,67 @@ All runtime-dependent acceptance criteria (AC-F0-01 through AC-F0-13) remain: **
 
 ---
 
-## 10. Review & Lifecycle Status Summary
+## 10. Independent Implementation Review: REV-F0-002
+
+> [!IMPORTANT]
+> **Independent Review Persistence Rule:**
+> Antigravity is acting solely as the recording agent persisting external reviewer findings for commit `30aa4ca7ee4609c8ed973bd1435823ff366c8c96`.
+> Antigravity did NOT perform this independent review. Antigravity is recording external reviewer evidence only.
+
+- **Review ID:** `REV-F0-002`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Review Date:** 2026-09-09
+- **Reviewed Commit:** `30aa4ca7ee4609c8ed973bd1435823ff366c8c96`
+- **Reviewed Scope:** F0 Production Implementation & Execution Evidence (`WO-F0-001`, `F0-BUILD-001`)
+- **Result:** `NEEDS_FIX`
+- **Disposition:** `RETURN_TO_BUILD_CORRECTION`
+
+### Evaluation Summary
+
+- **Architecture:** `PASS_WITH_FIXES`
+- **Desktop AutoCAD UI:** `PASS`
+- **Scope Containment:** `PASS`
+- **Governance Scope Compliance:** `NEEDS_FIX`
+- **Acceptance Traceability:** `NEEDS_FIX`
+- **Runtime Evidence:** `PASS_WITH_FIXES`
+- **Security / Non-destructive Execution:** `NEEDS_FIX`
+- **F0 Tranche Freeze:** `NOT AUTHORIZED`
+
+### Reviewer Findings
+
+| Finding ID | Finding Description | Disposition |
+|:---|:---|:---|
+| **F01** | Host verification script changes `SECURELOAD` to 0. | `NEEDS_FIX` |
+| **F02** | BUILD evidence renumbered/reinterpreted frozen AC definitions. | `NEEDS_FIX` |
+| **F03** | Invalid/missing configuration does not emit required structured warning. | `NEEDS_FIX` |
+| **F04** | `AC-F0-12` and `AC-F0-13` lack explicit qualifying runtime evidence. | `NEEDS_FIX` |
+| **F05** | Issue Registry overclaims `HOST_VERIFIED` for several items. | `NEEDS_FIX` |
+| **F06** | `production/.gitignore` was created outside WO-owned path list. | `NEEDS_FIX` |
+| **F07** | Machine/user-specific evidence paths remain in repository documentation. | `NEEDS_FIX` |
+
+---
+
+## 11. Review & Lifecycle Status Summary
 
 - **Historical REV-F0-001:** `NEEDS_FIX / RETURN_TO_SPEC`
 - **REV-F0-001-R2:** `NEEDS_FIX / RETURN_TO_SPEC`
 - **Spec Freeze Review (REV-F0-001-R3):** `PASS / PASS_FOR_FREEZE`
 - **F0 Spec Status:** `FROZEN` (Version 1.0.0)
 - **F0 Tranche Status:** `NOT FROZEN` (Tranche completion requires BUILD -> REVIEW -> FREEZE)
-- **Current Lifecycle Stage:** `BUILD_READY`
-- **Current Work Order:** `WO-F0-001` (`docs/tranches/F0/WORK_ORDER.md` — Status: `APPROVED_FOR_EXECUTION`)
-- **Latest Work Order Review:** `REV-WO-F0-001-002` (`PASS / PASS_FOR_EXECUTION_APPROVAL`)
+- **Work Order Review:** `REV-WO-F0-001-002` (`PASS / PASS_FOR_EXECUTION_APPROVAL`)
 - **Product Owner Approval:** `APPROVED_FOR_EXECUTION` (`F0-WORK-ORDER-APPROVAL-001`)
 - **Approved Execution Baseline:** `b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515`
-- **Implementation:** `NOT_STARTED`
+- **Implementation Review (REV-F0-002):** `NEEDS_FIX / RETURN_TO_BUILD_CORRECTION`
+- **Current Lifecycle Stage:** `REVIEW`
+- **Current Status:** `BUILD_CORRECTION_COMPLETE / RE_REVIEW_PENDING`
+- **Implementation:** `IMPLEMENTED_PENDING_RE_REVIEW`
 - **Production Build Authorization:** `AUTHORIZED_FOR_F0_ONLY`
+- **Expected Next Review:** `REV-F0-002-R2`
 
 ---
 
-## 11. Next Authorized Action
+## 12. Next Authorized Action
 
-Execute F0 BUILD under `WO-F0-001`.
+Perform independent technical re-review under Review ID `REV-F0-002-R2`.
+Downstream tranches (`F1`, `P1`, `P2`, `M&E`) remain strictly `NOT AUTHORIZED`.

@@ -945,23 +945,23 @@ PASS
 
 ---
 
-### Acceptance Criteria Verification Matrix
+### Acceptance Criteria Verification Matrix (Session AG-F0-008 Baseline)
 
-| Acceptance Criteria | Description | Verification Method | Status |
-|---|---|---|---|
-| **AC-F0-01** | Package Manifest Compliance (`PackageContents.xml` SeriesMin/Max R24.2) | ManifestValidationTests + Host Load | **PASS** |
-| **AC-F0-02** | Diagnostic Command `TTCINFO` (reports versions, config, log path) | AutoCAD 2023 Host Execution | **PASS** |
-| **AC-F0-03** | Ribbon UI Shell (Tab `TTC CAD`, Panel `General`, buttons) | RibbonHost Implementation & Inspection | **PASS** |
-| **AC-F0-04** | Modeless `PaletteSet` Shell (GUID `{4A7A779F-...}`, WPF StatusControl) | PaletteHost Implementation & Host Test | **PASS** |
-| **AC-F0-05** | Valid Configuration Deserialization | SettingsRepositoryTests + Host Log | **PASS** |
-| **AC-F0-06** | Malformed Configuration Fallback | SettingsRepositoryTests | **PASS** |
-| **AC-F0-07** | Missing Configuration Fallback | SettingsRepositoryTests | **PASS** |
-| **AC-F0-08** | Resilient File Logging (daily file, thread-safe, fallback) | FileLoggerTests + Host Log | **PASS** |
-| **AC-F0-09** | Architectural Decoupling (0 CAD refs in Core/Infra) | DecouplingTests (Reflection) | **PASS** |
-| **AC-F0-10** | Scope Containment (0 downstream domain types/tokens) | ScopeContainmentTests (AST/Reflection) | **PASS** |
-| **AC-F0-11** | Zero-Document State Stability (no null dereference, stable) | AutoCAD 2023 Host Execution Log | **PASS** |
-| **AC-F0-12** | Palette Toggle Idempotency | PaletteCommand & Host Execution Log | **PASS** |
-| **AC-F0-13** | Application-Context Command Safety | AutoCAD 2023 Host Execution | **PASS** |
+| AC ID | Frozen Acceptance Criterion | Verification Method | Status |
+|:---|:---|:---|:---|
+| **AC-F0-01** | Plugin Bootstrap | AutoCAD Host Execution (`accoreconsole.exe` NETLOAD) | **PASS** |
+| **AC-F0-02** | Diagnostic Command `TTCINFO` | AutoCAD 2023 Host Execution | **PASS** |
+| **AC-F0-03** | Ribbon Shell | RibbonHost Implementation & Inspection | **PASS_WITH_FIXES** |
+| **AC-F0-04** | PaletteSet Shell | PaletteHost Implementation & Inspection | **PASS_WITH_FIXES** |
+| **AC-F0-05** | Valid Configuration | SettingsRepositoryTests + Host Log | **PASS** |
+| **AC-F0-06** | Invalid / Missing Configuration | SettingsRepositoryTests | **PASS_WITH_FIXES** |
+| **AC-F0-07** | Structured File Logging | FileLoggerTests + Host Log | **PASS** |
+| **AC-F0-08** | Package Manifest Validation | ManifestValidationTests | **PASS** |
+| **AC-F0-09** | Decoupling Integrity | DecouplingTests | **PASS** |
+| **AC-F0-10** | Strict Scope Containment | ScopeContainmentTests | **PASS** |
+| **AC-F0-11** | Zero-Document State Safety | AutoCAD 2023 Host Execution Log | **PASS** |
+| **AC-F0-12** | Palette Idempotency & Singleton | PaletteCommand Implementation | **PASS_WITH_FIXES** |
+| **AC-F0-13** | Application-Context Command Safety | InfoCommand Implementation | **PASS_WITH_FIXES** |
 
 ---
 
@@ -981,3 +981,124 @@ PASS
 ### Next Action
 
 Independent technical review of F0 production implementation (`REV-F0-002`).
+
+---
+
+## Session: AG-F0-009
+
+- **Date:** 2026-09-09
+- **Task ID:** `F0-BUILD-CORRECTION-001`
+- **Session ID:** `AG-F0-009`
+- **Reviewed Commit:** `30aa4ca7ee4609c8ed973bd1435823ff366c8c96`
+- **Independent Review:** `REV-F0-002` (`NEEDS_FIX / RETURN_TO_BUILD_CORRECTION`)
+- **Lifecycle Stage:** `BUILD_CORRECTION`
+- **Target Tranche:** `F0 — AutoCAD Foundation`
+- **Operator Authority:** Product Owner instruction to correct REV-F0-002 findings F01 through F07 and persist review results.
+
+### 1. Review Persistence (REV-F0-002)
+- Appended Section 10 to `docs/tranches/F0/REVIEW.md` recording external review findings F01 through F07 with disposition `RETURN_TO_BUILD_CORRECTION`.
+- Explicitly stated: *Antigravity is recording external reviewer evidence only.*
+- Treated `docs/tranches/F0/REVIEW.md` as strictly **READ ONLY** for the remainder of build correction.
+
+### 2. Product Owner Manual Desktop AutoCAD 2023 Evidence
+- **Evidence Source:** `Product Owner Manual Desktop AutoCAD 2023 Verification`
+- **Environment:** Full Autodesk AutoCAD 2023 Desktop UI
+- **Result:** `PASS`
+- **Evidence Type:** `OPERATOR_MANUAL_DESKTOP_EVIDENCE`
+- **Verified Capabilities:**
+  - Ribbon tab `TTC CAD` and panel `General` visible and active on cold start
+  - `TTCINFO` command executes and outputs diagnostic information
+  - `TTCPALETTE` opens modeless dockable `PaletteSet`
+  - Palette docking, floating, and content resizing operate smoothly
+  - Active-document state display updates with drawing names
+  - Closing last drawing transitions palette to stable zero-document state ("No Active Document")
+  - Opening new drawing dynamically restores active document state
+  - Workspace switching (`Drafting & Annotation` <-> other workspaces) retains and restores `TTC CAD` tab
+  - Full AutoCAD restart restores `TTC CAD` ribbon tab
+  - Palette dock state and position persist across AutoCAD restarts via GUID `{4A7A779F-9C3D-4A42-A862-2D5392D6D3A0}`
+
+### 3. Finding F01 — Security Script Correction & Host Inspection
+- Inspected and modified `production/TTC.CadTools.Tests/run_host_verify.scr` to completely eliminate `SECURELOAD 0` mutation.
+- Verified test automation policy: Automated tests MUST NOT disable `SECURELOAD`, lower `TRUSTEDPATHS`, or modify host security policy.
+- Inspected host workstation's active `SECURELOAD` value via non-mutating query:
+  - `OBSERVED_SECURELOAD = 0`
+  - Host setting left completely untouched by this task.
+  - Flagged for Product Owner awareness: `OPERATOR_SECURITY_SETTING_REVIEW_REQUIRED`.
+
+### 4. Finding F02 — Frozen Acceptance Criteria Definition Alignment
+- Aligned all AC mappings across all evidence files to strictly match frozen Feature Spec `SPEC-FOUNDATION-F0-001` v1.0.0 (`AC-F0-01` through `AC-F0-13`).
+- Distinguish evidence types factually (`AUTOMATED_TEST`, `HEADLESS_AUTOCAD`, `OPERATOR_MANUAL_DESKTOP_EVIDENCE`, `STATIC_AUDIT`). Never classify `accoreconsole` as desktop GUI evidence.
+
+### 5. Finding F03 & F04 — Configuration Warning Implementation & Testing
+- Created `production/TTC.CadTools.Core/Configuration/ConfigurationStatusLogger.cs`:
+  - `ConfigurationStatus.Valid` -> `_logger.Info($"Configuration loaded successfully (Source: {result.Source}).");`
+  - `ConfigurationStatus.Invalid` -> `_logger.Warn($"WARN: Configuration invalid; using safe defaults. Source: {result.Source}, Error: {result.ErrorMessage}");`
+  - `ConfigurationStatus.FallbackDefault` -> `_logger.Warn($"WARN: settings.json not found; using in-memory defaults. Source: {result.Source}");`
+- Integrated `ConfigurationStatusLogger` into `PluginApplication.Initialize()`.
+- Implemented path sanitization in `JsonSettingsRepository.cs`, `InfoCommand.cs`, and `PluginApplication.cs` to prevent user profile paths from leaking into logs or diagnostic screens.
+- Created `production/TTC.CadTools.Tests/SettingsTests/ConfigurationWarningTests.cs` adding 4 automated tests verifying valid, malformed, missing, and resilient configuration scenarios.
+
+### 6. Finding F05 — Issue Registry Evidence Correction
+- Audited and updated `docs/tranches/F0/ISSUES.md`:
+  - Attributed desktop GUI verification for `ISSUE-F0-003`, `ISSUE-F0-004`, `ISSUE-F0-005`, and `ISSUE-F0-007` to `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023`.
+  - Reclassified `ISSUE-F0-002` truthfully as `AUTOMATED_FALLBACK_VERIFIED (RUNTIME_FALLBACK_NOT_RUN_ON_HOST)` based on automated unit tests, since real host permission-denied fallback was not executed on the host.
+
+### 7. Finding F06 — Path Ratification
+- Product Owner formally ratified:
+  ```text
+  POST_BUILD_PATH_RATIFICATION:
+  production/.gitignore
+
+  Reason:
+  Prevents generated bin/obj/Visual Studio artifacts from contaminating production source control.
+
+  Behavioral Scope Change:
+  NONE
+  ```
+
+### 8. Finding F07 — Machine/User Path Scrubbing
+- Scrubbed local user paths across all documentation artifacts, replacing them with portable `%APPDATA%\TTC_CadTools\...` and `%TEMP%\TTC_CadTools\...` references.
+
+### 9. Build, Automated Tests & Host Verification
+- **Compilation:** `dotnet build production/TTC.CadTools.sln -c Release` -> `0 Error(s), 0 Warning(s)`.
+- **Automated Tests:** `dotnet test production/TTC.CadTools.sln -c Release` -> **20/20 PASSED** (0 failed, 0 skipped).
+- **Bundle Packaging:** Updated binaries in `production/TTC.CadTools.bundle/Contents/` (0 Autodesk host assemblies copied).
+- **AutoCAD 2023 Host Verification (`accoreconsole.exe`):**
+  - Executed `run_host_verify.scr` under existing workstation security policy (0 `SECURELOAD` commands).
+  - Clean exit code `0`.
+  - `TTCINFO` printed full diagnostic report with masked log path `%APPDATA%\TTC_CadTools\Logs\ttc_cad_20260909.log`.
+  - Zero-document shutdown transition cleanly captured in active log file.
+
+---
+
+### Acceptance Criteria Verification Matrix (Post-Correction)
+
+| AC ID | Frozen Acceptance Criterion | Verification Method / Evidence Source | Result |
+|:---|:---|:---|:---|
+| **AC-F0-01** | **Plugin Bootstrap:** Assembly loads into AutoCAD 2023 without unhandled exceptions. | `AUTOMATED_TEST` + `HEADLESS_AUTOCAD` (`accoreconsole.exe` NETLOAD) | **PASS** |
+| **AC-F0-02** | **Diagnostic Command (`TTCINFO`):** Outputs host version, assembly version, CLR, config status, log path. | `HEADLESS_AUTOCAD` + `OPERATOR_MANUAL_DESKTOP_EVIDENCE` | **PASS** |
+| **AC-F0-03** | **Ribbon Shell:** `TTC CAD` tab and `General` panel with clickable buttons appear in AutoCAD ribbon. | `OPERATOR_MANUAL_DESKTOP_EVIDENCE` (Product Owner verified desktop UI) | **PASS** |
+| **AC-F0-04** | **PaletteSet Shell:** `TTCPALETTE` opens modeless dockable WPF palette with 3-param `AddVisual`. | `OPERATOR_MANUAL_DESKTOP_EVIDENCE` (Product Owner verified dock/float/resize) | **PASS** |
+| **AC-F0-05** | **Valid Configuration:** Well-formed `settings.json` deserializes and reflects `VALID` in `TTCINFO`. | `AUTOMATED_TEST` (`SettingsRepositoryTests`) + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-06** | **Invalid / Missing Configuration:** Malformed or missing JSON emits structured warning and falls back to safe defaults. | `AUTOMATED_TEST` (`ConfigurationWarningTests.cs` — 4 tests passing) | **PASS** |
+| **AC-F0-07** | **Structured File Logging:** `FileLogger` generates daily rolling log file in `%APPDATA%\TTC_CadTools\Logs\`. | `AUTOMATED_TEST` (`FileLoggerTests`) + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-08** | **Package Manifest Validation:** `PackageContents.xml` conforms to Autodesk schema with SeriesMin/Max `R24.2`. | `AUTOMATED_TEST` (`ManifestValidationTests`) | **PASS** |
+| **AC-F0-09** | **Decoupling Integrity:** Core and Infrastructure contain zero references to Autodesk assemblies. | `AUTOMATED_TEST` (`DecouplingTests`) | **PASS** |
+| **AC-F0-10** | **Strict Scope Containment:** Zero Panel or M&E features exist; domain repositories deferred to P1/M1. | `AUTOMATED_TEST` (`ScopeContainmentTests`) | **PASS** |
+| **AC-F0-11** | **Zero-Document State Safety:** Closing last drawing maintains stable palette ("No Active Document"); opening drawing restores state. | `OPERATOR_MANUAL_DESKTOP_EVIDENCE` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-12** | **Palette Idempotency & Singleton:** Repeated `TTCPALETTE` toggles visibility of single instance without duplicate windows. | `OPERATOR_MANUAL_DESKTOP_EVIDENCE` (Product Owner manual confirmation) | **PASS** |
+| **AC-F0-13** | **Application-Context Command Safety:** Application-context command execution with 0 open drawings writes to log/dialog without null Editor dereference. | Guarded in `InfoCommand.cs`; `NOT_RUN` (No interactive desktop automation trace) | **NOT_RUN** |
+
+---
+
+### Scope & Policy Verification
+- Production Code Changes: Strictly bounded to `production/**`
+- Frozen Spec: `SPEC.md` v1.0.0 FROZEN untouched
+- Review Document: `REVIEW.md` touched only for external review persistence, then kept strictly READ ONLY
+- Downstream Tranches: ZERO CODE for F1, P1, P2, M&E
+- Tranche Freeze: NOT FROZEN
+
+---
+
+### Next Action
+Handoff to ChatGPT / Independent Technical Reviewer for re-review `REV-F0-002-R2`.

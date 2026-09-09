@@ -53,8 +53,14 @@ namespace TTC.CadTools.AutoCAD.Entry
 
                 _logger.Info("==================================================");
                 _logger.Info("TTC CAD Plugin Initializing (F0 Foundation v1.0.0)");
-                _logger.Info($"Configuration Status: {_settingsRepo.Status}");
-                _logger.Info($"Active Log File: {((FileLogger)_logger).ActiveLogPath}");
+                string displayLogPath = ((FileLogger)_logger).ActiveLogPath;
+                string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                if (!string.IsNullOrEmpty(appData) && displayLogPath.StartsWith(appData, StringComparison.OrdinalIgnoreCase))
+                {
+                    displayLogPath = "%APPDATA%" + displayLogPath.Substring(appData.Length);
+                }
+                _logger.Info($"Active Log File: {displayLogPath}");
+                ConfigurationStatusLogger.LogStatus(_logger, _settingsRepo.Status);
 
                 if (!IsCoreConsole)
                 {

@@ -59,7 +59,7 @@ namespace TTC.CadTools.Infrastructure.Configuration
                     _status = new ConfigurationResult
                     {
                         Status = ConfigurationStatus.Invalid,
-                        Source = $"AppData ({userPath})",
+                        Source = $"AppData ({SanitizePath(userPath)})",
                         ErrorMessage = error
                     };
                     return;
@@ -86,7 +86,7 @@ namespace TTC.CadTools.Infrastructure.Configuration
                     _status = new ConfigurationResult
                     {
                         Status = ConfigurationStatus.Invalid,
-                        Source = $"Bundle ({bundlePath})",
+                        Source = $"Bundle ({SanitizePath(bundlePath)})",
                         ErrorMessage = error
                     };
                     return;
@@ -193,6 +193,22 @@ namespace TTC.CadTools.Infrastructure.Configuration
                 error = $"IO/General error: {ex.Message}";
                 return false;
             }
+        }
+
+        private static string SanitizePath(string? path)
+        {
+            if (string.IsNullOrEmpty(path)) return string.Empty;
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (!string.IsNullOrEmpty(appData) && path != null && path.StartsWith(appData, StringComparison.OrdinalIgnoreCase))
+            {
+                return "%APPDATA%" + path.Substring(appData.Length);
+            }
+            string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            if (!string.IsNullOrEmpty(userProfile) && path != null && path.StartsWith(userProfile, StringComparison.OrdinalIgnoreCase))
+            {
+                return "%USERPROFILE%" + path.Substring(userProfile.Length);
+            }
+            return path ?? string.Empty;
         }
     }
 }

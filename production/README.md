@@ -3,8 +3,8 @@
 This directory contains the official AutoCAD 2023 Managed .NET plugin implementation for the TTC CAD Tools suite.
 
 > [!NOTE]
-> **BUILD STATUS: BUILD_COMPLETE / REVIEW_PENDING**
-> Tranche `F0 — AutoCAD Foundation` has completed implementation under `WO-F0-001` against frozen Feature Spec `SPEC-FOUNDATION-F0-001` v1.0.0.
+> **BUILD STATUS: BUILD_CORRECTION_COMPLETE / RE_REVIEW_PENDING**
+> Tranche `F0 — AutoCAD Foundation` has completed implementation and build correction under `WO-F0-001` against frozen Feature Spec `SPEC-FOUNDATION-F0-001` v1.0.0.
 > Downstream tranches (F1, P1, P2, M&E) remain **NOT AUTHORIZED**.
 
 ## Solution Architecture
@@ -46,7 +46,7 @@ dotnet build production/TTC.CadTools.sln -c Release
 
 ## Running Automated Tests
 
-Run the full xUnit test suite (16/16 automated tests):
+Run the full xUnit test suite (20/20 automated tests):
 ```bash
 dotnet test production/TTC.CadTools.sln -c Release
 ```

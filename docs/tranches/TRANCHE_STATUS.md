@@ -10,7 +10,7 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 
 | Tranche ID | Capability | Depends On | Spec Status | Work Order | Build Status | Frozen? | Current Disposition |
 |:---:|---|---|:---:|:---:|:---:|:---:|---|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `APPROVED / WO-F0-001` | `COMPLETE / REVIEW_PENDING` | NO | **IMPLEMENTATION_REVIEW** (WO-F0-001 executed; implementation complete; verified in real AutoCAD 2023 host; 16/16 tests pass; awaiting independent review REV-F0-002) |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `APPROVED / WO-F0-001` | `COMPLETE / RE_REVIEW_PENDING` | NO | **IMPLEMENTATION_RE_REVIEW** (WO-F0-001 executed; build correction complete; verified in real AutoCAD 2023 host and desktop UI; 20/20 tests pass; awaiting independent re-review REV-F0-002-R2) |
 | **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F0) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` | `NONE` | `BLOCKED` | NO | **BLOCKED_BY_UPSTREAM** (Spec evidence exists in `docs/03_FEATURE_SPEC_TTCPANELPLACE.md`; awaiting F0/F1/P1) |
@@ -31,6 +31,6 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 
 - **Production Build Authorization:** `AUTHORIZED_FOR_F0_ONLY`
 - **Frozen Specs:** `F0 — docs/tranches/F0/SPEC.md v1.0.0`
-- **Approved Active Work Orders:** `WO-F0-001 (BUILD_COMPLETE)`
+- **Approved Active Work Orders:** `WO-F0-001 (BUILD_CORRECTION_COMPLETE)`
 - **Draft Work Orders:** `NONE`
-- **Production Code Status:** `BUILD_COMPLETE` (`production/TTC.CadTools.sln` implemented, 16/16 automated tests passing, AutoCAD 2023 host verified)
+- **Production Code Status:** `BUILD_CORRECTION_COMPLETE` (`production/TTC.CadTools.sln` implemented, 20/20 automated tests passing, AutoCAD 2023 host verified)

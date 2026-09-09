@@ -73,7 +73,8 @@ namespace TTC.CadTools.AutoCAD.Commands
             string asmVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0.0";
             string clrVersion = Environment.Version.ToString();
             string configStatus = settingsRepo?.Status.ToString() ?? "Unknown";
-            string logPath = logger is FileLogger fl ? fl.ActiveLogPath : "Active";
+            string rawLogPath = logger is FileLogger fl ? fl.ActiveLogPath : "Active";
+            string logPath = SanitizeDisplayPath(rawLogPath);
 
             string paletteStatus = PluginApplication.IsCoreConsole
                 ? "Deferred (Headless Core Console)"
@@ -139,6 +140,22 @@ namespace TTC.CadTools.AutoCAD.Commands
             {
                 return $"Unavailable ({ex.Message})";
             }
+        }
+
+        private static string SanitizeDisplayPath(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return "Active";
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (!string.IsNullOrEmpty(appData) && path.StartsWith(appData, StringComparison.OrdinalIgnoreCase))
+            {
+                return "%APPDATA%" + path.Substring(appData.Length);
+            }
+            string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            if (!string.IsNullOrEmpty(userProfile) && path.StartsWith(userProfile, StringComparison.OrdinalIgnoreCase))
+            {
+                return "%USERPROFILE%" + path.Substring(userProfile.Length);
+            }
+            return path;
         }
     }
 }

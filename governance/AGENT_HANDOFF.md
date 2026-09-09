@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-09 00:30:00 +07:00
+2026-09-09 20:45:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,14 +10,14 @@ Branch:
 simulator
 
 Baseline Commit:
-2316ca64d4aa2b243bba04ef938a3e340d1fd3db
+30aa4ca7ee4609c8ed973bd1435823ff366c8c96
 
 Approved Execution Baseline:
 b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD must contain or descend from Result Commit of task F0-BUILD-001.
+Current HEAD must contain or descend from Result Commit of task F0-BUILD-CORRECTION-001.
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -29,7 +29,7 @@ Current Lifecycle Stage:
 REVIEW
 
 Current Status:
-BUILD_COMPLETE / REVIEW_PENDING
+BUILD_CORRECTION_COMPLETE / RE_REVIEW_PENDING
 
 Current Frozen Authority:
 docs/tranches/F0/SPEC.md — FROZEN v1.0.0
@@ -44,10 +44,13 @@ Current Spec:
 docs/tranches/F0/SPEC.md (Status: FROZEN v1.0.0)
 
 Current Work Order:
-docs/tranches/F0/WORK_ORDER.md (Status: APPROVED_FOR_EXECUTION / BUILD_COMPLETE)
+docs/tranches/F0/WORK_ORDER.md (Status: APPROVED_FOR_EXECUTION / BUILD_CORRECTION_COMPLETE)
 
 Implementation:
-BUILD_COMPLETE
+IMPLEMENTED_PENDING_RE_REVIEW
+
+F0 Tranche:
+NOT FROZEN
 
 Latest Spec Review:
 REV-F0-001-R3 = PASS / PASS_FOR_FREEZE
@@ -55,35 +58,41 @@ REV-F0-001-R3 = PASS / PASS_FOR_FREEZE
 Latest WO Review:
 REV-WO-F0-001-002 = PASS_FOR_EXECUTION_APPROVAL
 
+Latest Implementation Review:
+REV-F0-002 = NEEDS_FIX / RETURN_TO_BUILD_CORRECTION
+
+Expected Next Review:
+REV-F0-002-R2
+
 Last Completed Task:
-F0-BUILD-001
+F0-BUILD-CORRECTION-001
 
 Last Agent:
-Antigravity / AG-F0-008
+Antigravity / AG-F0-009
 
 Last Result:
-PASS / BUILD_COMPLETE
+PASS / BUILD_CORRECTION_COMPLETE
 
 Open Blocking Issues:
 NONE (0 issues block review entry)
 
 Open Non-Blocking Issues:
-0 (All 8 issues in docs/tranches/F0/ISSUES.md closed or host verified)
+0 (All 8 issues in docs/tranches/F0/ISSUES.md addressed across build and runtime gates)
 
 Reviewer Disposition:
-PENDING_INDEPENDENT_REVIEW (REV-F0-002)
+PENDING_INDEPENDENT_RE_REVIEW (REV-F0-002-R2)
 
 Product Owner Approval:
 APPROVED_FOR_EXECUTION
 
 Next Authorized Action:
-Independent technical review of F0 implementation (REV-F0-002).
+Independent technical re-review of F0 implementation (REV-F0-002-R2).
 
 Forbidden Next Actions:
-- F1
-- P1
-- P2
-- M&E
+- F1 (BLOCKED)
+- P1 (BLOCKED)
+- P2 (BLOCKED)
+- M&E (BLOCKED)
 - Frozen Spec mutation
 - Work Order mutation outside review disposition
 - Implementation of downstream features
@@ -106,4 +115,4 @@ Required First Reads:
 15. docs/tranches/F0/WORK_ORDER.md
 
 Handoff Notes:
-Task F0-BUILD-001 has successfully implemented the complete bounded F0 AutoCAD Foundation defined by WO-F0-001 and frozen Spec v1.0.0. The multi-project solution `production/TTC.CadTools.sln` compiles cleanly with 0 errors and 0 warnings on .NET Framework 4.8. 16/16 automated unit and architecture tests pass (including decoupling tests ensuring 0 CAD references in Core/Infrastructure, and scope containment tests ensuring 0 downstream domain entities). Physical execution was verified in real Autodesk AutoCAD 2023 (`accoreconsole.exe` 24.2.53.0.0) with NETLOAD, TTCINFO, and TTCPALETTE; diagnostic logs were captured at `%APPDATA%\TTC_CadTools\Logs\ttc_cad_20260909.log` showing clean zero-document handling and 0 unhandled exceptions. All 8 items in `ISSUES.md` are closed or host verified. The implementation is ready for independent review REV-F0-002. Downstream tranches remain strictly locked.
+Task F0-BUILD-CORRECTION-001 addressed all 7 findings from independent review REV-F0-002. Automated test script `run_host_verify.scr` was corrected to completely remove `SECURELOAD 0` mutation (existing host SECURELOAD=0 observed and preserved without change, flagged for operator review). Acceptance criteria mappings across all evidence files were strictly aligned with frozen Spec definitions (AC-F0-01 to AC-F0-13). Configuration status logging was enhanced with `ConfigurationStatusLogger` in Core, logging structured warnings on invalid/missing config and safe in-memory defaults, verified by 4 new automated unit tests in `ConfigurationWarningTests.cs` (20/20 tests now passing). Local user paths were scrubbed to portable `%APPDATA%` representations. Product Owner manual desktop AutoCAD 2023 evidence was formally recorded for GUI capabilities (Ribbon, Palette dock/resize/persistence, zero-doc state). Issue registry evidence was corrected separating automated unit test fallback from host desktop evidence. Path `production/.gitignore` was formally ratified. Physical execution was re-verified in AutoCAD 2023 `accoreconsole.exe` under normal security policy with exit code 0. The implementation is ready for independent technical re-review under REV-F0-002-R2. Downstream tranches remain strictly locked.
