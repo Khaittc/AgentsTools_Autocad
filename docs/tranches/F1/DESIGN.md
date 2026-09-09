@@ -1,9 +1,10 @@
 # Tranche F1: Common CAD Contracts — Architectural Design
 
 - **Document ID:** `DESIGN-FOUNDATION-F1-001`
-- **Version:** `0.3.0` (Corrected Architectural Proposal)
-- **Lifecycle Stage:** `DESIGN_CORRECTION`
-- **Status:** `PROPOSED_DESIGN / INDEPENDENT_RE_REVIEW_PENDING`
+- **Version:** `0.3.0` (Architectural Design Baseline)
+- **Lifecycle Stage:** `DESIGN`
+- **Status:** `COMPLETE / REVIEWED_PASS / PASS_TO_SPEC`
+- **Latest Design Review:** `REV-F1-DESIGN-001-R3 — PASS`
 - **Dependency:** Tranche F0 — AutoCAD Foundation (`FROZEN v1.0.0`, Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
 - **Inherited Architecture:** Architecture Roadmap (`docs/TTC_AutoCAD_Engineering_Tools_Architecture_Roadmap.md`)
 - **Target Host Baseline:** AutoCAD 2023 Managed .NET API (C#, .NET Framework 4.8)
@@ -29,7 +30,7 @@ Tranche F1 establishes the foundational CAD domain contracts, metadata persisten
                                     |
                                     v
 +-------------------------------------------------------------------------+
-|           Tranche F1: Common CAD Contracts (DESIGN_CORRECTION)           |
+|           Tranche F1: Common CAD Contracts (COMPLETE / PASS_TO_SPEC)    |
 |  +-----------------------+  +-----------------------+  +--------------+  |
 |  |   A/B. Units & Math   |  | C/D. Identity/Meta    |  | F-I. Native  |  |
 |  | - Conflict States     |  | - Drawing Instance ID |  |      Edit    |  |

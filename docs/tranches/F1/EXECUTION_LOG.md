@@ -394,7 +394,7 @@ Independent technical re-review: `REV-F1-DESIGN-001-R2`. F1 SPEC and BUILD remai
 - **External Design Review:** `REV-F1-DESIGN-001-R2` (`NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION`)
 - **Work Order:** `NONE` (Architectural Design Correction Stage Only)
 - **Starting Commit:** `b9911a6f0985b71a689ef858f9ed383a48e73e41`
-- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Ending Commit:** `628ecb6ea7119c0cf76c4187473b98e2e6659f74`
 - **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
 - **Current Production Build Authorization:** `NONE`
 
@@ -443,3 +443,92 @@ Independent technical re-review: `REV-F1-DESIGN-001-R2`. F1 SPEC and BUILD remai
 
 ### Next Required Action
 Independent technical re-review: `REV-F1-DESIGN-001-R3`. F1 SPEC and BUILD remain strictly NOT AUTHORIZED until independent reviewer approval.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F1-006
+- **Task ID:** F1-DESIGN-CORRECTION-002
+- **Resolved Ending Commit:** `628ecb6ea7119c0cf76c4187473b98e2e6659f74`
+- **Resolution Date:** 2026-09-10
+- **Recorded In:** Session `AG-F1-007` (`F1-SPEC-001`)
+- **Reason:** Reconciled historical completion commit `628ecb6ea7119c0cf76c4187473b98e2e6659f74` in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-10 / AG-F1-007
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-007`
+- **Task ID:** `F1-SPEC-001`
+- **Lifecycle Stage:** `SPEC`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Design Review:** `REV-F1-DESIGN-001-R3` (`PASS / PASS_TO_SPEC`)
+- **Work Order:** `NONE` (Specification Stage Only)
+- **Starting Commit:** `628ecb6ea7119c0cf76c4187473b98e2e6659f74`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+1. Transition Tranche F1 from reviewed DESIGN into formal SPEC authoring.
+2. Persist independent review `REV-F1-DESIGN-001-R3` (`PASS / PASS_TO_SPEC`) into `docs/tranches/F1/REVIEW.md`.
+3. Mark DESIGN gate `COMPLETE / REVIEWED_PASS / PASS_TO_SPEC` in `docs/tranches/F1/DESIGN.md`.
+4. Reconcile execution continuity for `AG-F1-006` (commit `628ecb6ea7119c0cf76c4187473b98e2e6659f74`) and append session `AG-F1-007`.
+5. Author the formal DRAFT specification `SPEC-FOUNDATION-F1-001` (v0.1.0) in `docs/tranches/F1/SPEC.md` covering all 20 required sections:
+   - Explicit F1 UI scope boundary (zero visible engineering Ribbon/Palette UI);
+   - Core engineering unit architecture (MILLIMETER canonical) and host 3-state resolution (`RESOLVED`, `UNRESOLVED`, `UNIT_CONFIGURATION_CONFLICT`);
+   - Pure Core typed tolerance contract (`GeometricTolerance`, linear $\varepsilon = 10^{-4}\text{ mm}$ candidate, zero raw float equality);
+   - `TTC_OBJECT_ID` instance identity (RFC 4122 UUIDv4 lowercase string, decoupled from catalog/BOM/EPLAN);
+   - Minimum TTC object ownership metadata;
+   - Canonical storage matrix (authoritative `XRecord` vs derivative `XData` index);
+   - Keyed/tagged logical schema definition (`TTC_METADATA_HEADER` v1.0.0);
+   - Registered `XData` index contract (`TTC_CAD`);
+   - Schema versioning and forward compatibility (SemVer 1.0.0);
+   - Comprehensive 18-command native edit lifecycle matrix;
+   - Two-state clone provenance contract (`PROVENANCE_KNOWN` vs `PROVENANCE_UNKNOWN`);
+   - Reactor and ephemeral cache invalidation contract (observation only, zero write transactions);
+   - Transaction and DocumentLock execution matrix;
+   - Common CAD block contract across 12 domains;
+   - Standardized 10 failure classifications and non-destructive recovery behaviors;
+   - Numbered acceptance criteria matrix (`AC-F1-01` through `AC-F1-25`);
+   - BUILD validation test matrix (`TEST-F1-01` through `TEST-F1-14`);
+   - Performance, safety, and robustness standards;
+   - Explicit out-of-scope boundaries;
+   - Traceability matrix to canonical issues `ISSUE-F1-001` through `ISSUE-F1-010`.
+6. Update canonical issue registry `docs/tranches/F1/ISSUES.md` (`ISSUE-F1-001` through `ISSUE-F1-010` updated to `SPEC_PROPOSED_RESOLVED_PENDING_REVIEW` with gate `SPEC_FREEZE`).
+7. Update project continuity artifacts (`docs/tranches/F1/README.md`, `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, `governance/AGENT_HANDOFF.md`).
+8. Maintain strict immutability: zero production code mutation (`production/**`), zero changes to frozen F0 (`docs/tranches/F0/**`), no Work Order created, build NOT authorized.
+9. Prepare for independent technical review of F1 SPEC.
+
+---
+
+### Execution Details
+- **Review Persisted:** `REV-F1-DESIGN-001-R3` recorded in `docs/tranches/F1/REVIEW.md` (marked read-only).
+- **Design Gate Closed:** `docs/tranches/F1/DESIGN.md` status updated to `COMPLETE / REVIEWED_PASS / PASS_TO_SPEC`.
+- **Specification Authored:** `docs/tranches/F1/SPEC.md` (`SPEC-FOUNDATION-F1-001` v0.1.0) authored with 25 acceptance criteria and 14 BUILD validation tests.
+- **Issue Registry Updated:** `docs/tranches/F1/ISSUES.md` updated with SPEC formalizations and dispositions.
+- **Tranche Front-Door Updated:** `docs/tranches/F1/README.md` updated to reflect `SPEC` stage.
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Work Order / Build:** NOT created / NOT AUTHORIZED.
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `SPEC_DRAFT_AUTHORED / INDEPENDENT_REVIEW_PENDING`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent technical review of Tranche F1 SPEC (`SPEC-FOUNDATION-F1-001` v0.1.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent review approval and Product Owner freeze.

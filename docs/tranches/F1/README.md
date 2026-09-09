@@ -2,8 +2,8 @@
 
 - **Tranche:** F1 — Common CAD Contracts
 - **Capability:** Common CAD Contracts & Data Abstractions
-- **Lifecycle Stage:** DESIGN_CORRECTION
-- **Current Status:** `DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
+- **Lifecycle Stage:** SPEC
+- **Current Status:** `SPEC_DRAFT_AUTHORED / INDEPENDENT_REVIEW_PENDING`
 
 ---
 
@@ -11,14 +11,15 @@
 
 - **Dependency:** F0 — AutoCAD Foundation (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
 - **Intake:** `INTAKE-FOUNDATION-F1-001` — `COMPLETE / PASS_TO_DESIGN` ([INTAKE.md](./INTAKE.md))
-- **Latest Review:** `REV-F1-DESIGN-001-R2` — `NEEDS_FIX` / `RETURN_TO_DESIGN_CORRECTION` ([REVIEW.md](./REVIEW.md))
-- **Design:** `DESIGN-FOUNDATION-F1-001` (v0.3.0) — `DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING` ([DESIGN.md](./DESIGN.md))
+- **Design:** `DESIGN-FOUNDATION-F1-001` (v0.3.0) — `COMPLETE / REVIEWED_PASS / PASS_TO_SPEC` ([DESIGN.md](./DESIGN.md))
+- **Latest Review:** `REV-F1-DESIGN-001-R3` — `PASS / PASS_TO_SPEC` ([REVIEW.md](./REVIEW.md))
 - **API Verification:** Architectural Host Evidence ([API_VERIFICATION.md](./API_VERIFICATION.md))
-- **Spec:** `NOT_STARTED / NOT AUTHORIZED`
+- **Spec:** `SPEC-FOUNDATION-F1-001` (v0.1.0) — `DRAFT / PROPOSED_FOR_REVIEW` ([SPEC.md](./SPEC.md))
+- **Spec Frozen:** `NO`
 - **Work Order:** `NONE`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
-- **Issue Registry:** `ISSUE-F1-001` through `ISSUE-F1-010` (10 registered) ([ISSUES.md](./ISSUES.md))
+- **Issue Registry:** `ISSUE-F1-001` through `ISSUE-F1-010` (10 registered; all `SPEC_PROPOSED_RESOLVED_PENDING_REVIEW`) ([ISSUES.md](./ISSUES.md))
 - **Execution Log:** [EXECUTION_LOG.md](./EXECUTION_LOG.md)
 
 ---
@@ -36,16 +37,15 @@ Tranche F1 establishes the common cross-feature contracts that downstream tranch
 
 ## 3. Immediate Next Authorized Action
 
-Independent Technical Re-Review of F1 DESIGN (`REV-F1-DESIGN-001-R3`).
+Independent Technical Review of F1 SPEC (`SPEC-FOUNDATION-F1-001` v0.1.0).
 
 ---
 
 ## 4. Forbidden Actions at Current Stage
 
-- Authoring F1 SPEC
+- Freezing F1 SPEC (requires independent review PASS + explicit Product Owner freeze)
 - Creating F1 Work Order
 - Writing production C# code (`production/**`)
 - Modifying frozen F0 artifacts or baseline (`docs/tranches/F0/**`)
-- Freezing candidate standards without SPEC/freeze authority
 - Starting P1, P2, or M&E implementation
-- Self-approving DESIGN
+- Self-approving SPEC
