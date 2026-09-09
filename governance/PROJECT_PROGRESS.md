@@ -45,7 +45,7 @@ Status: ACTIVE_GOVERNANCE
   - Continuity Compliance: `PASS`
 - **TTC-GOV-002 Status:** `IMPLEMENTED / REVIEWED PASS`
 - **Continuity Gate:** `PASS`
-- **Production Build Authorization:** `AUTHORIZED_FOR_F0_ONLY`
+- **Production Build Authorization:** `NONE`
 
 ---
 
