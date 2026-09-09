@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-09 22:30:00 +07:00
+2026-09-09 22:50:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,35 +10,35 @@ Branch:
 simulator
 
 Baseline Commit:
-9892f905d6650fdeb6cb4a98431fc8d5e17e84bf
+012c7613a37cca767cac03e0b80ccbc6f5b6554a
 
 Approved Execution Baseline:
-b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515
+NONE (F1 Build NOT AUTHORIZED; F0 Baseline: b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515)
 
 Frozen Implementation Baseline:
-9892f905d6650fdeb6cb4a98431fc8d5e17e84bf
+9892f905d6650fdeb6cb4a98431fc8d5e17e84bf (Tranche F0)
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD contains or descends from Tranche Freeze commit of task F0-TRANCHE-FREEZE-001.
+Current HEAD contains or descends from F1 INTAKE commit of task F1-INTAKE-001.
 
 Development Model:
 SPEC-FIRST PER TRANCHE
 
 Current Tranche:
-F0 — FROZEN / COMPLETE
+F1 — Common CAD Contracts
 
 Current Lifecycle Stage:
-TRANCHE_FROZEN / READY_FOR_INTAKE
+INTAKE
 
 Current Status:
-F0_FROZEN / F1_READY_FOR_INTAKE
+INTAKE_DRAFT / INDEPENDENT_REVIEW_PENDING
 
 Current Frozen Authority:
 docs/tranches/F0/SPEC.md — FROZEN v1.0.0
 
 Frozen Dependencies:
-NONE — F0 is the root technical tranche.
+F0 — AutoCAD Foundation (FROZEN v1.0.0, baseline 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf)
 
 Production Build Authorization:
 NONE (F0 mutation CLOSED; F1 NOT AUTHORIZED)
@@ -47,60 +47,50 @@ Current Production Mutation Authority:
 NONE
 
 Current Spec:
-docs/tranches/F0/SPEC.md (Status: FROZEN v1.0.0)
+NOT_STARTED (F0 SPEC.md FROZEN v1.0.0)
 
 Current Work Order:
-docs/tranches/F0/WORK_ORDER.md (Status: APPROVED_FOR_EXECUTION / EXECUTED (COMPLETE))
+NONE
 
 Implementation:
-COMPLETE / REVIEWED PASS
+NOT_STARTED / NOT AUTHORIZED (F0 Implementation Baseline: 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf)
 
 F0 Tranche:
 FROZEN
 
-Final Review:
-REV-F0-002-R3 = PASS / PASS_FOR_TRANCHE_FREEZE
-
-Acceptance:
-13/13 PASS
-
-Issues:
-9/9 RESOLVED
+F1 Tranche:
+INTAKE_DRAFT / INDEPENDENT_REVIEW_PENDING
 
 Last Completed Task:
-F0-TRANCHE-FREEZE-001
+F1-INTAKE-001
 
 Last Agent:
-Antigravity / AG-F0-012
+Antigravity / AG-F1-001
 
 Last Result:
-PASS / F0_TRANCHE_FROZEN
+PASS / INTAKE_DRAFT_PENDING_REVIEW
 
 Open Blocking Issues:
-0
+0 blocking INTAKE exit (10 issues registered in docs/tranches/F1/ISSUES.md for DESIGN/SPEC investigation)
 
 Open Non-Blocking Issues:
-0 (9 issues recorded: 9 resolved/closed)
-
-Product Owner Freeze Authority:
-EXPLICITLY APPROVED (FREEZE F0)
+0
 
 Next Tranche:
-F1 — Common CAD Contracts
-
-F1 Status:
-READY_FOR_INTAKE
+P1 — Component Library (BLOCKED by F1)
 
 Next Authorized Action:
-Prepare F1 INTAKE / DESIGN / SPEC workflow (`F1-INTAKE-001`).
+Independent technical review of Tranche F1 Intake (`INTAKE-FOUNDATION-F1-001`). F1 DESIGN authoring is NOT AUTHORIZED until review disposition is issued.
 
 F1 Production Build:
 NOT AUTHORIZED
 
 Forbidden Next Actions:
-- F0 production code mutation without reopen authority
+- Authoring F1 DESIGN before independent review disposition
+- Authoring F1 SPEC
+- Creating F1 Work Order
 - F1 production code creation (BUILD NOT AUTHORIZED)
-- F1 spec drafting without intake approval
+- F0 production code mutation without reopen authority
 - P1, P2, M&E implementation (BLOCKED)
 - Frozen Spec mutation
 
@@ -111,15 +101,12 @@ Required First Reads:
 4. governance/DECISION_LOG.md
 5. docs/tranches/TRANCHE_STATUS.md
 6. docs/tranches/TRANCHE_ROADMAP.md
-7. docs/tranches/F0/README.md
-8. docs/tranches/F0/REVIEW.md
-9. docs/tranches/F0/API_VERIFICATION.md
-10. docs/tranches/F0/ISSUES.md
-11. docs/tranches/F0/EXECUTION_LOG.md
-12. docs/tranches/F0/INTAKE.md
-13. docs/tranches/F0/DESIGN.md
-14. docs/tranches/F0/SPEC.md
-15. docs/tranches/F0/WORK_ORDER.md
+7. docs/tranches/F1/INTAKE.md
+8. docs/tranches/F1/ISSUES.md
+9. docs/tranches/F1/EXECUTION_LOG.md
+10. docs/tranches/F0/README.md
+11. docs/tranches/F0/SPEC.md
+12. docs/tranches/F0/REVIEW.md
 
 Handoff Notes:
-Task F0-TRANCHE-FREEZE-001 (Session AG-F0-012) formally froze Tranche F0 (AutoCAD Foundation). Product Owner manual desktop verification in AutoCAD 2023 confirmed Ribbon TTCINFO (PASS), Ribbon TTCPALETTE (PASS), Ribbon Command Dispatch (PASS), 5/5 cold restart stability (PASS), and AC-F0-13 (PASS/CLOSED). Independent reviewer ChatGPT issued REV-F0-002-R3 (PASS / PASS_FOR_TRANCHE_FREEZE) evaluating implementation baseline commit 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf, 45/45 automated unit tests, and runtime evidence. All 13 Acceptance Criteria (AC-F0-01 through AC-F0-13) are PASS. All 9 registered issues (ISSUE-F0-001 through ISSUE-F0-009) are RESOLVED. Product Owner explicitly authorized FREEZE F0. Production code mutation authority for F0 is formally CLOSED. Tranche F1 (Common CAD Contracts) dependency is SATISFIED and unblocked for PLANNING/INTAKE ONLY (READY_FOR_INTAKE). F1 production build remains strictly NOT AUTHORIZED; no F1 code, no F1 spec drafting, and no F1 work orders may be created until intake and design gates are completed. Downstream tranches (P1, P2, M&E) remain BLOCKED.
+Task F1-INTAKE-001 (Session AG-F1-001) initiated Tranche F1 (Common CAD Contracts) strictly at the INTAKE lifecycle stage. Authored `docs/tranches/F1/INTAKE.md` (`INTAKE-FOUNDATION-F1-001`) defining 12 common contract domains (Drawing Units, Geometric Tolerance, Object Identity, Metadata Storage, Schema Versioning, Native AutoCAD Lifecycle, Clone/Copy/Insert semantics, Save/Reopen persistence, Undo/Redo atomicity, Erase/Restore, Block Asset Contracts, and Host Transaction Boundaries). Classified candidate values (`INSUNITS = 4`, $\varepsilon = 10^{-4}\text{ mm}$) vs inherited architectural baseline vs inherited frozen F0 contracts. Registered 10 canonical open questions in `docs/tranches/F1/ISSUES.md` (`ISSUE-F1-001` through `ISSUE-F1-010`). Created session log in `docs/tranches/F1/EXECUTION_LOG.md`. Preserved 100% frozen integrity of Tranche F0 and production code paths (zero production changes). Next authorized action is independent technical review of F1 INTAKE. Authoring of F1 DESIGN is strictly prohibited until independent review approval.

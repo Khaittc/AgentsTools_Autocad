@@ -1,9 +1,9 @@
 # TTC CAD — Project Progress
 
 Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))<br>
-Current Lifecycle Stage: TRANCHE_FROZEN / READY_FOR_INTAKE<br>
+Current Lifecycle Stage: INTAKE (Tranche F1)<br>
 Current Completed Tranche: F0 — FROZEN<br>
-Current Production Focus: F1 — READY_FOR_INTAKE<br>
+Current Production Focus: F1 — INTAKE_DRAFT / INDEPENDENT_REVIEW_PENDING<br>
 Status: ACTIVE_GOVERNANCE
 
 ---
@@ -77,9 +77,9 @@ Status: ACTIVE_GOVERNANCE
 - **F0 Tranche Status:** `FROZEN`
 - **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `APPROVED_FOR_EXECUTION / EXECUTED (COMPLETE)`)
 - **F0 Production Mutation:** `CLOSED / REQUIRES REOPEN AUTHORITY`
-- **Current Production Focus:** `F1 — READY_FOR_INTAKE`
-- **Production Build Authorization:** `NONE FOR F1`
-- **Next Lifecycle Action:** `F1 INTAKE`
+- **Current Production Focus:** `F1 — INTAKE_DRAFT / INDEPENDENT_REVIEW_PENDING`
+- **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
+- **Next Lifecycle Action:** `Independent Review of F1 INTAKE`
 
 ---
 
@@ -88,7 +88,7 @@ Status: ACTIVE_GOVERNANCE
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
 | **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `EXECUTED / WO-F0-001` | `COMPLETE / FROZEN` (Baseline `9892f905...`) |
-| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `NOT_STARTED` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`READY_FOR_INTAKE`) |
+| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `NOT_STARTED` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`INTAKE_DRAFT / INDEPENDENT_REVIEW_PENDING`) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F1_P1) |
 | **P3..P9** | **Panel Designer Capabilities** | Upstream | `PLANNED` | `NONE` | `BLOCKED` |
@@ -102,11 +102,11 @@ Status: ACTIVE_GOVERNANCE
 - **Approved Active Work Orders:** `NONE` (`WO-F0-001` EXECUTED / CLOSED)
 - **Draft Work Orders:** `NONE`
 - **Production Code Files:** `17 .cs files across Core, Infrastructure, AutoCAD, Tests (FROZEN)`
-- **Gate Result:** `F0_TRANCHE_FROZEN / F1_READY_FOR_INTAKE`
+- **Gate Result:** `F1_INTAKE_DRAFT_PENDING_REVIEW`
 
 ### Downstream Scope Controls:
 1. F0 is complete, 13/13 AC verified PASS, reviewed PASS (`REV-F0-002-R3`), and FROZEN.
-2. Tranche F1 is unblocked for PLANNING/INTAKE only (`READY_FOR_INTAKE`). Zero F1 code, zero F1 spec drafting, and zero F1 build authorization are granted.
+2. Tranche F1 is in INTAKE stage (`INTAKE-FOUNDATION-F1-001` drafted, `docs/tranches/F1/ISSUES.md` registered, pending independent review). F1 DESIGN, SPEC, and BUILD remain strictly unauthorized.
 3. Downstream tranches (P1, P2, M&E) remain strictly locked and BLOCKED.
 
 ---
@@ -125,6 +125,6 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Tranche F1 Planning & Intake (`F1-INTAKE-001`). Prepare F1 INTAKE / DESIGN / SPEC workflow.
+Independent Technical Review of Tranche F1 Intake (`INTAKE-FOUNDATION-F1-001`). Authoring of F1 DESIGN is NOT AUTHORIZED until independent review disposition is issued.
 
 Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED for build. Production code mutation outside frozen F0 baseline requires explicit reopen authority.
