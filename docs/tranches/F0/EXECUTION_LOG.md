@@ -1102,3 +1102,87 @@ Independent technical review of F0 production implementation (`REV-F0-002`).
 
 ### Next Action
 Handoff to ChatGPT / Independent Technical Reviewer for re-review `REV-F0-002-R2`.
+
+---
+
+## Session: AG-F0-010
+
+- **Date:** 2026-09-09
+- **Task ID:** `F0-VALIDATION-CLOSEOUT-001`
+- **Session ID:** `AG-F0-010`
+- **Reviewed Commit:** `c9a9ec4e182e32aa86be126c77a32e76f40c7413`
+- **Independent Re-Review:** `REV-F0-002-R2` (`BLOCKED / BLOCKED_PENDING_OPERATOR_VALIDATION`)
+- **Lifecycle Stage:** `REVIEW_VALIDATION`
+- **Target Tranche:** `F0 — AutoCAD Foundation`
+- **Purpose:** Persist review status, record Product Owner cold-start stability evidence, execute and persist final AC-F0-13 operator validation procedure.
+
+### 1. Review Persistence (REV-F0-002-R2)
+- Appended Section 11 to `docs/tranches/F0/REVIEW.md` recording external re-review `REV-F0-002-R2`.
+- Recorded review disposition `BLOCKED / BLOCKED_PENDING_OPERATOR_VALIDATION`.
+- Recorded SECURELOAD Policy Clarification: current workstation setting is an operational/environment property, not an F0 acceptance criterion; TTC automation does not weaken host security or silently mutate security settings.
+- Stated explicitly: *Antigravity is recording external reviewer evidence only.*
+- Treated `docs/tranches/F0/REVIEW.md` as strictly **READ ONLY** for the remainder of this task.
+
+### 2. Product Owner Manual Cold-Start Stability Evidence
+- **Evidence Type:** `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023`
+- **Test:** Ribbon Cold-Start Stability (Full AutoCAD 2023 Desktop UI)
+- **Execution Protocol:** 5 consecutive full AutoCAD 2023 cold restarts without manual `NETLOAD`.
+  - Restart 1: `TTC CAD` Ribbon tab visible & active — **PASS**
+  - Restart 2: `TTC CAD` Ribbon tab visible & active — **PASS**
+  - Restart 3: `TTC CAD` Ribbon tab visible & active — **PASS**
+  - Restart 4: `TTC CAD` Ribbon tab visible & active — **PASS**
+  - Restart 5: `TTC CAD` Ribbon tab visible & active — **PASS**
+- **Runs:** 5 | **Passed:** 5 | **Failed:** 0
+- **Result:** `PASS`
+- **Evidence Impact:**
+  - `AC-F0-03`: `PASS — STABILITY VERIFIED`
+  - `ISSUE-F0-007`: `RESOLVED_DESKTOP_VERIFIED`
+
+### 3. AC-F0-13 Operator Test Procedure & Outcome
+- **Requirement:** Application-Context Command Safety under zero open drawings (`MdiActiveDocument == null`).
+- **Procedure Presented to Operator:**
+  - Step A: Launch full desktop AutoCAD 2023, verify `TTC CAD` ribbon tab.
+  - Step B: Close all open drawings (`MdiActiveDocument == null`, palette shows `[No Active Document]`).
+  - Step C: Click `TTC CAD -> General -> TTCINFO` ribbon button without opening a drawing.
+  - Step D: Observe zero-document handling (no crash, no auto-created drawing, diagnostic output emitted).
+  - Step E: Open a normal drawing afterward, verify plugin usability restored.
+- **Operator Execution Result:** `NOT_RUN`
+  - The Product Owner was unable to execute the zero-document interactive desktop verification at this time.
+  - Per Section 7 and 15 directives, `AC-F0-13` remains: **`NOT_RUN / BLOCKING`**.
+  - Current status remains: **`BLOCKED_PENDING_OPERATOR_VALIDATION`**.
+
+### 4. Operational Security Observation
+- **Operational Security Note:** Current workstation reports `SECURELOAD=0`.
+- TTC validation automation did not modify this value.
+- This setting is owned by the Product Owner / AutoCAD environment policy and is outside the behavioral scope of F0.
+
+### 5. Production Source & Packaging Containment
+- Production Source Mutation: **NONE** (`*.cs`, `*.csproj`, `*.xaml`, `PackageContents.xml`, `settings.json`, bundle binaries untouched).
+- Scope Containment: ZERO code for F1, P1, P2, M&E.
+- Spec Modification: `SPEC.md` v1.0.0 FROZEN untouched.
+- Tranche Freeze: **NOT FROZEN**.
+
+---
+
+### Acceptance Criteria Status Matrix (Session AG-F0-010)
+
+| AC ID | Frozen Acceptance Criterion | Verification Source | Status |
+|:---|:---|:---|:---|
+| **AC-F0-01** | **Plugin Bootstrap:** Assembly loads without unhandled exceptions. | `AUTOMATED_TEST` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-02** | **Diagnostic Command (`TTCINFO`):** Outputs versions, config, log path. | `HEADLESS_AUTOCAD` + `OPERATOR_MANUAL_DESKTOP_EVIDENCE` | **PASS** |
+| **AC-F0-03** | **Ribbon Shell:** `TTC CAD` tab and buttons appear in ribbon on cold start. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` (5/5 cold restarts passed) | **PASS (STABILITY_VERIFIED)** |
+| **AC-F0-04** | **PaletteSet Shell:** `TTCPALETTE` opens modeless dockable WPF palette. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` | **PASS** |
+| **AC-F0-05** | **Valid Configuration:** Well-formed `settings.json` deserializes cleanly. | `AUTOMATED_TEST` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-06** | **Invalid / Missing Configuration:** Emits structured warning, safe fallback. | `AUTOMATED_TEST` (`ConfigurationWarningTests.cs`) | **PASS** |
+| **AC-F0-07** | **Structured File Logging:** `FileLogger` generates daily rolling log. | `AUTOMATED_TEST` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-08** | **Package Manifest Validation:** Conforms to schema with Series R24.2. | `AUTOMATED_TEST` (`ManifestValidationTests.cs`) | **PASS** |
+| **AC-F0-09** | **Decoupling Integrity:** Zero CAD references in Core and Infrastructure. | `AUTOMATED_TEST` (`DecouplingTests.cs`) | **PASS** |
+| **AC-F0-10** | **Strict Scope Containment:** Zero Panel or M&E features in codebase. | `AUTOMATED_TEST` (`ScopeContainmentTests.cs`) | **PASS** |
+| **AC-F0-11** | **Zero-Document State Safety:** Stable palette on close-all; restores on open. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-12** | **Palette Idempotency & Singleton:** Repeated `TTCPALETTE` toggles instance. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` | **PASS** |
+| **AC-F0-13** | **Application-Context Command Safety:** TTCINFO executes safely with 0 drawings open. | Desktop Operator Execution | **NOT_RUN / BLOCKING** |
+
+---
+
+### Next Action
+Awaiting Product Owner desktop execution of `AC-F0-13` procedure in AutoCAD 2023 Desktop UI to unlock final re-review `REV-F0-002-R3`.

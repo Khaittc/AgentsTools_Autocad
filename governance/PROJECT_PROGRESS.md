@@ -2,7 +2,7 @@
 
 Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))<br>
 Current Lifecycle Stage: REVIEW<br>
-Current Focus: F0 — Build Correction Complete / Independent Re-Review Pending (REV-F0-002-R2)<br>
+Current Focus: F0 — Blocked Pending Operator Validation (REV-F0-002-R2 persisted; AC-F0-13 pending desktop run)<br>
 Status: ACTIVE_GOVERNANCE
 
 ---
@@ -10,7 +10,7 @@ Status: ACTIVE_GOVERNANCE
 ## 1. Operational Lanes
 
 - **Simulator Lane (`src/`):** `ACTIVE / DESIGN EVIDENCE` (React/TS UX Simulator, Scenarios S01–S05 validated).
-- **Production AutoCAD Lane (`production/`):** `BUILD_CORRECTION_COMPLETE / RE_REVIEW_PENDING` (WO-F0-001 executed; multi-project .NET 4.8 solution built; 20/20 automated tests passing; AutoCAD 2023 host verified).
+- **Production AutoCAD Lane (`production/`):** `COMPLETE / BLOCKED_PENDING_OPERATOR_VALIDATION` (WO-F0-001 executed; multi-project .NET 4.8 solution built; 20/20 automated tests passing; AutoCAD 2023 host verified; 5/5 cold restarts passed; AC-F0-13 awaiting desktop execution).
 
 ---
 
@@ -62,18 +62,21 @@ Status: ACTIVE_GOVERNANCE
   - Round 6 (Build Implementation): `F0-BUILD-001` (Session `AG-F0-008`, Implementation complete, Commit `30aa4ca7ee4609c8ed973bd1435823ff366c8c96`)
   - Round 6 Review: `REV-F0-002` (`NEEDS_FIX / RETURN_TO_BUILD_CORRECTION`, Commit `30aa4ca7ee4609c8ed973bd1435823ff366c8c96`)
   - Round 7 (Build Correction): `F0-BUILD-CORRECTION-001` (Session `AG-F0-009`, REV-F0-002 findings F01-F07 addressed, 20/20 tests pass, SECURELOAD preserved, config warnings implemented)
+  - Round 8 (Independent Re-Review): `REV-F0-002-R2` (`BLOCKED / BLOCKED_PENDING_OPERATOR_VALIDATION`, Commit `c9a9ec4e182e32aa86be126c77a32e76f40c7413`, AC-F0-01..12 PASS, SECURELOAD clarification persisted, AC-F0-13 pending operator validation)
+  - Round 9 (Operator Validation & Stability): `F0-VALIDATION-CLOSEOUT-001` (Session `AG-F0-010`, 5/5 desktop cold-start stability runs verified PASS; AC-F0-13 procedure presented and marked `NOT_RUN`)
 - **Reviewer:** ChatGPT / Independent Technical Reviewer
 - **Latest Spec Review:** `REV-F0-001-R3` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md) — `PASS / PASS_FOR_FREEZE`)
 - **F0 Spec Status:** `FROZEN (v1.0.0)`
 - **F0 Tranche Status:** `NOT FROZEN` (Tranche completion requires BUILD -> REVIEW -> FREEZE)
-- **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `APPROVED_FOR_EXECUTION / BUILD_CORRECTION_COMPLETE`)
-- **Latest Implementation Review:** `REV-F0-002` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md) — `NEEDS_FIX / RETURN_TO_BUILD_CORRECTION`)
+- **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `APPROVED_FOR_EXECUTION / EXECUTION_COMPLETE`)
+- **Latest Implementation Review:** `REV-F0-002-R2` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md) — `BLOCKED / BLOCKED_PENDING_OPERATOR_VALIDATION`)
 - **Product Owner Approval:** `APPROVED_FOR_EXECUTION` (Task: `F0-WORK-ORDER-APPROVAL-001`, Session: `AG-F0-007`)
 - **Approved Execution Baseline:** `b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515`
-- **Implementation:** `IMPLEMENTED_PENDING_RE_REVIEW`
+- **Implementation:** `IMPLEMENTED_PENDING_OPERATOR_VALIDATION`
 - **Production Build Authorization:** `AUTHORIZED_FOR_F0_ONLY`
 - **Current Lifecycle Stage:** `REVIEW`
-- **Expected Next Review:** `REV-F0-002-R2`
+- **Current Status:** `BLOCKED_PENDING_OPERATOR_VALIDATION`
+- **Expected Next Review:** `REV-F0-002-R3`
 
 ---
 
@@ -81,7 +84,7 @@ Status: ACTIVE_GOVERNANCE
 
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `APPROVED / WO-F0-001` | `COMPLETE / RE_REVIEW_PENDING` |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `APPROVED / WO-F0-001` | `COMPLETE / BLOCKED_PENDING_OPERATOR_VALIDATION` |
 | **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F0) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F0_F1_P1) |
@@ -93,10 +96,10 @@ Status: ACTIVE_GOVERNANCE
 ## 5. Current Gate & Build Authorization
 
 - **Production Build Authorization:** `AUTHORIZED_FOR_F0_ONLY`
-- **Approved Active Work Orders:** `WO-F0-001 (BUILD_CORRECTION_COMPLETE)`
+- **Approved Active Work Orders:** `WO-F0-001 (EXECUTION_COMPLETE / BLOCKED_PENDING_OPERATOR_VALIDATION)`
 - **Draft Work Orders:** `NONE`
 - **Production Code Files:** `15 .cs files across Core, Infrastructure, AutoCAD, Tests`
-- **Gate Result:** `PASS_FOR_INDEPENDENT_RE_REVIEW`
+- **Gate Result:** `BLOCKED_PENDING_OPERATOR_VALIDATION`
 
 ### Downstream Scope Controls:
 1. F0 BUILD correction is complete, automated unit tests verified (20/20 pass), and host verified.
@@ -118,6 +121,6 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent technical re-review of F0 production implementation (`REV-F0-002-R2`).
+Product Owner desktop execution of AC-F0-13 (zero-document application context safety), followed by independent final re-review REV-F0-002-R3.
 
 Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED. Production code mutation outside the bounded scope and paths of `WO-F0-001` is strictly prohibited.
