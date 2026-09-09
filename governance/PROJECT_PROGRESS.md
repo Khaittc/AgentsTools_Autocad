@@ -1,9 +1,9 @@
 # TTC CAD — Project Progress
 
 Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))<br>
-Current Lifecycle Stage: INTAKE_CORRECTION (Tranche F1)<br>
+Current Lifecycle Stage: DESIGN (Tranche F1)<br>
 Current Completed Tranche: F0 — FROZEN<br>
-Current Production Focus: F1 — INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING<br>
+Current Production Focus: F1 — PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING<br>
 Status: ACTIVE_GOVERNANCE
 
 ---
@@ -77,29 +77,28 @@ Status: ACTIVE_GOVERNANCE
 - **F0 Tranche Status:** `FROZEN`
 - **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `APPROVED_FOR_EXECUTION / EXECUTED (COMPLETE)`)
 - **F0 Production Mutation:** `CLOSED / REQUIRES REOPEN AUTHORITY`
-- **Current Production Focus:** `F1 — INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
+- **Current Production Focus:** `F1 — PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING`
 - **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
-- **Next Lifecycle Action:** `Independent Re-Review REV-F1-INTAKE-001-R3`
+- **Next Lifecycle Action:** `Independent Review of F1 DESIGN`
 
 ---
 
-## 3.2. Tranche F1 Review State
+## 3.2. Tranche F1 Design State
 
 - **Tranche:** F1 — Common CAD Contracts
-- **Lifecycle Stage:** INTAKE
-- **Status:** `INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
-- **Current Review:** `REV-F1-INTAKE-001-R2` ([docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
-- **Reviewer:** ChatGPT / Independent Technical Reviewer
-- **Review Result:** `NEEDS_FIX`
-- **Disposition:** `RETURN_TO_INTAKE_CORRECTION`
-- **Correction Task:** `F1-INTAKE-CORRECTION-002` (Session `AG-F1-003`)
-- **F1 DESIGN:** `NOT AUTHORIZED`
-- **F1 SPEC:** `NOT_STARTED`
+- **Lifecycle Stage:** DESIGN
+- **Status:** `PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING`
+- **Intake Status:** `COMPLETE / PASS_TO_DESIGN` ([docs/tranches/F1/INTAKE.md](../docs/tranches/F1/INTAKE.md))
+- **Latest Intake Review:** `REV-F1-INTAKE-001-R3` (`PASS / PASS_TO_DESIGN` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
+- **Design Document:** `DESIGN-FOUNDATION-F1-001` ([docs/tranches/F1/DESIGN.md](../docs/tranches/F1/DESIGN.md))
+- **API Verification:** Host Evidence Compiled ([docs/tranches/F1/API_VERIFICATION.md](../docs/tranches/F1/API_VERIFICATION.md))
+- **F1 DESIGN:** `AUTHORED / PENDING_INDEPENDENT_REVIEW`
+- **F1 SPEC:** `NOT_STARTED / NOT AUTHORIZED`
 - **Work Order:** `NONE`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
 - **P1/P2/M&E:** `BLOCKED`
-- **Next Authorized Action:** Independent re-review `REV-F1-INTAKE-001-R3`
+- **Next Authorized Action:** Independent technical review of F1 DESIGN (`DESIGN-FOUNDATION-F1-001`)
 
 ---
 
@@ -108,7 +107,7 @@ Status: ACTIVE_GOVERNANCE
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
 | **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `EXECUTED / WO-F0-001` | `COMPLETE / FROZEN` (Baseline `9892f905...`) |
-| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `NOT_STARTED` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`) |
+| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `NOT_STARTED` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING`) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F1_P1) |
 | **P3..P9** | **Panel Designer Capabilities** | Upstream | `PLANNED` | `NONE` | `BLOCKED` |
@@ -122,11 +121,11 @@ Status: ACTIVE_GOVERNANCE
 - **Approved Active Work Orders:** `NONE` (`WO-F0-001` EXECUTED / CLOSED)
 - **Draft Work Orders:** `NONE`
 - **Production Code Files:** `17 .cs files across Core, Infrastructure, AutoCAD, Tests (FROZEN)`
-- **Gate Result:** `F1_INTAKE_CORRECTED_PENDING_RE_REVIEW`
+- **Gate Result:** `F1_DESIGN_PROPOSED_PENDING_REVIEW`
 
 ### Downstream Scope Controls:
 1. F0 is complete, 13/13 AC verified PASS, reviewed PASS (`REV-F0-002-R3`), and FROZEN.
-2. Tranche F1 is in INTAKE stage (`INTAKE-FOUNDATION-F1-001` corrected, `REV-F1-INTAKE-001-R2` persisted in `docs/tranches/F1/REVIEW.md`, 10 canonical issues in `docs/tranches/F1/ISSUES.md`, pending independent re-review `REV-F1-INTAKE-001-R3`). F1 DESIGN, SPEC, and BUILD remain strictly unauthorized.
+2. Tranche F1 is in DESIGN stage (`DESIGN-FOUNDATION-F1-001` authored, 10 canonical issues addressed with design proposals, pending independent technical review). F1 SPEC and BUILD remain strictly unauthorized.
 3. Downstream tranches (P1, P2, M&E) remain strictly locked and BLOCKED.
 
 ---
@@ -145,6 +144,6 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent Technical Re-Review of Tranche F1 Intake (`REV-F1-INTAKE-001-R3`). Authoring of F1 DESIGN is NOT AUTHORIZED until independent review disposition is issued.
+Independent Technical Review of Tranche F1 DESIGN (`DESIGN-FOUNDATION-F1-001`). Authoring of F1 SPEC is NOT AUTHORIZED until independent review disposition is issued.
 
 Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED for build. Production code mutation outside frozen F0 baseline requires explicit reopen authority.

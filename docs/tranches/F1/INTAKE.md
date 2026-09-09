@@ -346,14 +346,15 @@ Tranche F1 may exit `INTAKE` and transition to `DESIGN` only when all of the fol
 7. [x] Open questions are formally captured and cross-referenced to `docs/tranches/F1/ISSUES.md`.
 8. [x] Risks are registered with appropriate mitigation strategies.
 9. [x] Zero production C# code has been written for F1.
-10. [ ] Independent Technical Reviewer reviews and issues disposition allowing entry into `DESIGN`.
+10. [x] Independent Technical Reviewer reviewed Intake and authorized DESIGN.
 
 ---
 
 ## 16. Next Lifecycle Gate
 
-- **Current Status:** `INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
-- **Prior Review:** `REV-F1-INTAKE-001-R2` (`NEEDS_FIX / RETURN_TO_INTAKE_CORRECTION`)
-- **Next Required Action:** Independent technical re-review `REV-F1-INTAKE-001-R3`.
-- **Next Stage Upon Approval:** `DESIGN` (Authoring `docs/tranches/F1/DESIGN.md`).
+- **Current Status:** `INTAKE_COMPLETE / PASS_TO_DESIGN`
+- **Intake Review Baseline:** `REV-F1-INTAKE-001-R3` (`PASS / PASS_TO_DESIGN`)
+- **Historical Reviews:** `REV-F1-INTAKE-001` (`NEEDS_FIX`), `REV-F1-INTAKE-001-R2` (`NEEDS_FIX`)
+- **Current Lifecycle Stage:** `DESIGN` (Authoring `docs/tranches/F1/DESIGN.md`)
+- **Spec Status:** `NOT_STARTED / NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE` (Remains strictly unauthorized).

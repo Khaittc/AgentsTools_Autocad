@@ -12,14 +12,14 @@
 ## 1. Status Summary
 
 - **Tranche:** F1 — Common CAD Contracts
-- **Lifecycle Stage:** INTAKE
-- **Current Review:** `REV-F1-INTAKE-001-R2`
-- **Current Result:** `NEEDS_FIX`
-- **Current Disposition:** `RETURN_TO_INTAKE_CORRECTION`
-- **F1 DESIGN:** `NOT AUTHORIZED`
-- **F1 SPEC:** `NOT_STARTED`
+- **Lifecycle Stage:** DESIGN
+- **Current Review:** `REV-F1-INTAKE-001-R3`
+- **Current Result:** `PASS`
+- **Current Disposition:** `PASS_TO_DESIGN`
+- **F1 DESIGN:** `AUTHORIZED`
+- **F1 SPEC:** `NOT_STARTED / NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
-- **Expected Next Review:** `REV-F1-INTAKE-001-R3`
+- **Expected Next Review:** Independent Review of F1 DESIGN
 
 ---
 
@@ -80,3 +80,36 @@
 4. Resolve execution continuity for `AG-F1-002` (commit `fe79da7fb1ac71568c53732e9e7b4c0be04deef4`) and append session `AG-F1-003`.
 5. Authoring F1 DESIGN remains strictly **NOT AUTHORIZED**.
 6. Resubmit for independent re-review: `REV-F1-INTAKE-001-R3`.
+
+---
+
+## 4. Independent Review: REV-F1-INTAKE-001-R3
+
+- **Review ID:** `REV-F1-INTAKE-001-R3`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Date:** 2026-09-09
+- **Reviewed Commit:** `df9354d5b679839ed7ed237df52deb395c3e8cb8`
+- **Reviewed Scope:** `docs/tranches/F1/INTAKE.md`, `docs/tranches/F1/ISSUES.md`, `docs/tranches/F1/EXECUTION_LOG.md`, `docs/tranches/F1/REVIEW.md`, continuity artifacts.
+- **Result:** `PASS`
+- **Disposition:** `PASS_TO_DESIGN`
+
+### Evaluation
+- **F0 dependency/immutability:** PASS (Frozen F0 baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf` remains untouched).
+- **Intake scope:** PASS (Clear problem statement, domains A through L, non-goals, stakeholders).
+- **Candidate-vs-standard discipline:** PASS (`INSUNITS = 4` and $\varepsilon = 10^{-4}\text{ mm}$ strictly maintained as candidates).
+- **Units boundary:** PASS (Respects Architecture Roadmap §42: panel = mm assumption, M&E = configurable project units, Core = normalized units where practical).
+- **Handle / ObjectId / TTC_OBJECT_ID semantics:** PASS (Factual distinction properly maintained; Handle identified as persistent database object identity within DWG, not duplicated on clone; ObjectId as transient memory locator; TTC_OBJECT_ID as cross-DWG / clone-safe contract).
+- **Clone / XRecord uncertainty classification:** PASS (Native copy / dictionary deep-clone classified as `HOST BEHAVIOR TO VERIFY IN DESIGN`).
+- **Metadata / lifecycle problem boundary:** PASS (Native lifecycle cases MOVE..REDEFINE, failure scenarios systematically identified).
+- **Transaction / DocumentLock boundary:** PASS (Managed transactions required for DB mutation; explicit DocumentLock required contextually for modeless UI / application contexts).
+- **Ten canonical issues:** VALID / OPEN FOR DESIGN-SPEC (`ISSUE-F1-001` through `ISSUE-F1-010`).
+- **Production mutation:** NONE (`production/**` verified unmodified).
+
+### Authority
+- **F1 DESIGN:** `AUTHORIZED`
+- **F1 SPEC:** `NOT AUTHORIZED`
+- **F1 BUILD:** `NOT AUTHORIZED`
+- **Production Build Authorization:** `NONE`
+
+After recording, this file is READ-ONLY for the remainder of task `F1-DESIGN-001`.

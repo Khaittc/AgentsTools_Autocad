@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-09 23:20:00 +07:00
+2026-09-09 23:40:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-fe79da7fb1ac71568c53732e9e7b4c0be04deef4
+df9354d5b679839ed7ed237df52deb395c3e8cb8
 
 Approved Execution Baseline:
 NONE (F1 Build NOT AUTHORIZED; F0 Baseline: 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf)
@@ -20,7 +20,7 @@ Frozen Implementation Baseline:
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD contains or descends from F1 INTAKE correction commit of task F1-INTAKE-CORRECTION-002.
+Current HEAD contains or descends from F1 DESIGN commit of task F1-DESIGN-001.
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -29,13 +29,16 @@ Current Tranche:
 F1 — Common CAD Contracts
 
 Current Lifecycle Stage:
-INTAKE
+DESIGN
 
 Current Status:
-INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
+PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING
 
-Current Review:
-REV-F1-INTAKE-001-R2 (NEEDS_FIX / RETURN_TO_INTAKE_CORRECTION)
+Intake Status:
+INTAKE-FOUNDATION-F1-001 — COMPLETE / PASS_TO_DESIGN (REV-F1-INTAKE-001-R3 PASS)
+
+Current Design Document:
+DESIGN-FOUNDATION-F1-001 (PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING)
 
 Current Frozen Authority:
 docs/tranches/F0/SPEC.md — FROZEN v1.0.0
@@ -50,7 +53,7 @@ Current Production Mutation Authority:
 NONE
 
 Current Spec:
-NOT_STARTED (F0 SPEC.md FROZEN v1.0.0)
+NOT_STARTED / NOT AUTHORIZED
 
 Current Work Order:
 NONE
@@ -62,22 +65,22 @@ F0 Tranche:
 FROZEN
 
 F1 Tranche:
-INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
+PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING
 
 F1 DESIGN:
-NOT AUTHORIZED
+AUTHORED / PENDING_INDEPENDENT_REVIEW
 
 Last Completed Task:
-F1-INTAKE-CORRECTION-002
+F1-DESIGN-001
 
 Last Agent:
-Antigravity / AG-F1-003
+Antigravity / AG-F1-004
 
 Last Result:
-INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
+PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING
 
 Open Blocking Issues:
-0 blocking INTAKE exit (10 issues registered in docs/tranches/F1/ISSUES.md for DESIGN/SPEC investigation)
+0 blocking DESIGN exit (10 issues registered in docs/tranches/F1/ISSUES.md addressed with design proposals, pending SPEC formalization)
 
 Open Non-Blocking Issues:
 0
@@ -86,19 +89,19 @@ Next Tranche:
 P1 — Component Library (BLOCKED by F1)
 
 Next Authorized Action:
-Independent technical re-review REV-F1-INTAKE-001-R3. F1 DESIGN authoring is NOT AUTHORIZED until independent review disposition is issued.
+Independent technical review of Tranche F1 DESIGN (`DESIGN-FOUNDATION-F1-001`). F1 SPEC authoring and BUILD remain strictly NOT AUTHORIZED until independent review disposition is issued.
 
 F1 Production Build:
 NOT AUTHORIZED
 
 Forbidden Next Actions:
-- Authoring F1 DESIGN before independent review disposition
-- Authoring F1 SPEC
+- Authoring F1 SPEC before independent design review disposition
 - Creating F1 Work Order
 - F1 production code creation (BUILD NOT AUTHORIZED)
 - F0 production code mutation without reopen authority
 - P1, P2, M&E implementation (BLOCKED)
-- Frozen Spec mutation
+- Freezing candidate standards without SPEC/freeze authority
+- Self-approving DESIGN
 
 Required First Reads:
 1. governance/ANTIGRAVITY_INSTRUCTIONS.md
@@ -107,13 +110,16 @@ Required First Reads:
 4. governance/DECISION_LOG.md
 5. docs/tranches/TRANCHE_STATUS.md
 6. docs/tranches/TRANCHE_ROADMAP.md
-7. docs/tranches/F1/REVIEW.md
-8. docs/tranches/F1/INTAKE.md
-9. docs/tranches/F1/ISSUES.md
-10. docs/tranches/F1/EXECUTION_LOG.md
-11. docs/tranches/F0/README.md
-12. docs/tranches/F0/SPEC.md
-13. docs/tranches/F0/REVIEW.md
+7. docs/tranches/F1/README.md
+8. docs/tranches/F1/REVIEW.md
+9. docs/tranches/F1/INTAKE.md
+10. docs/tranches/F1/DESIGN.md
+11. docs/tranches/F1/API_VERIFICATION.md
+12. docs/tranches/F1/ISSUES.md
+13. docs/tranches/F1/EXECUTION_LOG.md
+14. docs/tranches/F0/README.md
+15. docs/tranches/F0/SPEC.md
+16. docs/tranches/F0/REVIEW.md
 
 Handoff Notes:
-Task F1-INTAKE-CORRECTION-002 (Session AG-F1-003) resolved two residual findings from independent re-review REV-F1-INTAKE-001-R2 (NEEDS_FIX / RETURN_TO_INTAKE_CORRECTION). Persisted review in docs/tranches/F1/REVIEW.md. Corrected INTAKE.md Section 2 (Handle semantics: removed statement claiming Handle is duplicated on copy; clarified Handle identifies AutoCAD database objects within a database, distinct from TTC semantic identity; ObjectId is transient locator; clone gets distinct Handle, risk is whether TTC metadata is cloned unchanged; exact clone behavior is to be verified in DESIGN). Audited ISSUE-F1-005 and RSK-F1-01 to separate Handle from TTC identity and phrase native clone/XRecord behavior as HOST BEHAVIOR TO VERIFY IN DESIGN rather than an already proven universal fact. Resolved execution continuity by reconciling AG-F1-002 ending commit (fe79da7fb1ac71568c53732e9e7b4c0be04deef4) and appending session AG-F1-003. Preserved 100% frozen integrity of Tranche F0 and production code paths (zero production changes). Next authorized action is independent technical re-review REV-F1-INTAKE-001-R3. F1 DESIGN authoring remains strictly NOT AUTHORIZED.
+Task F1-DESIGN-001 (Session AG-F1-004) authored the architectural design for Tranche F1 (Common CAD Contracts). Persisted REV-F1-INTAKE-001-R3 (PASS / PASS_TO_DESIGN) in docs/tranches/F1/REVIEW.md (marked read-only). Closed Intake gate in docs/tranches/F1/INTAKE.md (criterion 10 checked, status INTAKE_COMPLETE / PASS_TO_DESIGN). Reconciled AG-F1-003 ending commit (df9354d5b679839ed7ed237df52deb395c3e8cb8) and appended session AG-F1-004 in docs/tranches/F1/EXECUTION_LOG.md. Created docs/tranches/F1/README.md (front-door). Created docs/tranches/F1/API_VERIFICATION.md compiling AutoCAD host API evidence across deep-clone, dictionaries, events, and locking. Authored docs/tranches/F1/DESIGN.md (DESIGN-FOUNDATION-F1-001) covering all 15 required sections (A through O) including unit architecture (2-tier adapter respecting panel mm assumption vs M&E configurable units, INSUNITS=4 candidate), tolerance architecture (typed tolerance record in pure Core, 1e-4 mm candidate), object identity (prefixed UUIDv4, global uniqueness, distinct from Handle and ObjectId), metadata storage (hybrid registered XData + ExtensionDictionary XRecords, vanilla DWG compatibility), schema versioning (semantic versioning, read-only protection, unknown field preservation), native edit lifecycle matrix, clone lifecycle (clean-on-save / command audit), save/reopen persistence, undo/redo compound atomicity, block asset contract, passive host event & cache invalidation strategy, transaction & document lock execution matrix, Core vs AutoCAD dependency boundaries, failure recovery architecture, and host verification plan. Updated all 10 canonical issues in docs/tranches/F1/ISSUES.md with design dispositions. Preserved 100% frozen integrity of Tranche F0 and production code paths (zero production changes). Next authorized action is independent technical review of F1 DESIGN. F1 SPEC and BUILD remain strictly NOT AUTHORIZED.

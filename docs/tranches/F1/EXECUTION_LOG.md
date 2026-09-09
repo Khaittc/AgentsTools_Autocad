@@ -220,3 +220,75 @@ Independent technical re-review: `REV-F1-INTAKE-001-R2`. F1 DESIGN remains stric
 
 ### Next Required Action
 Independent technical re-review: `REV-F1-INTAKE-001-R3`. F1 DESIGN remains strictly NOT AUTHORIZED until independent reviewer approval.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F1-003
+- **Task ID:** F1-INTAKE-CORRECTION-002
+- **Resolved Ending Commit:** `df9354d5b679839ed7ed237df52deb395c3e8cb8`
+- **Resolution Date:** 2026-09-09
+- **Recorded In:** Session `AG-F1-004` (`F1-DESIGN-001`)
+- **Reason:** Reconciled historical completion commit `df9354d5b679839ed7ed237df52deb395c3e8cb8` in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-09 / AG-F1-004
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-004`
+- **Task ID:** `F1-DESIGN-001`
+- **Lifecycle Stage:** `DESIGN`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Intake Review:** `REV-F1-INTAKE-001-R3` (`PASS / PASS_TO_DESIGN`)
+- **Work Order:** `NONE` (Architectural Design Stage Only)
+- **Starting Commit:** `df9354d5b679839ed7ed237df52deb395c3e8cb8`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+1. Author architectural DESIGN for Tranche F1 (`DESIGN-FOUNDATION-F1-001`).
+2. Persist independent review `REV-F1-INTAKE-001-R3` (`PASS / PASS_TO_DESIGN`) in `docs/tranches/F1/REVIEW.md`.
+3. Close INTAKE gate in `docs/tranches/F1/INTAKE.md` (`INTAKE_COMPLETE / PASS_TO_DESIGN`).
+4. Reconcile execution continuity for `AG-F1-003` (commit `df9354d5b679839ed7ed237df52deb395c3e8cb8`) and append `AG-F1-004`.
+5. Create Tranche F1 Front-Door README (`docs/tranches/F1/README.md`).
+6. Compile AutoCAD host API verification evidence (`docs/tranches/F1/API_VERIFICATION.md`).
+7. Create `docs/tranches/F1/DESIGN.md` covering all 15 required architectural sections (A through O).
+8. Update issue dispositions in `docs/tranches/F1/ISSUES.md` (`ISSUE-F1-001` through `ISSUE-F1-010`).
+9. Maintain strict immutability: zero production C# code (`production/**`), zero F0 mutations, no `SPEC.md`, no `WORK_ORDER.md`.
+10. Update project continuity artifacts (`docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, `governance/AGENT_HANDOFF.md`).
+11. Prepare for independent technical review of F1 DESIGN.
+
+---
+
+### Execution Details
+- **Review Persisted:** `REV-F1-INTAKE-001-R3` persisted in `docs/tranches/F1/REVIEW.md` (marked read-only).
+- **Intake Closed:** `docs/tranches/F1/INTAKE.md` criterion #10 checked, status updated to `INTAKE_COMPLETE / PASS_TO_DESIGN`.
+- **Tranche Front-Door Created:** `docs/tranches/F1/README.md` created.
+- **API Verification Created:** `docs/tranches/F1/API_VERIFICATION.md` created.
+- **Design Document Created:** `docs/tranches/F1/DESIGN.md` (`DESIGN-FOUNDATION-F1-001`, Status: `PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING`).
+- **Issue Registry Updated:** `docs/tranches/F1/ISSUES.md` updated with DESIGN proposals and dispositions.
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Spec / Work Order:** NOT created (strictly NOT AUTHORIZED).
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent technical review of Tranche F1 DESIGN (`DESIGN-FOUNDATION-F1-001`). F1 SPEC and BUILD remain strictly NOT AUTHORIZED.
