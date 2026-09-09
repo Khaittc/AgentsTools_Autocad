@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-09 22:00:00 +07:00
+2026-09-09 22:30:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,26 +10,29 @@ Branch:
 simulator
 
 Baseline Commit:
-9b8bb0693772b4af628f7fa308bf37d977c5b754
+9892f905d6650fdeb6cb4a98431fc8d5e17e84bf
 
 Approved Execution Baseline:
 b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515
 
+Frozen Implementation Baseline:
+9892f905d6650fdeb6cb4a98431fc8d5e17e84bf
+
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD must contain or descend from Result Commit of task F0-BUILD-CORRECTION-001.
+Current HEAD contains or descends from Tranche Freeze commit of task F0-TRANCHE-FREEZE-001.
 
 Development Model:
 SPEC-FIRST PER TRANCHE
 
 Current Tranche:
-F0 — AutoCAD Foundation
+F0 — FROZEN / COMPLETE
 
 Current Lifecycle Stage:
-REVIEW_VALIDATION
+TRANCHE_FROZEN / READY_FOR_INTAKE
 
 Current Status:
-RIBBON_DISPATCH_CORRECTED / OPERATOR_VALIDATION_PENDING
+F0_FROZEN / F1_READY_FOR_INTAKE
 
 Current Frozen Authority:
 docs/tranches/F0/SPEC.md — FROZEN v1.0.0
@@ -38,67 +41,68 @@ Frozen Dependencies:
 NONE — F0 is the root technical tranche.
 
 Production Build Authorization:
-AUTHORIZED_FOR_F0_ONLY
+NONE (F0 mutation CLOSED; F1 NOT AUTHORIZED)
+
+Current Production Mutation Authority:
+NONE
 
 Current Spec:
 docs/tranches/F0/SPEC.md (Status: FROZEN v1.0.0)
 
 Current Work Order:
-docs/tranches/F0/WORK_ORDER.md (Status: APPROVED_FOR_EXECUTION / EXECUTION_COMPLETE)
+docs/tranches/F0/WORK_ORDER.md (Status: APPROVED_FOR_EXECUTION / EXECUTED (COMPLETE))
 
 Implementation:
-IMPLEMENTED_PENDING_OPERATOR_VALIDATION
+COMPLETE / REVIEWED PASS
 
 F0 Tranche:
-NOT FROZEN
+FROZEN
 
-Latest Spec Review:
-REV-F0-001-R3 = PASS / PASS_FOR_FREEZE
+Final Review:
+REV-F0-002-R3 = PASS / PASS_FOR_TRANCHE_FREEZE
 
-Latest WO Review:
-REV-WO-F0-001-002 = PASS_FOR_EXECUTION_APPROVAL
+Acceptance:
+13/13 PASS
 
-Latest Implementation Review:
-REV-F0-002-R2 = BLOCKED / BLOCKED_PENDING_OPERATOR_VALIDATION
-
-Latest Review Addendum:
-REV-F0-002-R2-ADDENDUM-001 = BUILD_CORRECTION_REQUIRED
-
-Expected Next Review:
-REV-F0-002-R3
+Issues:
+9/9 RESOLVED
 
 Last Completed Task:
-F0-RIBBON-DISPATCH-CORRECTION-001
+F0-TRANCHE-FREEZE-001
 
 Last Agent:
-Antigravity / AG-F0-011
+Antigravity / AG-F0-012
 
 Last Result:
-PASS / RIBBON_DISPATCH_CORRECTED
+PASS / F0_TRANCHE_FROZEN
 
 Open Blocking Issues:
-1 blocking verification (Product Owner desktop validation for Ribbon clicks, AC-F0-13, and 5 cold-start restarts; 0 code defects)
+0
 
 Open Non-Blocking Issues:
-0 (9 issues recorded: 8 resolved/verified, 1 resolved pending desktop verification)
+0 (9 issues recorded: 9 resolved/closed)
 
-Reviewer Disposition:
-BUILD_CORRECTION_REQUIRED (REV-F0-002-R2-ADDENDUM-001)
+Product Owner Freeze Authority:
+EXPLICITLY APPROVED (FREEZE F0)
 
-Product Owner Approval:
-APPROVED_FOR_EXECUTION
+Next Tranche:
+F1 — Common CAD Contracts
+
+F1 Status:
+READY_FOR_INTAKE
 
 Next Authorized Action:
-Product Owner desktop validation of Ribbon TTCINFO, TTCPALETTE, AC-F0-13, and 5 cold-start restarts, followed by independent final re-review REV-F0-002-R3.
+Prepare F1 INTAKE / DESIGN / SPEC workflow (`F1-INTAKE-001`).
+
+F1 Production Build:
+NOT AUTHORIZED
 
 Forbidden Next Actions:
-- F1 (BLOCKED)
-- P1 (BLOCKED)
-- P2 (BLOCKED)
-- M&E (BLOCKED)
+- F0 production code mutation without reopen authority
+- F1 production code creation (BUILD NOT AUTHORIZED)
+- F1 spec drafting without intake approval
+- P1, P2, M&E implementation (BLOCKED)
 - Frozen Spec mutation
-- Work Order mutation outside review disposition
-- Implementation of downstream features
 
 Required First Reads:
 1. governance/ANTIGRAVITY_INSTRUCTIONS.md
@@ -118,4 +122,4 @@ Required First Reads:
 15. docs/tranches/F0/WORK_ORDER.md
 
 Handoff Notes:
-Task F0-RIBBON-DISPATCH-CORRECTION-001 (Session AG-F0-011) resolved the Ribbon button click command dispatch failure identified by the Product Owner (finding F08 / REV-F0-002-R2-ADDENDUM-001). The root cause was identified: Autodesk's WPF Ribbon framework passes the RibbonButton (RibbonCommandItem) instance to ICommand.Execute, where previous code expected a direct string. Created pure `RibbonCommandResolver` in Core whitelisting `TTCINFO` and `TTCPALETTE` with defensive parameter extraction (CommandParameter/Id via reflection or direct string) and whitespace trimming. Updated `RibbonCommandHandler.Execute` in `RibbonHost.cs` to handle `RibbonCommandItem`, direct string, and fallback, dispatching to active-doc (`doc.SendStringToExecute`) or zero-doc (`InfoCommand.ExecuteApplicationContextInfo()` / `PaletteHost.ToggleVisibility()`) with diagnostic logging. Added 8 unit tests in `RibbonCommandResolverTests.cs` (45/45 automated unit tests pass). Rebuilt solution and updated `%APPDATA%\Autodesk\ApplicationPlugins\TTC.CadTools.bundle`. Disabled duplicate in ProgramData (`.disabled`) to ensure deterministic loading. Verified direct command-line regression in AutoCAD 2023 `accoreconsole.exe`. Awaiting Product Owner desktop UI verification of Ribbon buttons, AC-F0-13, and 5 cold restarts before independent re-review REV-F0-002-R3.
+Task F0-TRANCHE-FREEZE-001 (Session AG-F0-012) formally froze Tranche F0 (AutoCAD Foundation). Product Owner manual desktop verification in AutoCAD 2023 confirmed Ribbon TTCINFO (PASS), Ribbon TTCPALETTE (PASS), Ribbon Command Dispatch (PASS), 5/5 cold restart stability (PASS), and AC-F0-13 (PASS/CLOSED). Independent reviewer ChatGPT issued REV-F0-002-R3 (PASS / PASS_FOR_TRANCHE_FREEZE) evaluating implementation baseline commit 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf, 45/45 automated unit tests, and runtime evidence. All 13 Acceptance Criteria (AC-F0-01 through AC-F0-13) are PASS. All 9 registered issues (ISSUE-F0-001 through ISSUE-F0-009) are RESOLVED. Product Owner explicitly authorized FREEZE F0. Production code mutation authority for F0 is formally CLOSED. Tranche F1 (Common CAD Contracts) dependency is SATISFIED and unblocked for PLANNING/INTAKE ONLY (READY_FOR_INTAKE). F1 production build remains strictly NOT AUTHORIZED; no F1 code, no F1 spec drafting, and no F1 work orders may be created until intake and design gates are completed. Downstream tranches (P1, P2, M&E) remain BLOCKED.

@@ -1,8 +1,9 @@
 # TTC CAD — Project Progress
 
 Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))<br>
-Current Lifecycle Stage: REVIEW_VALIDATION<br>
-Current Focus: F0 — Ribbon Dispatch Corrected / Operator Desktop Validation Pending<br>
+Current Lifecycle Stage: TRANCHE_FROZEN / READY_FOR_INTAKE<br>
+Current Completed Tranche: F0 — FROZEN<br>
+Current Production Focus: F1 — READY_FOR_INTAKE<br>
 Status: ACTIVE_GOVERNANCE
 
 ---
@@ -10,7 +11,7 @@ Status: ACTIVE_GOVERNANCE
 ## 1. Operational Lanes
 
 - **Simulator Lane (`src/`):** `ACTIVE / DESIGN EVIDENCE` (React/TS UX Simulator, Scenarios S01–S05 validated).
-- **Production AutoCAD Lane (`production/`):** `COMPLETE / OPERATOR_VALIDATION_PENDING` (WO-F0-001 executed; multi-project .NET 4.8 solution built; 45/45 automated tests passing; AutoCAD 2023 host verified; Ribbon dispatch corrected; awaiting Product Owner desktop validation).
+- **Production AutoCAD Lane (`production/`):** `FROZEN` (Tranche F0 frozen at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`; REV-F0-002-R3 PASS; 13/13 AC PASS; 9/9 issues resolved; production mutation CLOSED).
 
 ---
 
@@ -63,22 +64,22 @@ Status: ACTIVE_GOVERNANCE
   - Round 6 Review: `REV-F0-002` (`NEEDS_FIX / RETURN_TO_BUILD_CORRECTION`, Commit `30aa4ca7ee4609c8ed973bd1435823ff366c8c96`)
   - Round 7 (Build Correction): `F0-BUILD-CORRECTION-001` (Session `AG-F0-009`, REV-F0-002 findings F01-F07 addressed, 20/20 tests pass, SECURELOAD preserved, config warnings implemented)
   - Round 8 (Independent Re-Review): `REV-F0-002-R2` (`BLOCKED / BLOCKED_PENDING_OPERATOR_VALIDATION`, Commit `c9a9ec4e182e32aa86be126c77a32e76f40c7413`, AC-F0-01..12 PASS, SECURELOAD clarification persisted, AC-F0-13 pending operator validation)
-  - Round 9 (Operator Validation & Stability): `F0-VALIDATION-CLOSEOUT-001` (Session `AG-F0-010`, 5/5 desktop cold-start stability runs verified PASS; AC-F0-13 procedure presented and marked `NOT_RUN`)
-  - Round 10 (Ribbon Dispatch Correction): `F0-RIBBON-DISPATCH-CORRECTION-001` (Session `AG-F0-011`, resolved RibbonButton callback parameter mismatch in `RibbonHost.cs`, implemented pure `RibbonCommandResolver` in Core, added 8 unit tests in `RibbonCommandResolverTests.cs` (45/45 tests pass), updated `%APPDATA%` bundle deployment, verified in AutoCAD 2023 accoreconsole, disabled ProgramData duplicate)
+  - Round 9 (Operator Validation & Stability): `F0-VALIDATION-CLOSEOUT-001` (Session `AG-F0-010`, 5/5 desktop cold-start stability runs verified PASS; AC-F0-13 procedure presented)
+  - Round 10 (Ribbon Dispatch Correction): `F0-RIBBON-DISPATCH-CORRECTION-001` (Session `AG-F0-011`, resolved RibbonButton callback parameter mismatch in `RibbonHost.cs`, implemented pure `RibbonCommandResolver` in Core, added 8 unit tests, verified in AutoCAD 2023 host, commit `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+  - Round 11 (Tranche Freeze): `F0-TRANCHE-FREEZE-001` (Session `AG-F0-012`, Product Owner desktop verified Ribbon TTCINFO/TTCPALETTE, 5/5 cold restarts, AC-F0-13 PASS/CLOSED, independent review `REV-F0-002-R3` PASS, Product Owner approved `FREEZE F0`)
 - **Reviewer:** ChatGPT / Independent Technical Reviewer
-- **Latest Spec Review:** `REV-F0-001-R3` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md) — `PASS / PASS_FOR_FREEZE`)
+- **Current Completed Tranche:** F0 — FROZEN
+- **F0 Implementation Baseline:** `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`
+- **F0 Final Review:** `REV-F0-002-R3` (`PASS / PASS_FOR_TRANCHE_FREEZE`)
+- **F0 Acceptance:** `13/13 PASS`
+- **F0 Issues:** `9/9 RESOLVED`
 - **F0 Spec Status:** `FROZEN (v1.0.0)`
-- **F0 Tranche Status:** `NOT FROZEN` (Tranche completion requires BUILD -> REVIEW -> FREEZE)
-- **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `APPROVED_FOR_EXECUTION / EXECUTION_COMPLETE`)
-- **Latest Implementation Review:** `REV-F0-002-R2` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md) — `BLOCKED / BLOCKED_PENDING_OPERATOR_VALIDATION`)
-- **Latest Review Addendum:** `REV-F0-002-R2-ADDENDUM-001` ([docs/tranches/F0/REVIEW.md](../docs/tranches/F0/REVIEW.md) — `BUILD_CORRECTION_REQUIRED`)
-- **Product Owner Approval:** `APPROVED_FOR_EXECUTION` (Task: `F0-WORK-ORDER-APPROVAL-001`, Session: `AG-F0-007`)
-- **Approved Execution Baseline:** `b9c6cc937fb7f9a1ea4c0acafa6ca8016bee3515`
-- **Implementation:** `IMPLEMENTED_PENDING_OPERATOR_VALIDATION`
-- **Production Build Authorization:** `AUTHORIZED_FOR_F0_ONLY`
-- **Current Lifecycle Stage:** `REVIEW_VALIDATION`
-- **Current Status:** `RIBBON_DISPATCH_CORRECTED / OPERATOR_VALIDATION_PENDING`
-- **Expected Next Review:** `REV-F0-002-R3`
+- **F0 Tranche Status:** `FROZEN`
+- **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `APPROVED_FOR_EXECUTION / EXECUTED (COMPLETE)`)
+- **F0 Production Mutation:** `CLOSED / REQUIRES REOPEN AUTHORITY`
+- **Current Production Focus:** `F1 — READY_FOR_INTAKE`
+- **Production Build Authorization:** `NONE FOR F1`
+- **Next Lifecycle Action:** `F1 INTAKE`
 
 ---
 
@@ -86,10 +87,10 @@ Status: ACTIVE_GOVERNANCE
 
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
-| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `APPROVED / WO-F0-001` | `COMPLETE / OPERATOR_VALIDATION_PENDING` |
-| **F1** | **Common CAD Contracts** | F0 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F0) |
+| **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `EXECUTED / WO-F0-001` | `COMPLETE / FROZEN` (Baseline `9892f905...`) |
+| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `NOT_STARTED` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`READY_FOR_INTAKE`) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
-| **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F0_F1_P1) |
+| **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F1_P1) |
 | **P3..P9** | **Panel Designer Capabilities** | Upstream | `PLANNED` | `NONE` | `BLOCKED` |
 | **M1..M8** | **M&E Cable Tray** | Panel MVP | `PLANNED` | `NONE` | `BLOCKED` (FUTURE / DEFERRED) |
 
@@ -97,15 +98,16 @@ Status: ACTIVE_GOVERNANCE
 
 ## 5. Current Gate & Build Authorization
 
-- **Production Build Authorization:** `AUTHORIZED_FOR_F0_ONLY`
-- **Approved Active Work Orders:** `WO-F0-001 (EXECUTION_COMPLETE / OPERATOR_VALIDATION_PENDING)`
+- **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
+- **Approved Active Work Orders:** `NONE` (`WO-F0-001` EXECUTED / CLOSED)
 - **Draft Work Orders:** `NONE`
-- **Production Code Files:** `17 .cs files across Core, Infrastructure, AutoCAD, Tests`
-- **Gate Result:** `RIBBON_DISPATCH_CORRECTED / OPERATOR_VALIDATION_PENDING`
+- **Production Code Files:** `17 .cs files across Core, Infrastructure, AutoCAD, Tests (FROZEN)`
+- **Gate Result:** `F0_TRANCHE_FROZEN / F1_READY_FOR_INTAKE`
 
 ### Downstream Scope Controls:
-1. F0 BUILD correction is complete, automated unit tests verified (45/45 pass), and host verified.
-2. Downstream tranches (F1, P1, P2, M&E) remain locked and NOT AUTHORIZED until F0 passes independent review and is frozen.
+1. F0 is complete, 13/13 AC verified PASS, reviewed PASS (`REV-F0-002-R3`), and FROZEN.
+2. Tranche F1 is unblocked for PLANNING/INTAKE only (`READY_FOR_INTAKE`). Zero F1 code, zero F1 spec drafting, and zero F1 build authorization are granted.
+3. Downstream tranches (P1, P2, M&E) remain strictly locked and BLOCKED.
 
 ---
 
@@ -123,6 +125,6 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Product Owner desktop validation of Ribbon TTCINFO, TTCPALETTE, AC-F0-13, and 5 cold-start restarts, followed by independent final re-review REV-F0-002-R3.
+Tranche F1 Planning & Intake (`F1-INTAKE-001`). Prepare F1 INTAKE / DESIGN / SPEC workflow.
 
-Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED. Production code mutation outside the bounded scope and paths of `WO-F0-001` is strictly prohibited.
+Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED for build. Production code mutation outside frozen F0 baseline requires explicit reopen authority.

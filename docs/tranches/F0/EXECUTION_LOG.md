@@ -1276,3 +1276,83 @@ Product Owner executes desktop validation procedure:
 3. Test C: Zero-document Ribbon TTCINFO (AC-F0-13 verification).
 4. Cold-start regression: 5 consecutive AutoCAD restarts to re-verify Ribbon stability.
 Following operator verification, submit for independent re-review REV-F0-002-R3.
+
+---
+
+## Session 2026-09-09 / AG-F0-012
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F0-012`
+- **Task ID:** `F0-TRANCHE-FREEZE-001`
+- **Lifecycle Stage:** `FREEZE`
+- **Tranche:** `F0 — AutoCAD Foundation`
+- **Work Order:** `WO-F0-001` (EXECUTED / CLOSED)
+- **Starting & Implementation Baseline Commit:** `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`
+- **Independent Final Review:** `REV-F0-002-R3` (Result: `PASS`, Disposition: `PASS_FOR_TRANCHE_FREEZE`)
+- **Product Owner Freeze Decision:** `APPROVED` (`FREEZE F0`)
+- **Purpose:** Record final Product Owner desktop runtime evidence, close AC-F0-13 and ISSUE-F0-009, normalize issue registry, freeze Tranche F0, unblock Tranche F1 for planning/intake, and establish frozen baseline.
+
+### 1. Product Owner Final Desktop Evidence
+- **Evidence Source:** `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023`
+- **Observed Desktop Results:**
+  - Ribbon `TTCINFO`: **PASS** (diagnostic output emitted cleanly to AutoCAD command line)
+  - Ribbon `TTCPALETTE`: **PASS** (WPF modeless palette opened and displayed)
+  - Ribbon Command Dispatch: **PASS** (parameter resolution verified in real AutoCAD 2023 GUI)
+  - Palette Singleton & Idempotency: **PASS** (repeated clicking toggled single instance without duplicate creation)
+  - Cold Restart Stability: **5/5 PASS** (`TTC CAD` ribbon tab visible and functional across 5 consecutive cold starts without manual NETLOAD)
+  - Product Owner `AC-F0-13` Disposition: **PASS / CLOSED**
+  - Production Defects Remaining: **NONE REPORTED**
+
+> **Evidence Boundary Note for AC-F0-13:**
+> `AC-F0-13` closure is based on explicit Product Owner desktop validation and acceptance instruction.
+> It is not attributed to `accoreconsole.exe`. No unverified automation trace is fabricated.
+
+### 2. Issue Closure & Registry Normalization
+- **ISSUE-F0-009:** Closed as `RESOLVED_DESKTOP_VERIFIED` (`RUNTIME_ACCEPTANCE`).
+- **Registry Total:** 9 registered issues, 9 resolved/closed (100% resolution).
+- **Open Blocking Issues:** 0.
+- **Open Non-Blocking Issues:** 0.
+
+### 3. Production Code & Packaging Immutability
+- **Production Code Modified During Freeze:** **NONE** (0 `.cs`, 0 `.csproj`, 0 `.xaml`, 0 `.dll`, 0 bundle changes).
+- **Frozen Implementation Baseline:** `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`.
+- **F0 Production Mutation Authority:** `CLOSED / REQUIRES REOPEN AUTHORITY`.
+
+### 4. Downstream Tranche State
+- **Tranche F0:** `COMPLETE / FROZEN`.
+- **Tranche F1 Dependency:** `SATISFIED / UNBLOCKED_FOR_INTAKE` (Planning/Intake only; zero code, zero spec, zero build authorized).
+- **Downstream Tranches (P1, P2, P3..P9, M1..M8, C1, C2):** Strictly `BLOCKED`.
+
+---
+
+### Authoritative Final Acceptance Criteria Matrix — Tranche F0 Frozen
+
+| AC ID | Frozen Acceptance Criterion | Verification Source | Status |
+|:---|:---|:---|:---|
+| **AC-F0-01** | **Plugin Bootstrap:** Assembly loads without unhandled exceptions. | `AUTOMATED_TEST` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-02** | **Diagnostic Command (`TTCINFO`):** Outputs versions, config, log path. | `HEADLESS_AUTOCAD` + `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` | **PASS** |
+| **AC-F0-03** | **Ribbon Shell:** `TTC CAD` tab and buttons appear in ribbon on cold start. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` (5/5 cold restarts passed) | **PASS** |
+| **AC-F0-04** | **PaletteSet Shell:** `TTCPALETTE` opens modeless dockable WPF palette. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` | **PASS** |
+| **AC-F0-05** | **Valid Configuration:** Well-formed `settings.json` deserializes cleanly. | `AUTOMATED_TEST` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-06** | **Invalid / Missing Configuration:** Emits structured warning, safe fallback. | `AUTOMATED_TEST` (`ConfigurationWarningTests.cs`) | **PASS** |
+| **AC-F0-07** | **Structured File Logging:** `FileLogger` generates daily rolling log. | `AUTOMATED_TEST` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-08** | **Package Manifest Validation:** Conforms to schema with Series R24.2. | `AUTOMATED_TEST` (`ManifestValidationTests.cs`) | **PASS** |
+| **AC-F0-09** | **Decoupling Integrity:** Zero CAD references in Core and Infrastructure. | `AUTOMATED_TEST` (`DecouplingTests.cs`) | **PASS** |
+| **AC-F0-10** | **Strict Scope Containment:** Zero Panel or M&E features in codebase. | `AUTOMATED_TEST` (`ScopeContainmentTests.cs`) | **PASS** |
+| **AC-F0-11** | **Zero-Document State Safety:** Stable palette on close-all; restores on open. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` + `HEADLESS_AUTOCAD` | **PASS** |
+| **AC-F0-12** | **Palette Idempotency & Singleton:** Repeated `TTCPALETTE` toggles instance. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` | **PASS** |
+| **AC-F0-13** | **Application-Context Command Safety:** TTCINFO executes safely with 0 drawings open. | `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` | **PASS** |
+
+**Final Matrix Summary:**
+- Acceptance Criteria: **13 / 13 PASS**
+- Failed: **0**
+- NOT_RUN: **0**
+- Blocking Acceptance: **0**
+
+---
+
+### Next Action
+Tranche F0 is **FROZEN**. Proceed to Tranche F1 Planning & Intake (`F1-INTAKE-001`).
+Production build authorization for F0 is **CLOSED**.
+F1 Production Build is **NOT AUTHORIZED**.

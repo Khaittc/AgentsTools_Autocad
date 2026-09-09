@@ -7,14 +7,14 @@
 
 ## 1. Registry Summary
 
-- **Total Registered Issues:** 8
+- **Total Registered Issues:** 9
 - **Issues Blocking BUILD Entry:** 0
 - **Required Closure Gates:**
   - `BUILD_COMPLETION`: 3 (`ISSUE-F0-001`, `ISSUE-F0-006`, `ISSUE-F0-008`) — ALL 3 CLOSED
-  - `RUNTIME_ACCEPTANCE`: 5:
-    - `ISSUE-F0-003`, `ISSUE-F0-004`, `ISSUE-F0-005`, `ISSUE-F0-007` — RESOLVED (`PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023`)
+  - `RUNTIME_ACCEPTANCE`: 6:
+    - `ISSUE-F0-003`, `ISSUE-F0-004`, `ISSUE-F0-005`, `ISSUE-F0-007`, `ISSUE-F0-009` — RESOLVED (`PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023`)
     - `ISSUE-F0-002` — `AUTOMATED_FALLBACK_VERIFIED` (`RUNTIME_FALLBACK_NOT_RUN_ON_HOST`)
-- **Resolved / Closed Issues:** 8 (100% addressed across build & runtime gates)
+- **Resolved / Closed Issues:** 9 (100% addressed across build & runtime gates; 0 open blocking, 0 open non-blocking)
 
 ---
 
@@ -34,8 +34,9 @@
 | `ISSUE-F0-001` (Issues) | AutoCAD 2023 Reference Assembly Resolution Strategy | `ISSUES.md` (initial) | **ISSUE-F0-001** | NO | `BUILD_COMPLETION` | **CLOSED** |
 | `ISSUE-F0-002` (Issues) | Plugin Log Directory Permissions in Standard Bundle | `ISSUES.md` (initial) | **ISSUE-F0-002** | NO | `RUNTIME_ACCEPTANCE` | **AUTOMATED_FALLBACK_VERIFIED** |
 | `ISSUE-F0-003` (Issues) | Modeless PaletteSet Threading & Context Switching | `ISSUES.md` (initial) | **ISSUE-F0-003** | NO | `RUNTIME_ACCEPTANCE` | **RESOLVED_DESKTOP_VERIFIED** |
+| `F08` (Review Addendum) | Ribbon button click callback parameter type mismatch | `REVIEW.md` §13 | **ISSUE-F0-009** | NO | `RUNTIME_ACCEPTANCE` | **RESOLVED_DESKTOP_VERIFIED** |
 
-> **Collision Resolution Note:** Previous drafting used `OQ-F0-01`..`03` in `DESIGN.md` for different topics than in `EXECUTION_LOG.md`. All items have been assigned unique canonical IDs (`ISSUE-F0-001` through `ISSUE-F0-008`) above.
+> **Collision Resolution Note:** Previous drafting used `OQ-F0-01`..`03` in `DESIGN.md` for different topics than in `EXECUTION_LOG.md`. All items have been assigned unique canonical IDs (`ISSUE-F0-001` through `ISSUE-F0-009`) above.
 
 ---
 
@@ -146,12 +147,16 @@
 ---
 
 ### ISSUE-F0-009: Ribbon Button Click Callback Parameter Type Mismatch
-- **Status:** RESOLVED_PENDING_DESKTOP_VERIFICATION (BUILD_CORRECTION)
+- **Status:** RESOLVED_DESKTOP_VERIFIED (RUNTIME_ACCEPTANCE)
 - **Severity:** HIGH
 - **Category:** UI / CAD_API
 - **Owner:** Implementer
 - **Blocks Entry To BUILD:** NO
 - **Required Closure Gate:** `RUNTIME_ACCEPTANCE`
 - **Problem:** Clicking Ribbon `TTCINFO` or `TTCPALETTE` button in desktop AutoCAD 2023 produced no observable action. In `RibbonHost.cs`, `RibbonCommandHandler.Execute(object parameter)` checked `if (parameter is string cmd)`, but Autodesk's Ribbon framework passes the `RibbonButton` (or `RibbonCommandItem`) instance as `parameter`, causing the check to evaluate to `false` and silently fail.
-- **Resolution:** Introduced pure `RibbonCommandResolver` in Core whitelisting `TTCINFO` and `TTCPALETTE`. Updated `RibbonCommandHandler.Execute` in `RibbonHost.cs` to handle `RibbonCommandItem` (reading `CommandParameter` / `Id`), direct strings, and reflection fallback. Implemented active-doc and zero-doc dispatch with diagnostic logging. Added 8 unit tests in `RibbonCommandResolverTests.cs`.
-- **Closure Evidence:** 45/45 automated unit tests pass. AutoCAD 2023 host verified direct command line dispatch. Awaiting Product Owner desktop UI verification of Ribbon click.
+- **Resolution:** Ribbon command dispatch corrected in commit `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`. Introduced pure `RibbonCommandResolver` in Core whitelisting `TTCINFO` and `TTCPALETTE`. Updated `RibbonCommandHandler.Execute` in `RibbonHost.cs` to handle `RibbonCommandItem` (reading `CommandParameter` / `Id`), direct strings, and reflection fallback. Implemented active-doc and zero-doc dispatch with diagnostic logging. Added 8 unit tests in `RibbonCommandResolverTests.cs`.
+- **Closure Evidence:** `PRODUCT_OWNER_MANUAL_DESKTOP_AUTOCAD_2023` confirmed:
+  - TTCINFO Ribbon: PASS
+  - TTCPALETTE Ribbon: PASS
+  - Cold Restart Stability: 5/5 PASS
+  - 45/45 automated unit tests PASS.
