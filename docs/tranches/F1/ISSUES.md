@@ -59,7 +59,7 @@
 - **Owner:** Architect
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `SPEC_FREEZE`
-- **Problem:** Many Vietnamese electrical panel drafting templates are historically configured with `INSUNITS = 0` (Unspecified/Unitless) while drawn 1 unit = 1 mm. If TTC CAD strictly checks `INSUNITS == 4`, these common legacy drawings will fail.
+- **Problem:** Legacy or enterprise drawings may use `INSUNITS = 0` (Unspecified/Unitless) while users may interpret drawing units according to local drafting practice. If TTC CAD strictly checks `INSUNITS == 4`, these drawings will fail or trigger unwanted blocking.
 - **Investigation Needed:** Determine whether `MEASUREMENT = 1` (Metric) combined with `INSUNITS = 0` can be accepted with a warning, or if `INSUNITS` must be normalized to `4`.
 
 ---
@@ -71,10 +71,10 @@
 - **Owner:** Core Developer
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `DESIGN_COMPLETION`
-- **Problem:** Roadmap proposes candidate tolerance $\varepsilon = 10^{-4}\text{ mm}$. A single scalar may not be appropriate for all geometric calculations (e.g., linear distance vs angular alignment in radians/degrees vs collinearity cross-product vs zero-length segment rejection).
+- **Problem:** Candidate single scalar tolerance $\varepsilon = 10^{-4}\text{ mm}$ is proposed as a candidate only. A single scalar may not be appropriate across all geometric calculations (e.g., linear distance vs angular alignment vs collinearity vs zero-length segment rejection).
 - **Options Under Consideration:**
-  1. *Single Scalar:* Global `Constants.Epsilon = 1e-4`.
-  2. *Typed Tolerance Record:* Struct/class defining `LinearTolerance` ($10^{-4}\text{ mm}$), `AngularTolerance` ($10^{-6}\text{ rad}$), `ZeroLengthTolerance` ($10^{-5}\text{ mm}$), and `ScaleTolerance` ($10^{-5}$).
+  1. *Single Scalar Model:* A single global tolerance $\varepsilon$ (candidate value $\varepsilon = 10^{-4}\text{ mm}$, final value TO_BE_DETERMINED in F1 DESIGN/SPEC).
+  2. *Typed Tolerance Model:* Distinct typed tolerances (e.g., LinearTolerance, AngularTolerance, ZeroLengthTolerance, ScaleTolerance) with specific numerical values TO_BE_DETERMINED during F1 DESIGN and SPEC.
 - **Target Seam:** Pure Core contracts in `TTC.CadTools.Core` with zero AutoCAD references.
 
 ---
@@ -86,12 +86,12 @@
 - **Owner:** Architect
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `DESIGN_COMPLETION`
-- **Problem:** Architecture baseline requires stable internal identity (`TTC_OBJECT_ID`). The format and scope of this identifier must be formalized.
+- **Problem:** Architecture baseline requires stable internal identity (`TTC_OBJECT_ID`). The format and scope of this identifier must be formalized during DESIGN.
 - **Options Under Consideration:**
   1. *Raw RFC 4122 GUID:* `Guid.NewGuid().ToString("D")` (36 characters).
-  2. *Prefixed Slug + GUID/Hex:* e.g. `TTC-COMP-4F8A3B21-...` or `TTC-RAIL-...` providing human-readable diagnostic recognition while preserving uniqueness.
+  2. *Prefixed Slug + UUID:* e.g. `TTC-COMP-UUID` or `TTC-RAIL-UUID` providing human-readable diagnostic recognition while preserving uniqueness.
   3. *Sequential / Database-Local ID:* Short numeric IDs (prone to collision when merging DWGs).
-- **Recommendation for Design:** Prefixed Slug + UUID ensures global uniqueness and clean diagnostic log tracing.
+- **Design Evaluation:** All alternatives require technical evaluation during F1 DESIGN; no specific format is recommended during INTAKE.
 
 ---
 

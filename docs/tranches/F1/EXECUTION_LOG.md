@@ -77,3 +77,74 @@
 
 ### Next Required Action
 Independent technical review of `INTAKE-FOUNDATION-F1-001`. F1 DESIGN is NOT AUTHORIZED until independent review disposition is issued.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F1-001
+- **Task ID:** F1-INTAKE-001
+- **Resolved Ending Commit:** `660a0b9bd8036978dd85097c4bdd16698ec52bd4`
+- **Resolution Date:** 2026-09-09
+- **Recorded In:** Session `AG-F1-002` (`F1-INTAKE-CORRECTION-001`)
+- **Reason:** Reconciled historical completion commit `660a0b9bd8036978dd85097c4bdd16698ec52bd4` in compliance with append-only continuity rules and finding F06.
+
+---
+
+## Session 2026-09-09 / AG-F1-002
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-002`
+- **Task ID:** `F1-INTAKE-CORRECTION-001`
+- **Lifecycle Stage:** `INTAKE_CORRECTION`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Review:** `REV-F1-INTAKE-001` (`NEEDS_FIX / RETURN_TO_INTAKE`)
+- **Work Order:** `NONE` (Intake Correction Stage Only)
+- **Starting Commit:** `660a0b9bd8036978dd85097c4bdd16698ec52bd4`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+1. Persist external review `REV-F1-INTAKE-001` (`NEEDS_FIX / RETURN_TO_INTAKE`) in `docs/tranches/F1/REVIEW.md`.
+2. Correct technical, authority, and continuity defects identified in `REV-F1-INTAKE-001`:
+   - `F01`: Unit contract overclaim corrected to align with Architecture Roadmap §42 (panel mechanical initial assumption = mm; M&E project drawing unit = configurable; Core uses normalized units where practical; `INSUNITS = 4` candidate only).
+   - `F02`: F0 logging path drift corrected to `%APPDATA%\TTC_CadTools\Logs\` (fallback `%TEMP%\TTC_CadTools\Logs\`).
+   - `F03`: AutoCAD Handle semantics corrected (persistent across sessions within database, unique within database, duplicate on copy; distinct from transient `ObjectId`).
+   - `F04`: Silent design inventions removed from `ISSUES.md` (`ISSUE-F1-003` exact tolerance numbers removed to TO_BE_DETERMINED; `ISSUE-F1-004` premature recommendation of Slug+UUID removed; `ISSUE-F1-002` neutral phrasing on legacy drawings).
+   - `F05`: Intake exit gate criterion #10 unchecked in `INTAKE.md` Section 15.
+   - `F06`: Execution continuity resolved for `AG-F1-001` ending commit and session `AG-F1-002` appended.
+   - `F07`: DocumentLock language corrected to distinguish managed transactions from context-appropriate explicit locking (modeless/app context).
+3. Clean up Risk Register in `INTAKE.md` Section 13 to mark ratings as non-authoritative qualitative triage and mitigations as investigation directions.
+4. Maintain strict immutability: zero production code changes (`production/**`), zero F0 changes (`docs/tranches/F0/**`), no `DESIGN.md`, `SPEC.md`, or `WORK_ORDER.md`.
+5. Update project continuity records (`docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, `governance/AGENT_HANDOFF.md`).
+6. Prepare for independent re-review `REV-F1-INTAKE-001-R2`.
+
+---
+
+### Execution Details
+- **Review Persisted:** `docs/tranches/F1/REVIEW.md` created with findings F01–F07 and reviewer directives (marked read-only).
+- **Intake Corrected:** `docs/tranches/F1/INTAKE.md` updated for F01, F02, F03, F05, F07, and Risk Register triage.
+- **Issue Registry Corrected:** `docs/tranches/F1/ISSUES.md` updated for F04 (ISSUE-F1-002, ISSUE-F1-003, ISSUE-F1-004).
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Design / Spec / Work Order:** NOT created (strictly NOT AUTHORIZED).
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent technical re-review: `REV-F1-INTAKE-001-R2`. F1 DESIGN remains strictly NOT AUTHORIZED until independent reviewer approval.

@@ -40,7 +40,7 @@ F1 inherits F0 contracts without re-opening, modifying, or re-implementing them.
 AutoCAD is an open, unconstrained drafting environment. Users may draw at arbitrary scales, use mixed units, manipulate geometry via standard commands (`MOVE`, `COPY`, `ARRAY`, `MIRROR`, `ERASE`, `UNDO`, `WBLOCK`), and copy linework between disparate DWGs.
 
 In earlier development phases, engineering features (such as `TTCPANELPLACE`) were drafted assuming that drawing entities would automatically preserve identity, true physical millimeter scale, and structured metadata. However:
-1. **No Shared Identity Contract:** Standard AutoCAD entities possess transient object handles (`Handle`) and session-specific IDs (`ObjectId`), neither of which guarantee immutable, globally unique, or clone-safe identity across `COPY`, `WBLOCK`, or inter-drawing copy-paste.
+1. **No Shared Cross-Feature / Clone-Safe Identity Contract:** While an AutoCAD `Handle` is persistent across sessions and unique within a single database, it is not globally unique across databases and is duplicated when entities are copied. An AutoCAD `ObjectId` is merely a transient, in-memory session locator. Neither provides an immutable, globally unique, or clone-safe identifier across native `COPY`, `WBLOCK`, or inter-drawing copy-paste, necessitating a dedicated `TTC_OBJECT_ID` contract.
 2. **No Standardized Metadata Strategy:** Without an authoritative convention for XData versus Extension Dictionary / `XRecord` storage, downstream features risk writing fragmented, conflicting, or unversioned metadata.
 3. **No Drawing Unit or Tolerance Standard:** If one module assumes millimeters while a drawing is set to Inches (`INSUNITS=1`) or Unitless (`INSUNITS=0`), or if geometric algorithms use different floating-point tolerances ($\varepsilon$), physical dimensions and collision detection fail silently.
 4. **No Native Edit Lifecycle Management:** Normal user drafting actions (`COPY`, `ERASE`, `UNDO`, `REDO`, `SAVE`, `REOPEN`) can duplicate entity IDs, orphan associated clearance geometry, or corrupt metadata caches unless host transaction and event boundaries are explicitly defined.
@@ -92,7 +92,7 @@ F1 inherits the following technical contracts from F0 without re-specification:
 1. **Host Platform Baseline:** AutoCAD 2023 (Release 24.2), .NET Framework 4.8, C# Managed .NET API (`AcCoreMgd.dll`, `AcDbMgd.dll`, `AcMgd.dll`).
 2. **Decoupling Doctrine:** `TTC.CadTools.Core` must remain pure C# with **zero** references to Autodesk/AutoCAD assemblies.
 3. **Packaging & Deployment:** Standard Autodesk Application Package `.bundle` layout (`TTC.CadTools.bundle`) in `%APPDATA%\Autodesk\ApplicationPlugins` with `PackageContents.xml` autoloader.
-4. **Structured Logging:** `ILogger` and `FileLogger` rolling daily diagnostic logging in `%APPDATA%\TTC\Logs` with safe `%TEMP%` fallback.
+4. **Structured Logging:** `ILogger` and `FileLogger` rolling daily diagnostic logging in `%APPDATA%\TTC_CadTools\Logs\` with safe `%TEMP%\TTC_CadTools\Logs\` fallback.
 5. **Configuration Foundation:** `ISettingsRepository` with JSON schema validation, structured warnings, and safe defaults.
 6. **UI Hosting Shell:** Modeless dockable WPF `PaletteSet` and Ribbon tab shell (`TTC CAD`).
 7. **Application-Context Safety:** Commands and UI handlers must execute safely when zero drawings are open (`MdiActiveDocument == null`), without dereferencing null editors or creating unwanted dummy drawings.
@@ -151,7 +151,7 @@ INTAKE identifies 12 essential problem domains that F1 must formally address bef
 - Establishing standards for mechanical block definitions: insertion base points, unit scaling, uniform scale requirement, rotation conventions, dynamic block restrictions, and attribute policies.
 
 ### Domain L: Host Integration & Transaction Boundary Requirements
-- Establishing transaction scoping rules (`TransactionManager.StartTransaction`), document locking protocols (`DocumentLock`), command-context vs application-context execution, and exception shielding.
+- Establishing transaction scoping rules (`TransactionManager.StartTransaction`), context-appropriate document locking protocols (`DocumentLock` where required by execution context), command-context vs application-context execution, and exception shielding.
 
 ---
 
@@ -190,9 +190,13 @@ The following items are strictly **excluded** from Tranche F1:
 
 ## 8. Required Behaviors
 
-### 8.1 Metric Drawing Consistency
-- All internal engineering calculations across all TTC modules MUST operate in millimeters (mm).
-- The plugin must have a deterministic policy when an active drawing does not report millimeters.
+### 8.1 Drawing Unit Strategy & Inspection
+- Per Architecture Roadmap (§42), all engineering calculations must have a defined drawing-unit strategy:
+  - Panel mechanical drawings: initial assumption = millimeters.
+  - M&E drawings: project drawing unit = configurable.
+- The implementation must inspect/configure drawing units and MUST NOT assume every drawing is millimeters without checking configuration and drawing units.
+- Core geometry should use normalized internal engineering units where practical, but the exact normalization and conversion strategy belongs to F1 DESIGN and SPEC.
+- Candidate standard `INSUNITS = 4` remains a proposed candidate only and is not an approved project-wide standard at INTAKE.
 
 ### 8.2 Standard DWG Usability (No Proxy Warnings)
 - All drawings produced using TTC CAD must remain standard DWG files.
@@ -208,9 +212,11 @@ The following items are strictly **excluded** from Tranche F1:
 - All geometric comparisons (coincidence, containment, intersection) must evaluate against explicitly specified tolerances.
 - Tolerances must prevent false positives/negatives caused by IEEE 754 floating-point inaccuracies.
 
-### 8.5 Transactional Safety & Error Shielding
-- All operations modifying drawing database entities must execute inside managed transactions with appropriate document locks.
-- If an operation fails or the user presses `Esc`, the transaction must abort cleanly, leaving no dangling, orphan, or unmanaged entities.
+### 8.5 Transactional Safety & Context-Appropriate Locking
+- **Transactions:** All operations modifying drawing database entities must execute inside managed AutoCAD transactions (`TransactionManager.StartTransaction`) according to the host database modification contract.
+- **Document Locking:** Explicit `DocumentLock` is required when the execution context demands it—specifically in modeless UI interactions (e.g. `PaletteSet` handlers), application-context operations (`Session` commands where applicable), cross-document modifications, and background tasks. Normal modal command contexts operating on the active document must not be specified as requiring an unnecessary explicit lock.
+- If an operation fails or the user cancels via `Esc`, the transaction must abort/rollback cleanly, leaving zero dangling, orphan, or corrupted entities.
+- Exact transaction lifecycle and document lock scoping will be formalized during F1 DESIGN.
 
 ---
 
@@ -292,16 +298,19 @@ The following ten questions are registered for resolution during the `DESIGN` an
 
 ## 13. Risk Register
 
-| Risk ID | Risk Description | Likelihood | Impact | Severity | Mitigation Strategy in F1 Design |
-|:---|:---|:---:|:---:|:---:|:---|
-| **RSK-F1-01** | **Duplicate IDs via Native Copy:** Native `COPY` duplicates `ExtensionDictionary` without mutating `TTC_OBJECT_ID`, causing duplicate keys. | HIGH | HIGH | **HIGH** | Design duplicate detection and automatic ID regeneration mechanism on save, audit, or clone events. |
-| **RSK-F1-02** | **Metadata Stripping via WBLOCK:** `WBLOCK` or external export may drop application-specific dictionaries if not properly configured. | MED | HIGH | **HIGH** | Verify `WBLOCK` / `INSERT` object cloning behavior in Managed .NET and specify persistence rules. |
-| **RSK-F1-03** | **Drawing Unit Distortion:** Components inserted into non-metric drawings appear with wrong physical dimensions. | HIGH | HIGH | **HIGH** | Implement strict drawing unit inspection and verification gate before placing geometry. |
-| **RSK-F1-04** | **Reactor Re-entrancy & Crash:** Database reactors reacting to entity modification invoke transactions recursively, causing AutoCAD fatal crash. | MED | CRITICAL | **HIGH** | Prefer deferred validation and command-boundary audits over complex live reactors wherever possible. |
-| **RSK-F1-05** | **Tolerance Floating-Point Creep:** Different modules using slight variations of floating-point comparison cause false positive clash detection. | MED | MED | **MED** | Encapsulate geometric comparison functions in pure Core math contracts (`TTC.CadTools.Core`). |
-| **RSK-F1-06** | **Undo / Redo Fragmentation:** Undoing an insert operation removes the block reference but leaves the clearance polyline or dictionary entry behind. | MED | HIGH | **HIGH** | Enforce single atomic transaction grouping (`TransactionManager`) for compound entity creation. |
-| **RSK-F1-07** | **Proxy Entity Warnings:** Inadvertent use of non-standard object types triggers AutoCAD proxy alerts in vanilla installations. | LOW | CRITICAL | **HIGH** | Strictly forbid custom ObjectARX classes; rely exclusively on standard native entities with XRecords. |
-| **RSK-F1-08** | **Downstream Coupling to Unstable Contracts:** P1/P2 proceed with provisional metadata schemas that break when F1 is finalized. | HIGH | HIGH | **HIGH** | Strictly maintain Hard Build Gate: P1 and P2 remain BLOCKED until F1 reaches FROZEN status. |
+> [!NOTE]
+> **Triage Notice:** Risk ratings and priorities below represent qualitative intake triage only and do not constitute an authoritative project risk-scoring methodology. Mitigation strategies indicate preliminary investigation directions to be analyzed during F1 DESIGN rather than finalized design decisions.
+
+| Risk ID | Risk Description | Qualitative Priority | Investigation Direction in F1 Design |
+|:---|:---|:---:|:---|
+| **RSK-F1-01** | **Duplicate IDs via Native Copy:** Native `COPY` duplicates `ExtensionDictionary` without mutating `TTC_OBJECT_ID`, causing duplicate keys. | High | Investigate duplicate detection and ID regeneration mechanisms during save, audit, or clone events. |
+| **RSK-F1-02** | **Metadata Stripping via WBLOCK:** `WBLOCK` or external export may drop application-specific dictionaries if not properly configured. | High | Investigate `WBLOCK` / `INSERT` object cloning behavior in Managed .NET and evaluate persistence rules. |
+| **RSK-F1-03** | **Drawing Unit Distortion:** Components inserted into non-metric drawings appear with wrong physical dimensions if units are assumed. | High | Investigate drawing unit inspection, configuration gates, and normalization strategies before placing geometry. |
+| **RSK-F1-04** | **Reactor Re-entrancy & Crash:** Database reactors reacting to entity modification invoke transactions recursively, risking AutoCAD fatal crashes. | High | Investigate deferred validation and command-boundary audits as alternatives to complex live reactors. |
+| **RSK-F1-05** | **Tolerance Floating-Point Creep:** Different modules using slight variations of floating-point comparison cause false positive clash detection. | Medium | Investigate encapsulating geometric comparison functions in pure Core math contracts (`TTC.CadTools.Core`). |
+| **RSK-F1-06** | **Undo / Redo Fragmentation:** Undoing an insert operation removes the block reference but leaves clearance geometry or dictionary entries behind. | High | Investigate single atomic transaction grouping (`TransactionManager`) for compound entity creation. |
+| **RSK-F1-07** | **Proxy Entity Warnings:** Inadvertent use of non-standard object types triggers AutoCAD proxy alerts in vanilla installations. | High | Investigate reliance exclusively on standard native entities with XRecords, avoiding custom ObjectARX classes. |
+| **RSK-F1-08** | **Downstream Coupling to Unstable Contracts:** P1/P2 proceed with provisional metadata schemas that break when F1 is finalized. | High | Maintain Hard Build Gate: P1 and P2 remain BLOCKED until F1 reaches FROZEN status. |
 
 ---
 
@@ -332,13 +341,14 @@ Tranche F1 may exit `INTAKE` and transition to `DESIGN` only when all of the fol
 7. [x] Open questions are formally captured and cross-referenced to `docs/tranches/F1/ISSUES.md`.
 8. [x] Risks are registered with appropriate mitigation strategies.
 9. [x] Zero production C# code has been written for F1.
-10. [x] Independent Technical Reviewer reviews and issues disposition allowing entry into `DESIGN`.
+10. [ ] Independent Technical Reviewer reviews and issues disposition allowing entry into `DESIGN`.
 
 ---
 
 ## 16. Next Lifecycle Gate
 
-- **Current Status:** `DRAFT / INDEPENDENT_REVIEW_PENDING`
-- **Next Required Action:** Independent technical review of `INTAKE-FOUNDATION-F1-001`.
+- **Current Status:** `INTAKE_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
+- **Prior Review:** `REV-F1-INTAKE-001` (`NEEDS_FIX / RETURN_TO_INTAKE`)
+- **Next Required Action:** Independent technical re-review `REV-F1-INTAKE-001-R2`.
 - **Next Stage Upon Approval:** `DESIGN` (Authoring `docs/tranches/F1/DESIGN.md`).
 - **Production Build Authorization:** `NONE` (Remains strictly unauthorized).
