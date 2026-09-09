@@ -12,14 +12,15 @@
 ## 1. Status Summary
 
 - **Tranche:** F1 — Common CAD Contracts
-- **Lifecycle Stage:** DESIGN
-- **Current Review:** `REV-F1-INTAKE-001-R3`
-- **Current Result:** `PASS`
-- **Current Disposition:** `PASS_TO_DESIGN`
-- **F1 DESIGN:** `AUTHORIZED`
-- **F1 SPEC:** `NOT_STARTED / NOT AUTHORIZED`
+- **Lifecycle Stage:** DESIGN_CORRECTION
+- **Current Review:** `REV-F1-DESIGN-001`
+- **Current Result:** `NEEDS_FIX`
+- **Current Disposition:** `RETURN_TO_DESIGN_CORRECTION`
+- **F1 DESIGN:** `CORRECTION_IN_PROGRESS`
+- **F1 SPEC:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
-- **Expected Next Review:** Independent Review of F1 DESIGN
+- **Expected Next Review:** `REV-F1-DESIGN-001-R2`
+
 
 ---
 
@@ -112,4 +113,36 @@
 - **F1 BUILD:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
 
-After recording, this file is READ-ONLY for the remainder of task `F1-DESIGN-001`.
+---
+
+## 5. Independent Review: REV-F1-DESIGN-001
+
+- **Review ID:** `REV-F1-DESIGN-001`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Date:** 2026-09-09
+- **Reviewed Commit:** `f3f679ac8946c13c08f461f6ecc0e8dba6d91e2f`
+- **Reviewed Scope:** `docs/tranches/F1/DESIGN.md`, `docs/tranches/F1/API_VERIFICATION.md`, `docs/tranches/F1/ISSUES.md`, `docs/tranches/F1/README.md`, `docs/tranches/F1/EXECUTION_LOG.md`, continuity artifacts.
+- **Result:** `NEEDS_FIX`
+- **Disposition:** `RETURN_TO_DESIGN_CORRECTION`
+
+### Findings
+
+- **D01 — Unitless drawing inference is unsafe:** `DESIGN.md` assumed `INSUNITS = 0` + `MEASUREMENT = 1` implies 1 drawing unit = 1 mm. `MEASUREMENT` controls hatch and linetype defaults, not model geometry units; `LUNITS` is display format only. Unitless drawings must have `PhysicalUnitResolution = UNRESOLVED` until resolved by approved project configuration or user confirmation. No silent millimeter assumption.
+- **D02 — Unsupported numerical tolerance candidate introduced:** `AngularAlignment candidate = 1e-5 rad` and other exact numbers were introduced without repository authority. The only roadmap candidate is linear $\varepsilon = 10^{-4}\text{ mm}$. All other fields must remain `TO_BE_DETERMINED_IN_SPEC`.
+- **D03 — TTC_OBJECT_ID canonical storage contradiction:** Contradictions existed between `DESIGN.md`, `API_VERIFICATION.md`, and `ISSUES.md` regarding XData vs XRecord storage. A canonical metadata-location matrix must define authoritative source of truth, secondary caching, and mismatch resolution.
+- **D04 — TTC_OBJECT_ID scope conflates drawing identity with catalog/BOM:** `TTC_OBJECT_ID` was described as identifying an equipment instance "across drawings, catalogs, and BOMs." It identifies only one TTC-managed AutoCAD drawing object instance. Catalog/library references belong to `TTC_LIBRARY_ID`. Strict EPLAN separation must be maintained.
+- **D05 — Duplicate identity repair strategy cannot reliably identify original:** Determining "original" via earlier Handle, CreatedTimestamp, or metadata timestamp is unreliable in WBLOCK/INSERT/clipboard cases. Must design two distinct states: (A) Clone provenance known, and (B) Duplicate discovered / provenance unknown (no silent arbitrary rewriting). Pre-save mutation via `Database.BeginSave` is unverified and must be classified `HOST_TEST_REQUIRED`. Generic F1 identity audit service boundary required.
+- **D06 — API verification evidence contains accuracy/traceability defects:** Lacked official Autodesk documentation references/URLs. XData capacity was misstated as 16,383 bytes per registered app (actual: approximately 16 KB per object total, shared across all applications). XRecord capacity was described as "arbitrary/unlimited". Event/reactor evidence conflated Autodesk API restrictions with TTC project design policies.
+- **D07 — Native lifecycle matrix overclaims host behavior:** MIRROR does not unconditionally create a new Handle if source is erased. Conflated host facts with TTC design policies and unverified behaviors.
+- **D08 — Frozen AutoCAD assembly/namespace boundary drift:** Silently introduced `TTC.CadTools.Acad` instead of the frozen F0 assembly `TTC.CadTools.AutoCAD`.
+
+### Reviewer Directives
+1. Correct architectural design and API verification defects (D01 through D08).
+2. Authoring F1 SPEC is **NOT AUTHORIZED**.
+3. Work Order creation is **NOT AUTHORIZED**.
+4. Production code mutation is **NOT AUTHORIZED** (`production/**` remains untouched).
+5. Tranche F0 remains **FROZEN** (`docs/tranches/F0/**` untouched).
+6. Resubmit for independent re-review: `REV-F1-DESIGN-001-R2`.
+
+After recording, this file is READ-ONLY for the remainder of task `F1-DESIGN-CORRECTION-001`.

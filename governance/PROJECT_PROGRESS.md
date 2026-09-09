@@ -1,9 +1,9 @@
 # TTC CAD — Project Progress
 
 Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))<br>
-Current Lifecycle Stage: DESIGN (Tranche F1)<br>
+Current Lifecycle Stage: DESIGN_CORRECTION (Tranche F1)<br>
 Current Completed Tranche: F0 — FROZEN<br>
-Current Production Focus: F1 — PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING<br>
+Current Production Focus: F1 — DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING<br>
 Status: ACTIVE_GOVERNANCE
 
 ---
@@ -86,19 +86,20 @@ Status: ACTIVE_GOVERNANCE
 ## 3.2. Tranche F1 Design State
 
 - **Tranche:** F1 — Common CAD Contracts
-- **Lifecycle Stage:** DESIGN
-- **Status:** `PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING`
+- **Lifecycle Stage:** DESIGN_CORRECTION
+- **Status:** `DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
 - **Intake Status:** `COMPLETE / PASS_TO_DESIGN` ([docs/tranches/F1/INTAKE.md](../docs/tranches/F1/INTAKE.md))
 - **Latest Intake Review:** `REV-F1-INTAKE-001-R3` (`PASS / PASS_TO_DESIGN` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
-- **Design Document:** `DESIGN-FOUNDATION-F1-001` ([docs/tranches/F1/DESIGN.md](../docs/tranches/F1/DESIGN.md))
-- **API Verification:** Host Evidence Compiled ([docs/tranches/F1/API_VERIFICATION.md](../docs/tranches/F1/API_VERIFICATION.md))
-- **F1 DESIGN:** `AUTHORED / PENDING_INDEPENDENT_REVIEW`
+- **Latest Design Review:** `REV-F1-DESIGN-001` (`NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
+- **Design Document:** `DESIGN-FOUNDATION-F1-001` (v0.2.0) ([docs/tranches/F1/DESIGN.md](../docs/tranches/F1/DESIGN.md))
+- **API Verification:** Host Evidence Updated ([docs/tranches/F1/API_VERIFICATION.md](../docs/tranches/F1/API_VERIFICATION.md))
+- **F1 DESIGN:** `CORRECTED / PENDING_INDEPENDENT_RE_REVIEW`
 - **F1 SPEC:** `NOT_STARTED / NOT AUTHORIZED`
 - **Work Order:** `NONE`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
 - **P1/P2/M&E:** `BLOCKED`
-- **Next Authorized Action:** Independent technical review of F1 DESIGN (`DESIGN-FOUNDATION-F1-001`)
+- **Next Authorized Action:** Independent technical re-review of F1 DESIGN (`REV-F1-DESIGN-001-R2`)
 
 ---
 
@@ -107,7 +108,7 @@ Status: ACTIVE_GOVERNANCE
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
 | **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `EXECUTED / WO-F0-001` | `COMPLETE / FROZEN` (Baseline `9892f905...`) |
-| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `NOT_STARTED` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`PROPOSED_DESIGN / INDEPENDENT_REVIEW_PENDING`) |
+| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `NOT_STARTED` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F1_P1) |
 | **P3..P9** | **Panel Designer Capabilities** | Upstream | `PLANNED` | `NONE` | `BLOCKED` |

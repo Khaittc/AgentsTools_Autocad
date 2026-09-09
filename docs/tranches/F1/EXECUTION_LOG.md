@@ -292,3 +292,80 @@ Independent technical re-review: `REV-F1-INTAKE-001-R3`. F1 DESIGN remains stric
 
 ### Next Required Action
 Independent technical review of Tranche F1 DESIGN (`DESIGN-FOUNDATION-F1-001`). F1 SPEC and BUILD remain strictly NOT AUTHORIZED.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F1-004
+- **Task ID:** F1-DESIGN-001
+- **Resolved Ending Commit:** `f3f679ac8946c13c08f461f6ecc0e8dba6d91e2f`
+- **Resolution Date:** 2026-09-09
+- **Recorded In:** Session `AG-F1-005` (`F1-DESIGN-CORRECTION-001`)
+- **Reason:** Reconciled historical completion commit `f3f679ac8946c13c08f461f6ecc0e8dba6d91e2f` in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-09 / AG-F1-005
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-005`
+- **Task ID:** `F1-DESIGN-CORRECTION-001`
+- **Lifecycle Stage:** `DESIGN_CORRECTION`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Design Review:** `REV-F1-DESIGN-001` (`NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION`)
+- **Work Order:** `NONE` (Architectural Design Correction Stage Only)
+- **Starting Commit:** `f3f679ac8946c13c08f461f6ecc0e8dba6d91e2f`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+1. Persist independent review `REV-F1-DESIGN-001` (`NEEDS_FIX / RETURN_TO_DESIGN_CORRECTION`) in `docs/tranches/F1/REVIEW.md`.
+2. Correct architectural design and API verification defects:
+   - `D01`: Remove silent millimeter assumption for unitless drawings (`INSUNITS=0`). Establish strict precedence (project config -> explicit non-zero INSUNITS -> unresolved unitless requiring approved config or user confirmation). Clarify `MEASUREMENT` controls hatch/linetype libraries only; `LUNITS` is coordinate display format only.
+   - `D02`: Remove invented angular tolerance candidate ($10^{-5}\text{ rad}$). Maintain linear $\varepsilon = 10^{-4}\text{ mm}$ as the sole authorized roadmap candidate; mark all other numerical thresholds `TO_BE_DETERMINED_IN_SPEC`.
+   - `D03`: Establish canonical metadata-location matrix for 5 baseline keys (`TTC_OBJECT_TYPE`, `TTC_OBJECT_ID`, `TTC_SCHEMA_VERSION`, `TTC_LIBRARY_ID`, `TTC_LIBRARY_VERSION`). Define `ExtensionDictionary / XRecord` as primary authoritative source of truth, `XData` as secondary query cache/index, and resynchronization rules.
+   - `D04`: Correct `TTC_OBJECT_ID` scope: uniquely identifies one TTC-managed AutoCAD drawing object instance. Remove conflation with catalog, BOM, or EPLAN IDs. Decouple from `TTC_LIBRARY_ID`. Evaluate pure UUIDv4 vs Prefixed Slug (semantic divergence on reclassification).
+   - `D05`: Redesign clone identity repair into two states: State A (provenance known -> new ID assigned to clone); State B (duplicate discovered / provenance unknown -> classified `COLLISION_UNRESOLVED`, no silent guessing of original, controlled reconciliation in SPEC). Classify pre-save mutation via `Database.BeginSave` as `HOST_TEST_REQUIRED`. Define generic `IEntityIdentityAuditService`.
+   - `D06`: Make `API_VERIFICATION.md` independently auditable with exact Autodesk 2023 documentation URLs, correct ~16 KB total XData limit across all applications, correct XRecord database object bounds, and cleanly distinguish host notification guidelines (`HOST_FACT_SOURCE_VERIFIED`) from TTC stability rules (`PROJECT_POLICY`).
+   - `D07`: Audit native lifecycle matrix: correct `MIRROR` conditional handle semantics (new handle only if source preserved); classify host facts vs design policies.
+   - `D08`: Align namespaces with frozen F0 assembly `TTC.CadTools.AutoCAD` (no rename to `Acad`).
+   - `D12`: Replace trailing-fields assumption with keyed/tagged schema preserving unrecognized entries anywhere.
+   - `D13`: Distinguish Common F1 Block Contract from downstream Panel P1/P2 asset recommendations.
+3. Update canonical issue registry `docs/tranches/F1/ISSUES.md` (`ISSUE-F1-001` through `ISSUE-F1-010`).
+4. Reconcile execution continuity for `AG-F1-004` (commit `f3f679ac8946c13c08f461f6ecc0e8dba6d91e2f`) and append `AG-F1-005`.
+5. Update front-door `README.md` and master continuity artifacts (`docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, `governance/AGENT_HANDOFF.md`).
+6. Maintain strict immutability: zero production code changes (`production/**`), zero F0 changes, no `SPEC.md`, no `WORK_ORDER.md`.
+7. Prepare for independent re-review `REV-F1-DESIGN-001-R2`.
+
+---
+
+### Execution Details
+- **Review Persisted:** `REV-F1-DESIGN-001` recorded in `docs/tranches/F1/REVIEW.md` (marked read-only).
+- **API Verification Corrected:** `docs/tranches/F1/API_VERIFICATION.md` updated with exact documentation URLs, corrected XData limits, and policy distinctions.
+- **Design Corrected:** `docs/tranches/F1/DESIGN.md` updated to v0.2.0 addressing findings D01 through D08, D12, and D13.
+- **Issue Registry Updated:** `docs/tranches/F1/ISSUES.md` updated with corrected statuses and resolutions.
+- **Front-Door Updated:** `docs/tranches/F1/README.md` updated to reflect `DESIGN_CORRECTION` stage.
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Spec / Work Order:** NOT created (strictly NOT AUTHORIZED).
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `DESIGN_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent technical re-review: `REV-F1-DESIGN-001-R2`. F1 SPEC and BUILD remain strictly NOT AUTHORIZED until independent reviewer approval.

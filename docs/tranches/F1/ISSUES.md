@@ -8,16 +8,16 @@
 ## 1. Registry Summary
 
 - **Total Registered Issues:** 10
-- **Status:** ALL OPEN (DESIGN_STAGE)
-- **Issues Blocking DESIGN Exit:** 0 (Architectural proposals formulated in `DESIGN-FOUNDATION-F1-001`)
+- **Status:** ALL OPEN (DESIGN_CORRECTION_STAGE)
+- **Current Lifecycle Gate:** `DESIGN_RE_REVIEW`
 - **Issues Blocking BUILD Entry:** 10 (Must be formalized in SPEC and approved before Work Order / BUILD)
 - **Disposition Breakdown:**
-  - `DESIGN_RESOLVED_PENDING_SPEC`: 6 (`ISSUE-F1-003`, `ISSUE-F1-004`, `ISSUE-F1-006`, `ISSUE-F1-007`, `ISSUE-F1-008`, `ISSUE-F1-009`)
-  - `DESIGN_PROPOSED`: 3 (`ISSUE-F1-001`, `ISSUE-F1-002`, `ISSUE-F1-010`)
+  - `DESIGN_RESOLVED_PENDING_SPEC`: 4 (`ISSUE-F1-003`, `ISSUE-F1-006`, `ISSUE-F1-007`, `ISSUE-F1-008`)
+  - `DESIGN_PROPOSED`: 5 (`ISSUE-F1-001`, `ISSUE-F1-002`, `ISSUE-F1-004`, `ISSUE-F1-009`, `ISSUE-F1-010`)
   - `HOST_TEST_REQUIRED`: 1 (`ISSUE-F1-005`)
 - **Target Resolution Gates:**
-  - `DESIGN_COMPLETION`: 6 (Architectural design proposals established; pending SPEC formalization)
-  - `SPEC_FREEZE`: 4 (`ISSUE-F1-001`, `ISSUE-F1-002`, `ISSUE-F1-005`, `ISSUE-F1-010`)
+  - `DESIGN_COMPLETION`: 4 (Architectural design proposals resolved; awaiting SPEC formalization)
+  - `SPEC_FREEZE`: 6 (`ISSUE-F1-001`, `ISSUE-F1-002`, `ISSUE-F1-004`, `ISSUE-F1-005`, `ISSUE-F1-009`, `ISSUE-F1-010`)
 
 ---
 
@@ -28,12 +28,12 @@
 | `OQ-F1-01` | Drawing-unit enforcement vs validation/warning | `INTAKE.md` §12 | **ISSUE-F1-001** | YES | `SPEC_FREEZE` | **DESIGN_PROPOSED** |
 | `OQ-F1-02` | Handling non-millimeter and unitless (`INSUNITS=0`) DWGs | `INTAKE.md` §12 | **ISSUE-F1-002** | YES | `SPEC_FREEZE` | **DESIGN_PROPOSED** |
 | `OQ-F1-03` | Geometric tolerance model: single $\varepsilon$ vs typed tolerances | `INTAKE.md` §12 | **ISSUE-F1-003** | YES | `DESIGN_COMPLETION` | **DESIGN_RESOLVED_PENDING_SPEC** |
-| `OQ-F1-04` | `TTC_OBJECT_ID` generation format & uniqueness scope | `INTAKE.md` §12 | **ISSUE-F1-004** | YES | `DESIGN_COMPLETION` | **DESIGN_RESOLVED_PENDING_SPEC** |
+| `OQ-F1-04` | `TTC_OBJECT_ID` generation format & uniqueness scope | `INTAKE.md` §12 | **ISSUE-F1-004** | YES | `SPEC_FREEZE` | **DESIGN_PROPOSED** |
 | `OQ-F1-05` | Identity lifecycle under native clone/copy operations | `INTAKE.md` §12 | **ISSUE-F1-005** | YES | `SPEC_FREEZE` | **HOST_TEST_REQUIRED** |
 | `OQ-F1-06` | Metadata storage split: XData vs Extension Dictionary/XRecord | `INTAKE.md` §12 | **ISSUE-F1-006** | YES | `DESIGN_COMPLETION` | **DESIGN_RESOLVED_PENDING_SPEC** |
 | `OQ-F1-07` | Schema versioning, migration, and backward compatibility | `INTAKE.md` §12 | **ISSUE-F1-007** | YES | `DESIGN_COMPLETION` | **DESIGN_RESOLVED_PENDING_SPEC** |
 | `OQ-F1-08` | Native AutoCAD event/reactor strategy vs command-boundary audit | `INTAKE.md` §12 | **ISSUE-F1-008** | YES | `DESIGN_COMPLETION` | **DESIGN_RESOLVED_PENDING_SPEC** |
-| `OQ-F1-09` | Mechanical block asset contracts, scaling, and orientation rules | `INTAKE.md` §12 | **ISSUE-F1-009** | YES | `DESIGN_COMPLETION` | **DESIGN_RESOLVED_PENDING_SPEC** |
+| `OQ-F1-09` | Mechanical block asset contracts, scaling, and orientation rules | `INTAKE.md` §12 | **ISSUE-F1-009** | YES | `SPEC_FREEZE` | **DESIGN_PROPOSED** |
 | `OQ-F1-10` | Corrupt, orphan, or missing metadata recovery strategy | `INTAKE.md` §12 | **ISSUE-F1-010** | YES | `SPEC_FREEZE` | **DESIGN_PROPOSED** |
 
 ---
@@ -47,10 +47,11 @@
 - **Owner:** Product Owner / Architect
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `SPEC_FREEZE`
-- **Problem:** Candidate standard proposes `INSUNITS = 4` (Millimeters). However, AutoCAD drawings may be opened with `INSUNITS = 0` (Unitless), `1` (Inches), or other settings. Does TTC CAD strictly block insertion/commands if `INSUNITS != 4`, prompt the user to change `INSUNITS`, or perform runtime scaling?
+- **Problem:** Candidate standard proposes `INSUNITS = 4` (Millimeters). However, AutoCAD drawings may have `INSUNITS = 0` (Unitless), `1` (Inches), or other values. Does TTC CAD strictly block commands if `INSUNITS != 4`, prompt the user to configure units, or perform runtime scaling?
 - **DESIGN Resolution Proposal (`DESIGN-FOUNDATION-F1-001` §A):**
-  - Implement a 2-tier unit adapter: pure Core `EngineeringUnit` and host `IDrawingUnitService`.
-  - For Panel Designer: `INSUNITS = 4` trusted at 1:1; `INSUNITS = 0` checked against `MEASUREMENT = 1` and accepted with warning; non-metric (`INSUNITS = 1`) emits validation block dialog.
+  - Implement a 2-tier unit adapter: pure Core `EngineeringUnit` and host `IDrawingUnitService` (`TTC.CadTools.AutoCAD.Units`).
+  - Unitless drawings (`INSUNITS = 0`) have `PhysicalUnitResolution = UNRESOLVED`. No silent millimeter assumption is made based on `MEASUREMENT`.
+  - For Panel Designer: `INSUNITS = 4` trusted at 1:1; `INSUNITS = 0` requires project configuration or explicit user confirmation; non-metric (`INSUNITS = 1`) emits validation block dialog.
   - For M&E: drawing units remain configurable per project settings.
 - **Pending Authority:** Product Owner approval in SPEC on whether non-metric drawings prompt for conversion or block execution outright.
 
@@ -63,10 +64,10 @@
 - **Owner:** Architect
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `SPEC_FREEZE`
-- **Problem:** Legacy or enterprise drawings may use `INSUNITS = 0` (Unspecified/Unitless) while users may interpret drawing units according to local drafting practice. If TTC CAD strictly checks `INSUNITS == 4`, these drawings will fail or trigger unwanted blocking.
+- **Problem:** Legacy or enterprise drawings may use `INSUNITS = 0` (Unspecified/Unitless). `MEASUREMENT` controls hatch/linetype libraries, not model geometry units, and `LUNITS` is coordinate display format only. `INSUNITSDEFSOURCE`/`TARGET` provide insertion scaling defaults but do not define physical scale of model geometry. How does TTC CAD resolve unitless drawings without dangerous silent assumptions or workflow breakage?
 - **DESIGN Resolution Proposal (`DESIGN-FOUNDATION-F1-001` §A.3):**
-  - If `INSUNITS == 0` and `MEASUREMENT == 1` (Metric), the system infers millimeters, logs a non-intrusive warning, and avoids disrupting drafting.
-  - If `MEASUREMENT == 0` (Imperial), user is alerted to confirm drawing units.
+  - Strict resolution precedence: (1) Explicit project/workspace configuration; (2) Explicit non-zero `INSUNITS`; (3) Unitless drawings requiring approved configuration or user confirmation.
+  - No silent millimeter assumption. Status remains `PhysicalUnitResolution = UNRESOLVED` until resolved.
 - **Pending Authority:** Formalization of acceptance criteria in `SPEC.md`.
 
 ---
@@ -78,27 +79,29 @@
 - **Owner:** Core Developer
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `DESIGN_COMPLETION`
-- **Problem:** Candidate single scalar tolerance $\varepsilon = 10^{-4}\text{ mm}$ is proposed as a candidate only. A single scalar may not be appropriate across all geometric calculations (e.g., linear distance vs angular alignment vs collinearity vs zero-length segment rejection).
+- **Problem:** A single scalar tolerance $\varepsilon = 10^{-4}\text{ mm}$ cannot be meaningfully applied across all geometric calculations (linear distance vs angular alignment vs collinearity vs zero-length segment rejection).
 - **DESIGN Resolution (`DESIGN-FOUNDATION-F1-001` §B):**
-  - Architecture resolved: Typed Tolerance Record (`GeometricTolerance` struct) in pure Core (`TTC.CadTools.Core.Geometry`) with separate fields for linear, angular, collinear, and zero-length thresholds.
+  - Architecture resolved: Typed Tolerance Record (`GeometricTolerance` struct) in pure Core (`TTC.CadTools.Core.Geometry`).
+  - Candidate linear tolerance $\varepsilon = 10^{-4}\text{ mm}$ retained as the sole authorized candidate.
+  - All other numerical tolerance thresholds are marked `TO_BE_DETERMINED_IN_SPEC`.
   - Zero AutoCAD assembly references in Core math contracts.
-- **Pending Authority:** Exact numerical values remain `CANDIDATE` and will be locked in `SPEC.md`.
+- **Pending Authority:** Numerical values to be locked in `SPEC.md`.
 
 ---
 
 ### ISSUE-F1-004: TTC_OBJECT_ID Generation Format and Uniqueness Scope
-- **Status:** OPEN (`DESIGN_RESOLVED_PENDING_SPEC`)
+- **Status:** OPEN (`DESIGN_PROPOSED`)
 - **Severity:** HIGH
 - **Category:** ARCHITECTURE / IDENTITY
 - **Owner:** Architect
 - **Blocks Entry To BUILD:** YES
-- **Required Closure Gate:** `DESIGN_COMPLETION`
-- **Problem:** Architecture baseline requires stable internal identity (`TTC_OBJECT_ID`). The format and scope of this identifier must be formalized during DESIGN.
-- **DESIGN Resolution (`DESIGN-FOUNDATION-F1-001` §C):**
-  - Architecture resolved: Prefixed Semantic Slug + UUIDv4 (`TTC-{ROLE}-{GUID}`) (e.g. `TTC-COMP-4f8a3b21-72f1-4b2a-b9c1-841f3e76a9b2`).
-  - Uniqueness scope: Globally unique across all DWG files and sessions.
-  - Distinguished from AutoCAD `Handle` (DWG-local) and `ObjectId` (session-transient).
-- **Pending Authority:** Formalization in `SPEC.md`.
+- **Required Closure Gate:** `SPEC_FREEZE`
+- **Problem:** Architecture requires stable internal drawing instance identity (`TTC_OBJECT_ID`). Scope must strictly identify one TTC-managed AutoCAD drawing entity instance, without conflating catalog, BOM, or EPLAN identity. Format must be evaluated for classification divergence if entity role/type changes.
+- **DESIGN Resolution Proposal (`DESIGN-FOUNDATION-F1-001` §C):**
+  - Scope clarified: Identifies one TTC-managed AutoCAD drawing object instance. Catalog reference uses `TTC_LIBRARY_ID`; EPLAN separation is maintained.
+  - Format evaluation: Pure UUIDv4 (fully decoupled from role) vs Prefixed Slug + UUID (human-readable, but carries risk of semantic divergence if entity role changes).
+  - Format remains proposed and pending formalization in SPEC; not frozen in DESIGN.
+- **Pending Authority:** Formalization of identifier format in `SPEC.md`.
 
 ---
 
@@ -109,11 +112,14 @@
 - **Owner:** AutoCAD Specialist
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `SPEC_FREEZE`
-- **Problem:** When an entity is copied via native AutoCAD commands (`COPY`, `ARRAY`, `MIRROR`) or Windows clipboard (`COPYCLIP`/`PASTECLIP`), the resulting clone is a distinct database object with its own new, distinct AutoCAD `Handle`. However, there is a risk that AutoCAD deeply clones the entity's `ExtensionDictionary` and its `XRecord`s unchanged, causing `TTC_OBJECT_ID` metadata to be duplicated and violating the TTC identity uniqueness contract. The exact cloning behavior of extension dictionaries and XRecords across various native commands and host operations is a **HOST BEHAVIOR TO VERIFY IN DESIGN** rather than an established baseline fact.
+- **Problem:** When an entity is copied via native AutoCAD commands (`COPY`, `ARRAY`, `MIRROR`) or Windows clipboard (`COPYCLIP`/`PASTECLIP`), AutoCAD assigns a new, distinct `Handle`. However, AutoCAD deeply clones the `ExtensionDictionary` and its `XRecord`s unchanged, causing `TTC_OBJECT_ID` to be duplicated. How does TTC CAD resolve this without arbitrary heuristics or corrupting database state?
 - **DESIGN Resolution Proposal (`DESIGN-FOUNDATION-F1-001` §G):**
-  - Tolerate duplicate identities transiently in memory during drafting; execute deterministic repair during pre-save hook (`Database.BeginSave`) or explicit QA audit (`TTCPANELCHECK`).
-  - Primary entity retains original ID; clone entity receives new generated UUID.
-- **Pending Authority:** Automated host test suite in BUILD (`TEST-F1-02`, `TEST-F1-03`); acceptance criteria formalization in `SPEC.md`.
+  - Two-state lineage model:
+    - **State A (Provenance Known):** Source retains ID; clone receives new ID; logged to audit.
+    - **State B (Provenance Unknown):** Classified as `COLLISION_UNRESOLVED`. No silent guessing or arbitrary rewriting of entities. Controlled reconciliation workflow defined in SPEC.
+  - Pre-save mutation via `Database.BeginSave` is classified `HOST_TEST_REQUIRED` (not a proven safe mutation point).
+  - Generic `IEntityIdentityAuditService` defined in F1 for cross-tranche reuse.
+- **Pending Authority:** Automated host test suite in BUILD (`TEST-F1-02`, `TEST-F1-03`, `TEST-F1-09`); acceptance criteria in `SPEC.md`.
 
 ---
 
@@ -124,13 +130,14 @@
 - **Owner:** Architect
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `DESIGN_COMPLETION`
-- **Problem:** Both `XData` and `ExtensionDictionary` / `XRecord` are supported by AutoCAD DWG database entities. An authoritative strategy must define what data belongs where.
+- **Problem:** Contradictions existed regarding whether XData or XRecord is authoritative, and what data belongs in which store given XData's ~16 KB per-entity limit across all applications.
 - **DESIGN Resolution (`DESIGN-FOUNDATION-F1-001` §D):**
-  - Architecture resolved: **Hybrid Storage Strategy**.
-  - Registered `XData` (RegApp `TTC_CAD`): Holds lightweight `TTC_OBJECT_TYPE` and `TTC_OBJECT_ID` strings for fast selection filtering.
-  - `ExtensionDictionary` / `XRecord`: Holds `TTC_METADATA_HEADER` (schema version, catalog IDs) and rich structured component attributes.
-  - 100% standard DWG compatibility; zero custom ObjectARX classes; zero proxy alerts.
-- **Pending Authority:** Key names and DXF code structures locked in `SPEC.md`.
+  - Architecture resolved: **Canonical Storage Matrix**.
+  - `ExtensionDictionary / XRecord` is the primary authoritative source of truth for all structured metadata (`TTC_OBJECT_ID`, `TTC_OBJECT_TYPE`, `TTC_SCHEMA_VERSION`, `TTC_LIBRARY_ID`, `TTC_LIBRARY_VERSION`).
+  - Registered `XData` (`TTC_CAD`) contains secondary / cached copy of `TTC_OBJECT_TYPE` and `TTC_OBJECT_ID` for fast selection filtering.
+  - Mismatch rule: `XRecord` wins; `XData` is resynchronized.
+  - 100% vanilla DWG compatible; zero custom ObjectARX classes.
+- **Pending Authority:** DXF group codes and record structures formalized in `SPEC.md`.
 
 ---
 
@@ -141,13 +148,13 @@
 - **Owner:** Architect
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `DESIGN_COMPLETION`
-- **Problem:** As feature capabilities evolve, metadata structure will expand. A drawing created with version `1.0.0` metadata must not crash version `1.2.0` of the plugin, nor should opening a newer drawing in an older plugin corrupt the extended fields.
+- **Problem:** Metadata structures will evolve across plugin releases. Future-compatible fields cannot be assumed to always be trailing entries in a sequential list.
 - **DESIGN Resolution (`DESIGN-FOUNDATION-F1-001` §E):**
+  - Keyed/tagged record schema contract where unrecognized fields anywhere in the record are preserved during read/write cycles.
   - Semantic versioning stored in header (`TTC_SCHEMA_VERSION = "1.0.0"`).
-  - Minor version updates read seamlessly with defaults for missing fields.
+  - Minor versions read seamlessly with defaults.
   - Unsupported future major versions trigger read-only protection with structured warning.
-  - Unknown trailing fields preserved during reserialization.
-- **Pending Authority:** Migration adapter interfaces specified in `SPEC.md`.
+- **Pending Authority:** Migration interfaces specified in `SPEC.md`.
 
 ---
 
@@ -158,34 +165,29 @@
 - **Owner:** AutoCAD Specialist
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `DESIGN_COMPLETION`
-- **Problem:** Users can move, rotate, scale, or delete TTC entities using vanilla AutoCAD commands outside of TTC plugins. To keep layout models coherent, should TTC register active database reactors (`ObjectModified`, `ObjectErased`), or rely on passive command-boundary audits and QA checks?
+- **Problem:** Native database reactors (`ObjectModified`, `ObjectErased`) can trigger recursive transaction exceptions (`eTransactionInProgress`), UI lockups, and crashes if write transactions are initiated inside callbacks.
 - **DESIGN Resolution (`DESIGN-FOUNDATION-F1-001` §K):**
   - Architecture resolved: **Passive Command-Boundary Audits + Ephemeral In-Memory Spatial Caches**.
-  - Live database reactors are strictly prohibited from initiating database transactions or writes.
-  - Layout models and spatial indexes are queried or rebuilt from persistent DWG data on demand.
+  - Host notification guidelines classified as `HOST_FACT_SOURCE_VERIFIED`.
+  - TTC stability rule prohibiting write transactions inside reactors classified as `PROJECT_POLICY`.
+  - Deep audits and reconciliation execute strictly at command boundaries or during explicit QA audit commands.
 - **Pending Authority:** Acceptance criteria formalization in `SPEC.md`.
 
 ---
 
 ### ISSUE-F1-009: Mechanical Block Asset Contracts, Scaling, and Orientation Rules
-- **Status:** OPEN (`DESIGN_RESOLVED_PENDING_SPEC`)
+- **Status:** OPEN (`DESIGN_PROPOSED`)
 - **Severity:** MEDIUM
 - **Category:** DOMAIN / ASSET_MANAGEMENT
 - **Owner:** Lead Draftsperson / Architect
 - **Blocks Entry To BUILD:** YES
-- **Required Closure Gate:** `DESIGN_COMPLETION`
-- **Problem:** Before Tranche P1/P2 insert vendor DWG footprints, the structural rules for candidate blocks must be defined:
-  1. Base insertion point (e.g. bottom-left corner vs center of DIN rail mounting clip).
-  2. Uniform scale rule: must `ScaleX == ScaleY == ScaleZ == 1.0` be strictly enforced?
-  3. Are dynamic blocks permitted, or must blocks be strictly static 2D geometry?
-  4. Are nested blocks permitted?
-  5. How are block attributes handled (visible vs invisible)?
-- **DESIGN Resolution (`DESIGN-FOUNDATION-F1-001` §J):**
-  - Base insertion point: Bottom-Left mounting corner (standard) or Center-Center (symmetrical rail components).
-  - Uniform scale mandatory: $ScaleX = ScaleY = ScaleZ = 1.0$. Non-uniform scaling flagged as model error.
-  - Static 2D blocks required for vendor catalog components; dynamic blocks prohibited for fixed hardware.
-  - Linework on Layer `0` with `ByBlock`/`ByLayer` properties.
-- **Pending Authority:** Validation rule tolerances formalized in `SPEC.md`.
+- **Required Closure Gate:** `SPEC_FREEZE`
+- **Problem:** Common CAD contract rules for standard AutoCAD blocks must be established while keeping vendor catalog schemas decoupled for Tranche P1.
+- **DESIGN Resolution Proposal (`DESIGN-FOUNDATION-F1-001` §J):**
+  - Clearly separated Common F1 Block Contract from Panel P1/P2 asset recommendations.
+  - Common F1: Uniform scale $ScaleX=ScaleY=ScaleZ=1.0$, static blocks for fixed catalog items, Layer 0 conventions, 1-level nesting limit.
+  - Specific basepoint conventions (Bottom-Left vs Center-Center) and catalog schemas are classified as proposed recommendations pending SPEC formalization.
+- **Pending Authority:** Formalization of validation rules in `SPEC.md`.
 
 ---
 
@@ -196,9 +198,10 @@
 - **Owner:** Architect
 - **Blocks Entry To BUILD:** YES
 - **Required Closure Gate:** `SPEC_FREEZE`
-- **Problem:** An AutoCAD user might manually erase a clearance envelope while leaving the component footprint, or delete an `XRecord` via an external cleanup script. How does TTC CAD behave when inspecting such an entity?
+- **Problem:** Handling user deletions, external cleaning scripts, or duplicate IDs must be architected without arbitrary silent mutation or coupling F1 to future P6 panel commands.
 - **DESIGN Resolution Proposal (`DESIGN-FOUNDATION-F1-001` §N):**
-  - Entities with missing dictionaries are marked `UNREGISTERED_TTC_ASSET` (geometry preserved; flagged in QA tool).
-  - Orphan clearance envelopes detected and offered for automated cleanup.
-  - Duplicate IDs resolved by retaining original on earliest Handle and re-assigning duplicate.
-- **Pending Authority:** Recovery command interactions and dialog specifications in `SPEC.md`.
+  - Generic `IEntityIdentityAuditService` defined in F1.
+  - Two-state collision resolution (no silent arbitrary choice of original on unknown lineage).
+  - Missing metadata marked `UNREGISTERED_TTC_ASSET` (geometry preserved; flagged for re-registration).
+  - Orphan clearance envelopes detected and offered for safe removal.
+- **Pending Authority:** Recovery workflows and UI dialogs specified in `SPEC.md`.
