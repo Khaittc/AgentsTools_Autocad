@@ -13,15 +13,15 @@
 
 - **Tranche:** F1 — Common CAD Contracts
 - **Lifecycle Stage:** SPEC_CORRECTION
-- **Current Review:** `REV-F1-SPEC-001-R3`
+- **Current Review:** `REV-F1-SPEC-001-R4`
 - **Current Result:** `NEEDS_FIX`
 - **Current Disposition:** `RETURN_TO_SPEC_CORRECTION`
-- **F1 SPEC:** `CORRECTION_IN_PROGRESS`
+- **F1 SPEC:** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
 - **Spec Freeze:** `NOT AUTHORIZED`
 - **Work Order:** `NOT AUTHORIZED`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
-- **Expected Next Review:** `REV-F1-SPEC-001-R4`
+- **Expected Next Review:** `REV-F1-SPEC-001-R5`
 
 
 
@@ -343,3 +343,74 @@ After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-002`.
 - **Expected Next Review:** `REV-F1-SPEC-001-R4`
 
 After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-003`.
+
+---
+
+## 11. Independent Re-Review: REV-F1-SPEC-001-R4
+
+- **Review ID:** `REV-F1-SPEC-001-R4`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Date:** 2026-09-16
+- **Reviewed HEAD:** `c19ef54cbbe22561076221a54e8cf82431275f73`
+- **Reviewed Artifact:** `SPEC-FOUNDATION-F1-001 v0.4.0` (`docs/tranches/F1/SPEC.md`)
+- **Previous Review:** `REV-F1-SPEC-001-R3`
+- **Governance Result:** `PASS`
+- **Technical Result:** `NEEDS_FIX`
+- **Review Result:** `NEEDS_FIX`
+- **Disposition:** `RETURN_TO_SPEC_CORRECTION`
+
+### Previous Finding Closure State (R3-F01–R3-F05)
+- **R3-F01 — Command-boundary reconciliation authority:** `RESOLVED` (Reactors observation-only; command-boundary reconciliation mechanisms A and B formalized as candidate implementations with host stability isolated to `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED` in `TEST-F1-15`, `TEST-F1-21`; `DESIGN.md` §17.1 superseding errata appended).
+- **R3-F02 — Numerical conversion acceptance:** `RESOLVED` (Deprecated `< 1e-9 mm>` in `DESIGN.md` §17.2; declared bounded test suite of coordinates `0.0`, `1.0`, `-1.0`, `0.001`, `1250.75`, `500000.0` in §3.3, `AC-F1-04`, `TEST-F1-28`; comparison designated as `TEST_IMPLEMENTATION_DETAIL`).
+- **R3-F03 — Schema compatibility matrix:** `RESOLVED` (Normative 4-row matrix in §9.2 for runtime `1.0.x`; unknown fields preserved verbatim without downward version rewrite; future major blocked with `UNSUPPORTED_SCHEMA`; removed unsupported "defaults older minor versions").
+- **R3-F04 — Undo/Redo normative scope and test coverage:** `RESOLVED` (Category A commands including `INSERT` formalized with Undo/Redo invariant in §10.1.1, `AC-F1-18`, `TEST-F1-21`; Category B separated).
+- **R3-F05 — Document lifecycle API source traceability:** `RESOLVED` (`SRC-F1-10` added in `API_VERIFICATION.md` Section 1 and linked from `API-F1-08`; non-retroactive subscription framed as `PROJECT_POLICY / ARCHITECTURAL_CONSEQUENCE`).
+
+### New / Residual Findings
+- **R4-F01 — MEDIUM — Operation-result status vs canonical entity failure taxonomy:** In §9.3 item 2, `OPERATION_ABORTED_PRESERVATION_RISK` is introduced as a status when a write cannot guarantee lossless preservation of unknown future-minor fields. However, §15 explicitly declares that F1 defines "10 standardized deterministic machine-readable failure statuses" and does not include `OPERATION_ABORTED_PRESERVATION_RISK`. Harmonize §9.3 and §15 by establishing the architectural distinction between Entity Metadata Failure Classifications (the 10 statuses in §15) and Operation Execution Results (including `OPERATION_ABORTED_PRESERVATION_RISK`), and update `AC-F1-17` and test coverage (`TEST-F1-29`).
+- **R4-F02 — MEDIUM — WBLOCK traceability and identity-postcondition ambiguity:** In §10.1.2 item 1, WBLOCK source document integrity incorrectly cites `AC-F1-10` (Native ARRAY Independence); replace with `AC-F1-12` / `AC-F1-07`. In §10.1.2 item 2, the statement that cloned entities in the target DWG receive independent distinct identities "upon insertion or opening" contradicts §10 line 371 ("Clones exported to target DWG assigned distinct NEW UUIDv4") and creates an ambiguous window where an exported DWG on disk could violate the global cross-drawing uniqueness invariant (§5.3). Explicitly define the behavioral postcondition: valid TTC-managed export artifacts must persist distinct identities, while the exact AutoCAD clone mechanism remains `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED`.
+- **R4-F03 — LOW — REVIEW.md current-state summary drift:** Line 19 of `docs/tranches/F1/REVIEW.md` displayed `CORRECTION_IN_PROGRESS` due to read-only locking rules during correction cycles; update to `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`.
+
+### Verified Named BUILD Test Mappings
+- `TEST-F1-01` → `AC-F1-07`
+- `TEST-F1-02` → `AC-F1-09`
+- `TEST-F1-03` → `AC-F1-09`
+- `TEST-F1-04` → `AC-F1-14`
+- `TEST-F1-05` → `AC-F1-20`
+- `TEST-F1-06` → `AC-F1-19`
+- `TEST-F1-07` → `AC-F1-23`
+- `TEST-F1-08` → `AC-F1-01`
+- `TEST-F1-09` → `AC-F1-21`
+- `TEST-F1-10` → `AC-F1-11`
+- `TEST-F1-11` → `AC-F1-10`
+- `TEST-F1-12` → `AC-F1-12`
+- `TEST-F1-13` → `AC-F1-13`, `AC-F1-17`
+- `TEST-F1-14` → `AC-F1-15`
+- `TEST-F1-15` → `AC-F1-21`
+- `TEST-F1-16` → `AC-F1-02`
+- `TEST-F1-17` → `AC-F1-03`
+- `TEST-F1-18` → `AC-F1-08`
+- `TEST-F1-19` → `AC-F1-16`
+- `TEST-F1-20` → `AC-F1-17`
+- `TEST-F1-21` → `AC-F1-18`
+- `TEST-F1-22` → `AC-F1-20`
+- `TEST-F1-23` → `AC-F1-21`
+- `TEST-F1-24` → `AC-F1-22`
+- `TEST-F1-25` → `AC-F1-25`
+- `TEST-F1-26` → `AC-F1-21`
+- `TEST-F1-27` → `AC-F1-14`, `AC-F1-15`
+- `TEST-F1-28` → `AC-F1-04`
+*(Note: `AC-F1-05`, `AC-F1-06`, and `AC-F1-24` are primarily `UNIT_TEST` / `STATIC_ANALYSIS` criteria and do not require fabricated host test entries).*
+
+### Authority
+- **F1 SPEC CORRECTION:** `AUTHORIZED`
+- **F1 SPEC FREEZE:** `NOT AUTHORIZED`
+- **WORK ORDER:** `NOT AUTHORIZED`
+- **BUILD:** `NOT AUTHORIZED`
+- **Production Build Authorization:** `NONE`
+- **Next Task:** `F1-SPEC-CORRECTION-004`
+- **Expected Next Review:** `REV-F1-SPEC-001-R5`
+
+After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-004`.
+

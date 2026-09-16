@@ -9,14 +9,14 @@
 
 - **Total Registered Issues:** 10
 - **Status:** ALL OPEN (`SPEC_CORRECTED`)
-- **Current Lifecycle Gate:** `SPEC_RE_REVIEW` (External Independent Review `REV-F1-SPEC-001-R4` Pending)
+- **Current Lifecycle Gate:** `SPEC_RE_REVIEW` (External Independent Review `REV-F1-SPEC-001-R5` Pending)
 - **Issues Blocking BUILD Entry:** 10 (Must be formalized in SPEC and approved before Work Order / BUILD)
 - **Disposition Breakdown:**
   - `SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`: 10 (`ISSUE-F1-001` through `ISSUE-F1-010`)
 - **Target Resolution Gates:**
-  - `SPEC_FREEZE`: 10 (Formalized and corrected in `SPEC-FOUNDATION-F1-001` v0.4.0; awaiting independent Spec re-review `REV-F1-SPEC-001-R4` & Product Owner freeze)
+  - `SPEC_FREEZE`: 10 (Formalized and corrected in `SPEC-FOUNDATION-F1-001` v0.5.0; awaiting independent Spec re-review `REV-F1-SPEC-001-R5` & Product Owner freeze)
 - **Verification Evidence Gate:**
-  - `BUILD_VALIDATION`: 10 (Empirical runtime host evidence to be collected during BUILD stage via `TEST-F1-01`..`TEST-F1-28`)
+  - `BUILD_VALIDATION`: 10 (Empirical runtime host evidence to be collected during BUILD stage via `TEST-F1-01`..`TEST-F1-29`)
 
 ---
 
@@ -53,13 +53,13 @@
   - Unit resolution states: `RESOLVED`, `UNRESOLVED`, and `UNIT_CONFIGURATION_CONFLICT`.
   - For Panel Designer: `INSUNITS = 4` trusted at 1:1; `INSUNITS = 0` requires project configuration or explicit user confirmation; non-metric (`INSUNITS = 1`) emits validation block dialog.
   - For M&E: drawing units remain configurable per project settings.
-- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.4.0 §3.2, §3.3, §3.5, `AC-F1-02`, `AC-F1-03`, `AC-F1-04`, `TEST-F1-16`, `TEST-F1-17`, `TEST-F1-28`):**
+- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.5.0 §3.2, §3.3, §3.5, `AC-F1-02`, `AC-F1-03`, `AC-F1-04`, `TEST-F1-16`, `TEST-F1-17`, `TEST-F1-28`):**
   - Formalized 3 deterministic states: `RESOLVED`, `UNRESOLVED`, `UNIT_CONFIGURATION_CONFLICT`.
   - Core canonical engineering linear unit is `MILLIMETER`.
   - Host adapter performs conversion at boundary using explicit conversion constants (`MillimetersPerDrawingUnit`); unit conversion executes in IEEE 754 double precision with deterministic reference value matching and round-trip identity fidelity (`AC-F1-04`, `TEST-F1-28`, addressing R2-F01, R2-F04, R3-F02).
   - `UNRESOLVED` and `UNIT_CONFIGURATION_CONFLICT` deterministically block physical-unit commands; zero silent conversion or silent `INSUNITS` mutation.
   - Downstream modules (e.g. P2) may constrain allowed `RESOLVED` units to millimeters without hard-coding into F1 common engine.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R4`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
 
 ---
 
@@ -76,11 +76,11 @@
   - Strict resolution precedence: (1) Explicit project/workspace configuration; (2) Explicit non-zero `INSUNITS`; (3) Unitless drawings requiring approved configuration or user confirmation.
   - No silent millimeter assumption. Status remains `PhysicalUnitResolution = UNRESOLVED` until resolved.
   - Contradictions between project configuration and non-zero `INSUNITS` trigger `UNIT_CONFIGURATION_CONFLICT`. Neither source is silently chosen; automated scaling/placement is held until resolved.
-- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.4.0 §3.2, §3.4, §15, `AC-F1-02`, `AC-F1-03`, `TEST-F1-16`, `TEST-F1-17`):**
+- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.5.0 §3.2, §3.4, §15.1, `AC-F1-02`, `AC-F1-03`, `TEST-F1-16`, `TEST-F1-17`):**
   - Explicit rule: `MEASUREMENT` MUST NOT determine physical units; `LUNITS` MUST NOT determine physical units; `INSUNITSDEFSOURCE` / `TARGET` are insertion scaling defaults only and MUST NOT prove model units.
   - Drawing with `INSUNITS = 0` without project config evaluates to `UNRESOLVED` and never silently defaults to millimeters (`AC-F1-03`).
   - Contradiction between non-zero `INSUNITS` and project config triggers `UNIT_CONFIGURATION_CONFLICT` and blocks physical operations without silent rescaling.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R4`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
 
 ---
 
@@ -98,7 +98,7 @@
   - Candidate linear tolerance $\varepsilon = 10^{-4}\text{ mm}$ retained as the sole authorized candidate.
   - All other numerical tolerance thresholds are marked `TO_BE_DETERMINED_IN_SPEC`.
   - Zero AutoCAD assembly references in Core math contracts.
-- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.4.0 §3.3, §4, `AC-F1-04`, `AC-F1-05`, `TEST-F1-28`):**
+- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.5.0 §3.3, §4, `AC-F1-04`, `AC-F1-05`, `TEST-F1-28`):**
   - Typed `GeometricTolerance` immutable record specified in pure Core (`TTC.CadTools.Core.Geometry`).
   - Zero Autodesk references in Core assemblies (`AC-F1-01`).
   - Linear coincidence tolerance $\varepsilon = 10^{-4}\text{ mm}$ formalized and proposed for freeze.
@@ -107,7 +107,7 @@
   - Removed unauthorized precision threshold `< 1e-9 mm>` from `AC-F1-04`; unit conversions use authoritative physical conversion constants (`MillimetersPerDrawingUnit`) evaluated in IEEE 754 double precision (`TEST-F1-28`).
   - All other tolerance categories (`AngularAlignment`, `ZeroLength`, `ScaleComparison`) explicitly marked `NO GLOBAL VALUE IN F1 v1`; must be supplied by caller or downstream spec.
   - Raw floating-point equality comparison prohibited across all geometry routines.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R4`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
 
 ---
 
@@ -123,12 +123,12 @@
 - **DESIGN Resolution Proposal (`DESIGN-FOUNDATION-F1-001` §C):**
   - Scope clarified: Identifies one TTC-managed AutoCAD drawing object instance. Catalog reference uses `TTC_LIBRARY_ID`. EPLAN Device Tag management belongs exclusively to the separate EPLAN 2022 toolchain (C2 owns clean DWG/DXF export only).
   - Format evaluation: Pure UUIDv4 (practical global uniqueness with negligibly small collision probability; decoupled from role) vs Prefixed Slug + UUID (human-readable, but carries risk of semantic divergence if entity role changes).
-- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.4.0 §5, §11, `AC-F1-06`, `AC-F1-12`, `TEST-F1-12`):**
+- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.5.0 §5, §11, `AC-F1-06`, `AC-F1-12`, `TEST-F1-12`):**
   - Scope locked: Uniquely identifies exactly one TTC-managed AutoCAD drawing object instance. Decoupled from `TTC_LIBRARY_ID`, EPLAN Device Tags, BOMs, Handles, and ObjectIds.
   - Format formalized: RFC 4122 Version 4 UUID canonical lower-case string (`Guid.ToString("D")`, 36 characters).
   - Role prefix rejected: Pure UUID without object-type slug; semantic classification resides independently in `TTC_OBJECT_TYPE` to prevent identity mutation on reclassification.
   - Uniqueness invariant (Addressing F01): No two independent TTC objects in a database—or across separate drawings within a project—may share the same valid `TTC_OBJECT_ID`. Distinct physical/semantic instances across drawings MUST possess distinct UUIDs (`AC-F1-12`, `TEST-F1-12`).
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R4`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
 
 ---
 
@@ -148,10 +148,10 @@
     - **State B (Provenance Unknown):** Classified as `COLLISION_UNRESOLVED`. No silent guessing or arbitrary rewriting of entities. Controlled reconciliation workflow defined in SPEC.
   - **Pre-Save Safety:** SPEC behavior does NOT depend on unverified `Database.BeginSave` mutation.
   - **Generic Service:** `IEntityIdentityAuditService` defined in F1 for cross-tranche reuse.
-- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.4.0 §10, §10.1, §11, §12.2, `AC-F1-09`, `AC-F1-10`, `AC-F1-11`, `AC-F1-12`, `AC-F1-18`, `TEST-F1-02`, `TEST-F1-03`, `TEST-F1-10`, `TEST-F1-15`, `TEST-F1-21`):**
+- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.5.0 §10, §10.1, §11, §12.2, `AC-F1-07`, `AC-F1-09`, `AC-F1-10`, `AC-F1-11`, `AC-F1-12`, `AC-F1-18`, `TEST-F1-02`, `TEST-F1-03`, `TEST-F1-10`, `TEST-F1-11`, `TEST-F1-12`, `TEST-F1-15`, `TEST-F1-21`):**
   - Comprehensive native edit lifecycle matrix formalized (§10, §10.1), categorizing commands into:
     - **Category A (Active Database Direct Clone/Mutation):** `COPY`, `ARRAY`, `MIRROR` (preserve-source), `PASTECLIP`, `INSERT` (drawing/block reference insertion), `ERASE`, `OOPS`. All Category A commands are subject to the strict Undo/Redo invariant: duplicate active UUIDs are strictly forbidden; clones undone lose active identity; clones redone restore distinct identities (`AC-F1-18`, `TEST-F1-21`, addressing R3-F04).
-    - **Category B (Cross-Database Export / Out-of-Scope Commands):** `WBLOCK` (exports objects to a secondary database on disk; exported entities receive fresh identities upon insertion into an active database and do not participate in the source drawing's Undo stack).
+    - **Category B (Cross-Database Export / Out-of-Scope Commands):** `WBLOCK` (exports objects to a secondary database on disk; target DWG considered a valid TTC artifact MUST persist distinct `TTC_OBJECT_ID` values; target is not promoted or accepted as a valid project drawing while containing duplicate IDs; exact host clone mechanism remains `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED` in `TEST-F1-12`, addressing R4-F02).
   - Formalized two candidate implementation mechanisms for command-boundary reconciliation (§10.1, §12.2, addressing R3-F01):
     - **Mechanism A:** Direct write under active `DocumentLock` and database `Transaction` initiated from `CommandEnded`.
     - **Mechanism B:** Deferred/scheduled write via application message pump / idle callback (`Application.Idle`).
@@ -160,8 +160,8 @@
   - Database reactors remain strictly observation and invalidation only; reconciliation writes require explicit `DocumentLock` and database `Transaction` at command boundaries.
   - Two-state lineage model formalized (§11): State A (`PROVENANCE_KNOWN`) updates clone UUID atomically; State B (`PROVENANCE_UNKNOWN`) classifies `COLLISION_UNRESOLVED` without silent survivor guessing or Handle-age heuristics.
   - Generic `IEntityIdentityAuditService` specified for collision reporting.
-  - Empirical host tests (`TEST-F1-02`, `TEST-F1-03`, `TEST-F1-10`, `TEST-F1-15`, `TEST-F1-21`) established as BUILD acceptance evidence.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R4`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+  - Empirical host tests (`TEST-F1-02`, `TEST-F1-03`, `TEST-F1-10`, `TEST-F1-11`, `TEST-F1-12`, `TEST-F1-15`, `TEST-F1-21`) established as BUILD acceptance evidence.
+- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
 
 ---
 
@@ -180,14 +180,14 @@
   - Registered `XData` (`TTC_CAD`) contains secondary / cached copy of `TTC_OBJECT_TYPE` and `TTC_OBJECT_ID` for fast selection filtering.
   - Mismatch rule: `XRecord` wins; `XData` is resynchronized.
   - 100% vanilla DWG compatible; zero custom ObjectARX classes.
-- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.4.0 §7, §8, §8.4, `AC-F1-13`, `AC-F1-14`, `AC-F1-15`, `AC-F1-16`, `TEST-F1-04`, `TEST-F1-27`):**
+- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.5.0 §7, §8, §8.4, `AC-F1-13`, `AC-F1-14`, `AC-F1-15`, `AC-F1-16`, `TEST-F1-04`, `TEST-F1-27`):**
   - Canonical storage matrix formalized: `XRecord` (`TTC_METADATA_HEADER`) is primary authoritative source of truth; registered `XData` (`TTC_CAD`) is secondary fast-query index (< 100 bytes).
   - DXF encoding formalized (Addressing F02): `XRecord` ResultBuffers encode properties using standard DXF group codes < 1000 (specifically Group Code 1 / `DxfCode.Text` for string keys and values); group codes 1000–1071 are reserved strictly for `XData`.
   - Invariant: `XRecord` wins all conflicts; out-of-sync XData resynchronized at safe write boundaries (`AC-F1-15`).
   - Added Authoritative Fallback Discovery & Index Rebuild Service (§8.4, addressing R2-F06): when entities lack fast-query XData (external clean, script strip), authoritative extension dictionary scan discovers entities and rebuilds index without loss; full scan strictly prohibited during cursor/point monitoring (`TEST-F1-27`).
   - Missing/incomplete metadata fails with single canonical status `METADATA_INCOMPLETE` (`AC-F1-16`, addressing F09); geometry 100% preserved; zero silent reconstruction.
   - Fast selection filtering via `Editor.SelectAll()` verified with `TEST-F1-04`.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R4`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
 
 ---
 
@@ -205,13 +205,14 @@
   - Semantic versioning stored in header (`TTC_SCHEMA_VERSION = "1.0.0"`).
   - Minor versions read seamlessly with defaults.
   - Unsupported future major versions trigger read-only protection with structured warning.
-- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.4.0 §7.3, §7.4, §9, §9.2, §9.3, `AC-F1-17`, `TEST-F1-13`):**
+- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.5.0 §7.3, §7.4, §9, §9.2, §9.3, §15.2, `AC-F1-17`, `TEST-F1-13`, `TEST-F1-20`, `TEST-F1-29`):**
   - Keyed/tagged `ResultBuffer` encoding formalized with key/value pairs using standard DXF text codes (Group Code 1 / `DxfCode.Text`, addressing F02).
   - Order independence and duplicate key rejection enforced.
   - Unknown fields preserved verbatim during read-modify-write cycles (`AC-F1-17`).
   - Normative Schema Compatibility Matrix formalized (§9.2, addressing R3-F03) for runtime 1.0.x: exact match (1.0.x) read/write normal; future patch (1.0.y) read/write normal; future minor (1.N.x, N > 0) read/write with unrecognized fields preserved verbatim and version string preserved verbatim without downward downgrade; future major (2.x.x) triggers read-only protection with structured status `UNSUPPORTED_SCHEMA` (mutation blocked, geometry preserved).
   - Replaced unsupported "defaults older minor versions" wording with explicit forward compatibility rules; malformed schema classified `INVALID_METADATA` without host crash.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R4`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+  - Explicit taxonomy separation formalized (§9.3, §15.2, addressing R4-F01): `OperationExecutionResult != EntityFailureClassification`. If future-minor unrecognized fields cannot be guaranteed during a write operation, the transaction aborts non-destructively returning `OperationResult.Code = OPERATION_ABORTED_PRESERVATION_RISK`, without altering entity failure classification, schema version, or stripping unknown fields (`AC-F1-17`, `TEST-F1-29`).
+- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
 
 ---
 
@@ -230,7 +231,7 @@
   - TTC stability rule prohibiting write transactions inside reactors classified as `PROJECT_POLICY`.
   - Reactors mark in-memory state as `DIRTY`. Derived layout models and spatial indexes are reconstructed on demand at command boundaries or explicit QA audit.
   - Active document switch invalidates ephemeral caches.
-- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.4.0 §12, §12.2, §12.4, §13, `AC-F1-21`, `TEST-F1-09`, `TEST-F1-15`, `TEST-F1-26`):**
+- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.5.0 §12, §12.2, §12.4, §13, `AC-F1-21`, `TEST-F1-09`, `TEST-F1-15`, `TEST-F1-23`, `TEST-F1-26`):**
   - Project policy formalized: reactor callbacks are strictly observation and invalidation only (zero database write operations, zero transaction creation, zero mutation of notifying objects).
   - Clarified distinction between reactors and command-boundary reconciliation (addressing R3-F01): While database reactors remain strictly observation-only, persistent identity reconciliation after native commands is permitted at command boundaries (`CommandEnded`) using candidate Mechanism A (active `DocumentLock` + `Transaction`) or Mechanism B (deferred/scheduled execution). Both mechanisms are classified as `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED` in `TEST-F1-15` and `TEST-F1-21`.
   - Startup document enumeration formalized (§12.2, addressing R2-F03, R3-F05): `IExtensionApplication.Initialize()` explicitly iterates `Application.DocumentManager`, attaches handlers to already-open documents, and hooks `DocumentCreated` (backed by verified Autodesk documentation `SRC-F1-10` in `API_VERIFICATION.md`, verified with `TEST-F1-26`). Non-retroactivity of .NET event subscription framed as `PROJECT_POLICY / ARCHITECTURAL_CONSEQUENCE`.
@@ -240,7 +241,7 @@
   - Cache invalidation contract specified (§12.2): ephemeral caches marked dirty on modification, invalidated on document switch, reconstructed at command boundaries.
   - Safe reconciliation writes require an explicit `DocumentLock` and database `Transaction`.
   - `Database.BeginSave` mutation classified as non-dependency (`BUILD_VALIDATION_REQUIRED` / optional investigation).
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R4`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
 
 ---
 
@@ -258,12 +259,12 @@
   - Common F1: Uniform scale $ScaleX=ScaleY=ScaleZ=1.0$, static blocks for fixed catalog items, Layer 0 conventions, attributes decoupled from metadata, clearance maintained on dedicated layers.
   - Nested block nesting limit of 1 level classified as candidate recommendation (`PANEL_P1_P2_RECOMMENDATION`), not a frozen invariant.
   - Catalog schema definition deferred to P1.
-- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.4.0 §14, §15, `AC-F1-04`, `AC-F1-22`, `TEST-F1-28`):**
+- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.5.0 §14, §15.1, `AC-F1-04`, `AC-F1-22`, `TEST-F1-24`, `TEST-F1-28`):**
   - Formalized all 12 block domains in §14: mounting base point at $(0,0,0)$, declared asset units, unit-safe uniform scale derived from unit conversion ratio ($ExpectedInsertionScale = MillimetersPerAssetUnit / MillimetersPerDrawingUnit$, addressing R2-F04).
-  - Clarified `MISSING_BLOCK_ASSET` (§14 domain 12, §15, addressing R2-F05): represents external library/catalog asset resolution failure, not an impossible BlockTable corruption state where a BlockReference exists without a BlockTableRecord.
+  - Clarified `MISSING_BLOCK_ASSET` (§14 domain 12, §15.1, addressing R2-F05): represents external library/catalog asset resolution failure, not an impossible BlockTable corruption state where a BlockReference exists without a BlockTableRecord.
   - Undeclared block units evaluate strictly to `UNRESOLVED` (never assumed millimeter).
   - Downstream scope de-normativized in F1 (addressing F08): generic clearance layers without freezing `TTC_CLEARANCE_*`; static vs dynamic block capability without freezing P1 catalog rules; `AllowMirroring` flag without freezing P6 polarity rules; 1-level nesting recommendation preserved as advisory guideline.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R4`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
 
 ---
 
@@ -282,12 +283,12 @@
   - Missing metadata marked `UNREGISTERED_TTC_ASSET` (geometry preserved; flagged for re-registration).
   - Missing block definitions classified as `MISSING_BLOCK_ASSET`.
   - Orphan clearance envelopes detected and offered for safe removal.
-- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.4.0 §8.4, §11.2, §15, `AC-F1-16`, `TEST-F1-27`):**
-  - Standardized deterministic failure statuses (§15).
+- **SPEC Formalization (`SPEC-FOUNDATION-F1-001` v0.5.0 §8.4, §11.2, §15.1, §15.2, `AC-F1-15`, `AC-F1-16`, `TEST-F1-19`, `TEST-F1-27`):**
+  - Standardized deterministic failure statuses: strictly 10 persistent entity metadata failure classifications in §15.1, cleanly separated from transient operation execution results in §15.2 (`OperationExecutionResult != EntityFailureClassification`, addressing R4-F01).
   - Authoritative fallback recovery (§8.4, addressing R2-F06): when external cleaning or scripts strip XData, bounded audit via `ITtcMetadataAuditService` recovers entity identity and resynchronizes secondary XData without data loss (`TEST-F1-27`).
   - Single canonical failure status `METADATA_INCOMPLETE` for missing or malformed metadata (`AC-F1-16`, addressing F09); non-normative `UNREGISTERED_TTC_ASSET` removed.
   - Two-state collision resolution formalized: `COLLISION_UNRESOLVED` requires explicit administrative action without silent survivor guessing (§11.2).
   - Orphan clearance envelopes detected and offered for safe removal.
   - Missing block library definitions classified as `MISSING_BLOCK_ASSET` (addressing R2-F05).
   - Missing XRecord with XData classified as `METADATA_INCOMPLETE` (`AC-F1-16`); geometry preserved; zero silent reconstruction.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R4`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.

@@ -2,13 +2,13 @@
 
 - **Spec ID:** `SPEC-FOUNDATION-F1-001`
 - **Title:** Common CAD Contracts
-- **Version:** `0.4.0`
+- **Version:** `0.5.0`
 - **Status:** `CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING`
 - **Lifecycle Stage:** `SPEC_CORRECTION`
 - **Tranche:** F1 — Common CAD Contracts
 - **Dependency:** Tranche F0 — AutoCAD Foundation (`FROZEN v1.0.0`, Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
 - **Design Authority:** `DESIGN-FOUNDATION-F1-001` v0.3.0 (`COMPLETE / REVIEWED_PASS / PASS_TO_SPEC`)
-- **Latest External Review:** `REV-F1-SPEC-001-R3` — `NEEDS_FIX / RETURN_TO_SPEC_CORRECTION`
+- **Latest External Review:** `REV-F1-SPEC-001-R4` — `NEEDS_FIX / RETURN_TO_SPEC_CORRECTION`
 - **Target Host Baseline:** AutoCAD 2023 Managed .NET API (C#, .NET Framework 4.8)
 - **Production Build Authorization:** `NONE`
 - **SPEC Freeze Authority:** `NONE`
@@ -17,7 +17,7 @@
 > [!IMPORTANT]
 > **Specification Governance & Non-Approval Notice:**
 > 1. Antigravity is the authoring/recording agent. Antigravity MUST NOT self-approve or freeze this specification.
-> 2. This document represents a formal CORRECTED DRAFT specification submitted for independent technical re-review (`REV-F1-SPEC-001-R4`).
+> 2. This document represents a formal CORRECTED DRAFT specification submitted for independent technical re-review (`REV-F1-SPEC-001-R5`).
 > 3. Statements marked `PROPOSED_SPEC_CONTRACT` are technical proposals pending independent review and explicit Product Owner freeze. They must NOT be represented as already approved by the Product Owner.
 > 4. Work Order creation is strictly **NOT AUTHORIZED**. Production code modification (`production/**`) is strictly **NOT AUTHORIZED**.
 
@@ -340,7 +340,7 @@ The following compatibility matrix defines the normative behavior of the `1.0.x`
    - All unrecognized tagged DXF group code 1 pairs in the `TTC_METADATA_HEADER` XRecord are read into an uninterpreted collection;
    - If a subsequent write operation occurs on that entity, the serializer MUST write back all unrecognized key/value pairs verbatim;
    - The plugin runtime MUST NOT rewrite the `TTC_SCHEMA_VERSION` downward to `"1.0.0"`; the original future schema version string MUST be preserved;
-   - If a write cannot guarantee lossless preservation of unknown fields, the write is aborted with status `OPERATION_ABORTED_PRESERVATION_RISK`.
+   - If a write cannot guarantee lossless preservation of unknown fields, the write is aborted non-destructively returning operation execution result `OperationResult.Code = OPERATION_ABORTED_PRESERVATION_RISK` (§15.2); the entity metadata failure classification is NOT altered, `TTC_SCHEMA_VERSION` is NOT modified, entity geometry is 100% preserved, and unknown fields are NOT stripped.
 3. **Major Version Boundary:** Any future major revision (`2.0.0`+) introduces incompatible structural changes. The runtime strictly treats such entities as read-only to avoid corrupting future structures.
 4. **Zero Geometry Destruction:** In neither `UNSUPPORTED_SCHEMA` nor `INVALID_METADATA` states does the plugin delete, alter, or hide the entity's underlying AutoCAD geometry.
 
@@ -368,7 +368,7 @@ The specification formalizes the behavioral invariant for all standard AutoCAD n
 | `SAVE` | Serialization to DWG (no clone) | Unchanged | **Preserve existing ID and XRecords verbatim** | `PROPOSED_SPEC_CONTRACT` |
 | `REOPEN` | Deserialization from DWG (no clone) | Invariant Handles | **Preserve existing ID and XRecords verbatim** | `PROPOSED_SPEC_CONTRACT` |
 | `EXPLODE` | Primitives created from definition linework (no clone) | New Handles on primitives | **Original ID NOT propagated to raw geometry primitives** | `PROPOSED_SPEC_CONTRACT` |
-| `WBLOCK` | `wblockClone` to target database | New Handles in target DB | **Clones exported to target DWG assigned distinct NEW UUIDv4** | `PROPOSED_SPEC_CONTRACT` |
+| `WBLOCK` | `wblockClone` to target database | New Handles in target DB | **Clones exported to target DWG assigned distinct NEW UUIDv4 upon export reconciliation completion** | `PROPOSED_SPEC_CONTRACT` |
 | `INSERT` (drawing/block) | `deepClone` from source into target DB | New Handles in target DB | **Imported instances assigned distinct NEW UUIDv4 upon insertion** | `PROPOSED_SPEC_CONTRACT` |
 | `COPYCLIP` | `wblockClone` to temporary clipboard database | New Handles in clipboard DB | **Clipboard payload encapsulates objects; source retains ID** | `PROPOSED_SPEC_CONTRACT` |
 | `PASTECLIP` | `wblockClone` from temporary clipboard database | New Handles in target DB | **Pasted instances assigned distinct NEW UUIDv4 in target DB** | `PROPOSED_SPEC_CONTRACT` |
@@ -394,8 +394,12 @@ Category A encompasses native AutoCAD commands that create, duplicate, or mutate
 
 #### 10.1.2 Category B: Cross-Database Export Commands (`WBLOCK`)
 `WBLOCK` extracts entities from the active drawing and writes them to an independent target DWG database:
-1. **Source Document Integrity:** The source drawing entities retain their original `TTC_OBJECT_ID` and remain unaffected (`AC-F1-10`).
-2. **Target Document Independence:** Cloned entities in the target DWG receive independent distinct identities upon insertion or opening (`AC-F1-12`, `TEST-F1-12`).
+1. **Source Document Integrity:** The source drawing entities retain their original `TTC_OBJECT_ID` and remain unaffected (`AC-F1-07`, `AC-F1-12`).
+2. **Target Document Independence & Export Postcondition (Addressing R4-F02):**
+   On successful completion of a TTC-supported `WBLOCK` export workflow, the resulting target DWG that is considered a valid TTC-managed artifact MUST persist distinct `TTC_OBJECT_ID` values for every independent exported TTC-managed instance (`AC-F1-12`, `TEST-F1-12`).
+   The source entities retain their original identities.
+   The target artifact MUST NOT be promoted or accepted as a valid TTC project drawing while it contains copied source `TTC_OBJECT_ID` values for independent exported instances.
+   *Host Implementation Boundary:* The exact AutoCAD host clone mechanism for achieving this (e.g. `wblockClone` `IdMapping`-based reconciliation, target database post-processing before final save, controlled export pipeline) remains `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED`. Vanilla AutoCAD native `WBLOCK` output is not considered TTC identity-valid until the TTC export reconciliation phase successfully completes.
 3. **Undo Stack Scope:** The target DWG does NOT participate in the source document's active Undo stack; executing `UNDO` in the source document rolls back only source modifications and does not alter the already-exported external DWG file.
 
 #### 10.1.3 Host Integration & Candidate Reconciliation Mechanisms
@@ -558,7 +562,14 @@ F1 defines generic common CAD block contracts across all engineering features, w
 
 **Classification:** `PROPOSED_SPEC_CONTRACT`
 
-The specification defines 10 standardized deterministic machine-readable failure statuses:
+The specification explicitly distinguishes between persistent **Entity Metadata Failure Classifications** (which describe inspectable drawing entity metadata states) and transient **Operation Execution Results** (which describe runtime service/command execution outcomes):
+
+```text
+OperationExecutionResult != EntityFailureClassification
+```
+
+### 15.1 Entity Metadata Failure Classifications
+The specification defines 10 standardized deterministic machine-readable entity failure statuses describing drawing entity health:
 
 | Status Identifier | Severity | Trigger Condition | System Recovery Behavior |
 |---|---|---|---|
@@ -572,6 +583,13 @@ The specification defines 10 standardized deterministic machine-readable failure
 | `XDATA_INDEX_OUT_OF_SYNC` | LOW | XData missing or mismatched with XRecord | Rely on authoritative XRecord; discover via `ITtcMetadataAuditService`; resync at safe write boundary |
 | `MISSING_BLOCK_ASSET` | HIGH | Library asset or required block definition cannot be located or loaded | Log error; preserve instance handle; block automated placement/redraw |
 | `INVALID_BLOCK_SCALE` | MEDIUM | Non-uniform scale or scale factor mismatch | Flag validation warning; offer normalization to expected scale |
+
+### 15.2 Operation Execution Results (Runtime Guard Taxonomy)
+When a TTC CAD runtime service or command boundary handler attempts a mutation or audit operation that cannot proceed safely, it returns a structured operation result code without mutating entity failure classifications:
+
+| Operation Result Code | Severity | Trigger Condition | Operational Safety & Invariants |
+|---|---|---|---|
+| `OPERATION_ABORTED_PRESERVATION_RISK` | HIGH | A requested mutation targets an entity with a future minor schema (`1.N.x`) where lossless preservation of unrecognized fields cannot be guaranteed | Mutation transaction aborted non-destructively; entity failure classification is NOT changed; entity `TTC_SCHEMA_VERSION` is NOT downgraded; unknown fields are NOT stripped; underlying AutoCAD geometry is 100% preserved; structured warning logged to `FileLogger`. |
 
 ---
 
@@ -599,7 +617,7 @@ The following 25 numbered acceptance criteria define the verifiable requirements
 | **AC-F1-14** | XData Index Discovery | Fast `Editor.SelectAll()` with `SelectionFilter` locates entities via `"TTC_CAD"` XData without treating XData as truth. | `AUTOCAD_HOST_TEST` |
 | **AC-F1-15** | XData Mismatch & Fallback Recovery | When XData is missing, corrupt, or mismatched with XRecord, the authoritative `ITtcMetadataAuditService` discovers the entity via XRecord scan, classifies status as `XDATA_INDEX_OUT_OF_SYNC`, and resynchronizes derivative `"TTC_CAD"` XData at an authorized write boundary. | `AUTOCAD_HOST_TEST` |
 | **AC-F1-16** | Missing XRecord Protection | Entity with orphan `XData` is classified as `METADATA_INCOMPLETE`; geometry is 100% preserved. | `AUTOCAD_HOST_TEST` |
-| **AC-F1-17** | Schema Forward Compatibility | System safely reads known fields, preserves unknown fields verbatim on future minor schemas (`1.N.x`) without downward version rewrite, blocks future major schemas (`2.x.x`) with `UNSUPPORTED_SCHEMA`, and safely handles malformed syntax as `INVALID_METADATA`. | `UNIT_TEST` / `AUTOCAD_HOST_TEST` |
+| **AC-F1-17** | Schema Forward Compatibility | System safely reads known fields, preserves unknown fields verbatim on future minor schemas (`1.N.x`) without downward version rewrite; if lossless preservation cannot be guaranteed, mutation is aborted non-destructively returning operation result `OPERATION_ABORTED_PRESERVATION_RISK` without mutating entity classification; blocks future major schemas (`2.x.x`) with `UNSUPPORTED_SCHEMA`; and safely handles malformed syntax as `INVALID_METADATA`. | `UNIT_TEST` / `AUTOCAD_HOST_TEST` |
 | **AC-F1-18** | Undo / Redo Identity Invariance | After any native Category A command (`COPY`, `ARRAY`, `MIRROR` preserve-source, `PASTECLIP`, `INSERT`, `ERASE`, `OOPS`) followed by UNDO/REDO sequences, the active database never contains duplicate `TTC_OBJECT_ID` instances; undone clones lose active identity and redo restores mutually independent identities. | `AUTOCAD_HOST_TEST` |
 | **AC-F1-19** | Transaction Atomicity | Aborting a multi-entity database transaction rolls back all created entities and dictionary records cleanly. | `AUTOCAD_HOST_TEST` |
 | **AC-F1-20** | DocumentLock Compliance | Modeless palette and session operations acquire `DocumentLock` before database write transactions. | `AUTOCAD_HOST_TEST` |
@@ -615,7 +633,7 @@ The following 25 numbered acceptance criteria define the verifiable requirements
 
 **Classification:** `BUILD_VALIDATION_REQUIRED`
 
-The following 28 empirical host tests are scheduled for execution during the future BUILD stage under an approved Work Order as runtime acceptance evidence. Every host-tested acceptance criterion maps to at least one concrete named test:
+The following 29 empirical host tests are scheduled for execution during the future BUILD stage under an approved Work Order as runtime acceptance evidence. Every host-tested acceptance criterion maps to at least one concrete named test:
 
 | Test ID | Test Name | Purpose & Verification Procedure | Mapped Acceptance Criteria |
 |---|---|---|---|
@@ -630,7 +648,7 @@ The following 28 empirical host tests are scheduled for execution during the fut
 | **TEST-F1-09** | BeginSave Write Safety Investigation | Empirically investigate whether write transactions inside `Database.BeginSave` succeed safely or trigger host stability hazards. | `AC-F1-21` |
 | **TEST-F1-10** | MIRROR Selective Deep-Clone & Identity Preservation | Verify that `MIRROR` with source preserved creates a clone with new UUIDv4, while `MIRROR` with source deleted transforms entity in-place preserving ID. | `AC-F1-11` |
 | **TEST-F1-11** | ARRAY Instance Identity Duplication and Fresh UUID Assignment | Execute native `ARRAY`; verify metadata state across all resulting elements and assert distinct UUIDv4s. | `AC-F1-10` |
-| **TEST-F1-12** | WBLOCK, INSERT, and Clipboard Cross-Database Independence | Execute `WBLOCK`, `INSERT`, `COPYCLIP`, and `PASTECLIP` between drawings; assert all imported/pasted instances receive fresh UUIDv4s with zero cross-drawing duplicate IDs. | `AC-F1-12` |
+| **TEST-F1-12** | WBLOCK Export, INSERT, and Clipboard Cross-Database Independence | Execute supported `WBLOCK` export workflow; independently inspect target database (e.g. reopen target DWG); assert persisted target `TTC_OBJECT_ID` values are distinct from source with zero duplicate IDs across drawings; execute `INSERT`, `COPYCLIP`, and `PASTECLIP` between drawings asserting distinct fresh UUIDv4s. | `AC-F1-12` |
 | **TEST-F1-13** | Keyed Schema Lossless Round-Trip & Unknown Field Preservation | Encode `TTC_METADATA_HEADER` using standard DXF group code 1 with custom future keys; read back and verify unknown keys are intact. | `AC-F1-13`, `AC-F1-17` |
 | **TEST-F1-14** | XData/XRecord Mismatch Safe Resynchronization | Mutate XData deliberately; invoke repair audit; assert `XRecord` overrides and XData resynchronizes. | `AC-F1-15` |
 | **TEST-F1-15** | Command-Boundary Reconciliation Safety & Mechanism Verification | Verify that `Document.CommandEnded` identifies reconciliation opportunities, triggers cache invalidation, and executes persistent reconciliation under candidate Mechanism A (direct `DocumentLock` + `Transaction`) or Mechanism B (scheduled/deferred execution context), asserting host stability and zero crashes. | `AC-F1-21` |
@@ -647,6 +665,7 @@ The following 28 empirical host tests are scheduled for execution during the fut
 | **TEST-F1-26** | Existing Document Event Subscription at Plugin Load | Open DWG in AutoCAD session prior to loading TTC CAD plugin; load plugin via `Initialize()`; execute native `COPY`; assert command boundary event fires, clone reconciliation executes, and per-document cache operates without document reopen. | `AC-F1-21` |
 | **TEST-F1-27** | Missing-XData Authoritative Fallback Discovery & Index Rebuild | (1) Create valid TTC object with `TTC_METADATA_HEADER`; (2) Remove `"TTC_CAD"` XData only; (3) Verify fast `SelectAll` with XData filter does not discover it; (4) Run `ITtcMetadataAuditService` authoritative scan; (5) Verify entity discovered by XRecord inspection; (6) Verify classification `XDATA_INDEX_OUT_OF_SYNC`; (7) Resynchronize XData at safe write boundary; (8) Verify subsequent fast XData query discovers entity. | `AC-F1-14`, `AC-F1-15` |
 | **TEST-F1-28** | Pure Core Unit Conversion Reference Value & Round-Trip Tests | Verify unit conversion against authoritative conversion constants (`MillimetersPerDrawingUnit`) across Millimeter, Centimeter, Meter, Inch, Foot using fixed declared coordinate suite (0.0, 1.0, -1.0, 0.001, 1250.75, 500000.0); assert `expectedMm == actualMm` using bounded double precision comparison (`TEST_IMPLEMENTATION_DETAIL`) and verify round-trip identity across all test coordinates. | `AC-F1-04` |
+| **TEST-F1-29** | Future-Minor Lossless Write Guard & Preservation Risk Abort Verification | Encode `TTC_METADATA_HEADER` with future minor `1.N.x` schema and unrecognized key/value pairs; simulate serialization context where preservation cannot be guaranteed; assert write/transaction is aborted non-destructively, entity XRecord and schema version remain unchanged, geometry is 100% preserved, and operation returns `OPERATION_ABORTED_PRESERVATION_RISK`. | `AC-F1-17` |
 
 ---
 
@@ -692,9 +711,9 @@ The requirements in this specification resolve all 10 canonical F1 issues:
 | **ISSUE-F1-002** | Unit Authority, Unitless DWGs, & Conflict States | Section 3.2, 3.4, AC-F1-02, AC-F1-03, Section 15, TEST-F1-16, TEST-F1-17 |
 | **ISSUE-F1-003** | Geometric Tolerance Architecture | Section 3.3, 4.1, 4.2, 4.3, AC-F1-04, AC-F1-05, TEST-F1-28 |
 | **ISSUE-F1-004** | `TTC_OBJECT_ID` Format & Global Uniqueness Scope | Section 5.1, 5.2, 5.3, AC-F1-06, AC-F1-12, TEST-F1-12 |
-| **ISSUE-F1-005** | Identity Lifecycle Under Native Clone Operations | Section 10, 10.1, 11.1, 11.2, AC-F1-09, AC-F1-10, AC-F1-11, AC-F1-12, AC-F1-18, TEST-F1-02, 03, 10, 11, 12, 21 |
+| **ISSUE-F1-005** | Identity Lifecycle Under Native Clone Operations | Section 10, 10.1, 11.1, 11.2, AC-F1-07, AC-F1-09, AC-F1-10, AC-F1-11, AC-F1-12, AC-F1-18, TEST-F1-02, TEST-F1-03, TEST-F1-10, TEST-F1-11, TEST-F1-12, TEST-F1-15, TEST-F1-21 |
 | **ISSUE-F1-006** | Metadata Storage Split: XRecord vs XData | Section 7.1, 7.2, 7.3, 8.1, 8.2, 8.4, AC-F1-13, AC-F1-14, AC-F1-15, TEST-F1-04, TEST-F1-13, TEST-F1-14, TEST-F1-27 |
-| **ISSUE-F1-007** | Schema Versioning & Backward Compatibility | Section 7.3, 7.4, 9.1, 9.2, 9.3, AC-F1-17, TEST-F1-13, TEST-F1-20 |
+| **ISSUE-F1-007** | Schema Versioning & Backward Compatibility | Section 7.3, 7.4, 9.1, 9.2, 9.3, Section 15.2, AC-F1-17, TEST-F1-13, TEST-F1-20, TEST-F1-29 |
 | **ISSUE-F1-008** | Reactor Safety & Cache Invalidation Strategy | Section 12.1, 12.2, 12.3, 12.4, 13, AC-F1-21, TEST-F1-09, TEST-F1-15, TEST-F1-23, TEST-F1-26 |
 | **ISSUE-F1-009** | Common Mechanical Block Asset Contract | Section 14 (12 domains), AC-F1-22, TEST-F1-24 |
-| **ISSUE-F1-010** | Metadata Recovery & Conflict Resolution | Section 8.4, 11.2, 15 (10 failure statuses), 16 (AC-F1-15, AC-F1-16), TEST-F1-19, TEST-F1-27 |
+| **ISSUE-F1-010** | Metadata Recovery & Conflict Resolution | Section 8.4, 11.2, 15.1 (10 failure statuses), 16 (AC-F1-15, AC-F1-16), TEST-F1-19, TEST-F1-27 |

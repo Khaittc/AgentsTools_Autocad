@@ -758,3 +758,59 @@ Independent technical re-review: `REV-F1-SPEC-001-R4` on `SPEC-FOUNDATION-F1-001
 - **Resolution Date:** 2026-09-16
 - **Recorded In:** Post-Correction Continuity Reconciliation
 - **Reason:** Reconciled historical completion commit `3fbd08596189b67f6a4a0c31975673893e9858d8` in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-16 / AG-F1-011
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-011`
+- **Task ID:** `F1-SPEC-CORRECTION-004`
+- **Lifecycle Stage:** `SPEC_CORRECTION`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Spec Review:** `REV-F1-SPEC-001-R4` (`NEEDS_FIX / RETURN_TO_SPEC_CORRECTION`)
+- **Work Order:** `NONE` (Specification Correction Stage Only)
+- **Starting Commit:** `c19ef54cbbe22561076221a54e8cf82431275f73`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+Resolve all findings R4-F01, R4-F02, and R4-F03 from independent technical review `REV-F1-SPEC-001-R4` in the F1 Specification (`SPEC-FOUNDATION-F1-001` v0.5.0), update review persistence, update issue registry, and prepare for independent technical re-review `REV-F1-SPEC-001-R5`:
+1. Persist `REV-F1-SPEC-001-R4` into Section 11 of `docs/tranches/F1/REVIEW.md` with accurate verified BUILD test mappings, update Section 1 status summary to `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING` (resolving R4-F03), and mark file read-only.
+2. Resolve R4-F01: Separate the 10 persistent Entity Metadata Failure Classifications (§15.1) from transient Operation Execution Results (§15.2) with explicit rule `OperationExecutionResult != EntityFailureClassification`. Clarify in §9.3 item 2 that if future-minor unrecognized fields cannot be preserved during a write operation, the transaction aborts non-destructively returning `OperationResult.Code = OPERATION_ABORTED_PRESERVATION_RISK`, without altering entity failure classification, schema version, or stripping unknown fields. Add `OPERATION_ABORTED_PRESERVATION_RISK` to `AC-F1-17`, add new test `TEST-F1-29`, and update Section 20 traceability.
+3. Resolve R4-F02: Correct §10.1.2 item 1 citation from `AC-F1-10` to `AC-F1-07`, `AC-F1-12`. Formalize WBLOCK target DWG export postcondition in §10 table and §10.1.2 item 2: target DWG exported via WBLOCK considered a valid TTC artifact MUST persist distinct `TTC_OBJECT_ID` values; target is not promoted or accepted as a valid project drawing while containing duplicate IDs; exact host clone mechanism remains `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED`. Update `TEST-F1-12` to independently inspect target DWG persistence, and update Section 20 traceability.
+4. Update `docs/tranches/F1/ISSUES.md` (all 10 canonical issues updated to Spec `v0.5.0` and `REV-F1-SPEC-001-R5` pending authority; updated `ISSUE-F1-005`, `ISSUE-F1-007`, and `ISSUE-F1-010`).
+5. Update `docs/tranches/F1/README.md`, `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, and `governance/AGENT_HANDOFF.md`.
+6. Maintain strict build lock: zero production code changes, zero F0 changes, no Work Order, build NOT authorized.
+
+---
+
+### Execution Details
+- **Review Persisted:** `REV-F1-SPEC-001-R4` recorded in `docs/tranches/F1/REVIEW.md` Section 11 (marked read-only).
+- **Specification Corrected:** `docs/tranches/F1/SPEC.md` updated to `SPEC-FOUNDATION-F1-001` v0.5.0 (`CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING`) resolving R4-F01 and R4-F02.
+- **Issue Registry Updated:** `docs/tranches/F1/ISSUES.md` updated across all 10 canonical issues to reference Spec v0.5.0 and `REV-F1-SPEC-001-R5` pending authority.
+- **Tranche Front-Door Updated:** `docs/tranches/F1/README.md` updated.
+- **Master Status Registers Updated:** `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, and `governance/AGENT_HANDOFF.md` updated.
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Work Order / Build:** NOT created / NOT AUTHORIZED.
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent technical re-review: `REV-F1-SPEC-001-R5` on `SPEC-FOUNDATION-F1-001` v0.5.0. F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent reviewer approval and Product Owner freeze.

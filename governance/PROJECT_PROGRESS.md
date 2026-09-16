@@ -79,7 +79,7 @@ Status: ACTIVE_GOVERNANCE
 - **F0 Production Mutation:** `CLOSED / REQUIRES REOPEN AUTHORITY`
 - **Current Production Focus:** `F1 — SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
 - **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
-- **Next Lifecycle Action:** `Independent Technical Re-Review of F1 SPEC (REV-F1-SPEC-001-R4)`
+- **Next Lifecycle Action:** `Independent Technical Re-Review of F1 SPEC (REV-F1-SPEC-001-R5)`
 
 ---
 
@@ -91,8 +91,8 @@ Status: ACTIVE_GOVERNANCE
 - **Intake Status:** `COMPLETE / PASS_TO_DESIGN` ([docs/tranches/F1/INTAKE.md](../docs/tranches/F1/INTAKE.md))
 - **Design Status:** `COMPLETE / PASS_TO_SPEC` ([docs/tranches/F1/DESIGN.md](../docs/tranches/F1/DESIGN.md))
 - **Latest Design Review:** `REV-F1-DESIGN-001-R3` (`PASS / PASS_TO_SPEC` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
-- **Latest Spec Review:** `REV-F1-SPEC-001-R3` (`NEEDS_FIX / RETURN_TO_SPEC_CORRECTION` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
-- **Spec Document:** `SPEC-FOUNDATION-F1-001` (v0.4.0) ([docs/tranches/F1/SPEC.md](../docs/tranches/F1/SPEC.md))
+- **Latest Spec Review:** `REV-F1-SPEC-001-R4` (`NEEDS_FIX / RETURN_TO_SPEC_CORRECTION` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
+- **Spec Document:** `SPEC-FOUNDATION-F1-001` (v0.5.0) ([docs/tranches/F1/SPEC.md](../docs/tranches/F1/SPEC.md))
 - **Spec Frozen:** `NO` (Corrected draft proposed for independent re-review)
 - **API Verification:** Host Evidence Preserved ([docs/tranches/F1/API_VERIFICATION.md](../docs/tranches/F1/API_VERIFICATION.md))
 - **F1 SPEC:** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
@@ -100,7 +100,7 @@ Status: ACTIVE_GOVERNANCE
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
 - **P1/P2/M&E:** `BLOCKED`
-- **Next Authorized Action:** Independent technical re-review of F1 SPEC (`REV-F1-SPEC-001-R4` on `SPEC-FOUNDATION-F1-001` v0.4.0)
+- **Next Authorized Action:** Independent technical re-review of F1 SPEC (`REV-F1-SPEC-001-R5` on `SPEC-FOUNDATION-F1-001` v0.5.0)
 
 ---
 
@@ -109,7 +109,7 @@ Status: ACTIVE_GOVERNANCE
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
 | **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `EXECUTED / WO-F0-001` | `COMPLETE / FROZEN` (Baseline `9892f905...`) |
-| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `CORRECTED_DRAFT (v0.4.0)` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`) |
+| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `CORRECTED_DRAFT (v0.5.0)` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F1_P1) |
 | **P3..P9** | **Panel Designer Capabilities** | Upstream | `PLANNED` | `NONE` | `BLOCKED` |
@@ -127,7 +127,7 @@ Status: ACTIVE_GOVERNANCE
 
 ### Downstream Scope Controls:
 1. F0 is complete, 13/13 AC verified PASS, reviewed PASS (`REV-F0-002-R3`), and FROZEN.
-2. Tranche F1 is in SPEC_CORRECTION stage (`SPEC-FOUNDATION-F1-001` v0.4.0 corrected in AG-F1-010 addressing REV-F1-SPEC-001-R3 findings R3-F01–R3-F05, 10 canonical issues updated to SPEC_CORRECTED, pending independent technical re-review REV-F1-SPEC-001-R4). F1 Work Order and BUILD remain strictly unauthorized.
+2. Tranche F1 is in SPEC_CORRECTION stage (`SPEC-FOUNDATION-F1-001` v0.5.0 corrected in AG-F1-011 addressing REV-F1-SPEC-001-R4 findings R4-F01–R4-F03, 10 canonical issues updated to SPEC_CORRECTED, pending independent technical re-review REV-F1-SPEC-001-R5). F1 Work Order and BUILD remain strictly unauthorized.
 3. Downstream tranches (P1, P2, M&E) remain strictly locked and BLOCKED.
 
 ---
@@ -146,6 +146,6 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent Technical Re-Review of Tranche F1 SPEC (`REV-F1-SPEC-001-R4` on `SPEC-FOUNDATION-F1-001` v0.4.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent review approval and Product Owner freeze.
+Independent Technical Re-Review of Tranche F1 SPEC (`REV-F1-SPEC-001-R5` on `SPEC-FOUNDATION-F1-001` v0.5.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent review approval and Product Owner freeze.
 
 Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED for build. Production code mutation outside frozen F0 baseline requires explicit reopen authority.
