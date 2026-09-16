@@ -12,9 +12,9 @@
 - **Dependency:** F0 — AutoCAD Foundation (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
 - **Intake:** `INTAKE-FOUNDATION-F1-001` — `COMPLETE / PASS_TO_DESIGN` ([INTAKE.md](./INTAKE.md))
 - **Design:** `DESIGN-FOUNDATION-F1-001` (v0.3.0) — `COMPLETE / REVIEWED_PASS / PASS_TO_SPEC` ([DESIGN.md](./DESIGN.md))
-- **Latest Review:** `REV-F1-SPEC-001-R2` — `NEEDS_FIX / RETURN_TO_SPEC_CORRECTION` ([REVIEW.md](./REVIEW.md))
+- **Latest Review:** `REV-F1-SPEC-001-R3` — `NEEDS_FIX / RETURN_TO_SPEC_CORRECTION` ([REVIEW.md](./REVIEW.md))
 - **API Verification:** Architectural Host Evidence ([API_VERIFICATION.md](./API_VERIFICATION.md))
-- **Spec:** `SPEC-FOUNDATION-F1-001` (v0.3.0) — `CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING` ([SPEC.md](./SPEC.md))
+- **Spec:** `SPEC-FOUNDATION-F1-001` (v0.4.0) — `CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING` ([SPEC.md](./SPEC.md))
 - **Spec Frozen:** `NO`
 - **Work Order:** `NONE`
 - **Build:** `NOT AUTHORIZED`
@@ -37,7 +37,7 @@ Tranche F1 establishes the common cross-feature contracts that downstream tranch
 
 ## 3. Immediate Next Authorized Action
 
-Independent Technical Re-Review of F1 SPEC (`REV-F1-SPEC-001-R3` on `SPEC-FOUNDATION-F1-001` v0.3.0).
+Independent Technical Re-Review of F1 SPEC (`REV-F1-SPEC-001-R4` on `SPEC-FOUNDATION-F1-001` v0.4.0).
 
 ---
 

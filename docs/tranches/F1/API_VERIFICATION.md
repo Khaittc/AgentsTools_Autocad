@@ -18,6 +18,7 @@
 | **SRC-F1-07** | Autodesk System Variables: Drawing Units & Defaults | AutoCAD 2023 Command & System Variable Reference | `INSUNITS`, `MEASUREMENT`, `LUNITS`, `INSUNITSDEFSOURCE`, `INSUNITSDEFTARGET` ([Autodesk SysVars](https://help.autodesk.com/view/ACD/2023/ENU/?guid=GUID-9B9AE1FF-48D3-4876-805A-33C623C5E358)) | **HOST FACT (`HOST_FACT_SOURCE_VERIFIED`):** `INSUNITS = 0` indicates *Unspecified / Unitless* physical units. `MEASUREMENT` controls hatch/linetype scale libraries (0=Imperial, 1=Metric), NOT model physical geometry units. `LUNITS` controls coordinate display format. `INSUNITSDEFSOURCE` and `INSUNITSDEFTARGET` supply fallback insertion scale factors when `INSUNITS=0`, but do NOT prove the engineering meaning of existing model geometry. |
 | **SRC-F1-08** | Autodesk Managed Reference: TransactionManager & Atomicity | AutoCAD 2023 Managed .NET API (`AcDbMgd.dll`) | `Autodesk.AutoCAD.DatabaseServices.TransactionManager` ([Autodesk Managed Ref](https://help.autodesk.com/view/OARX/2023/ENU/?guid=OARX-ManagedRefDevGuide-Autodesk_AutoCAD_DatabaseServices_TransactionManager)) | **HOST FACT (`HOST_FACT_SOURCE_VERIFIED`):** All persistent database mutations require an active `Transaction`. Calling `tr.Abort()` rolls back all uncommitted changes across all objects enlisted in that transaction. Multiple objects (e.g. block reference + clearance boundary + extension dictionary) can be committed or aborted atomically. |
 | **SRC-F1-09** | Autodesk ObjectARX DevGuide: AutoCAD Commands That Use Deep Clone and Wblock Clone | AutoCAD 2023 ObjectARX DevGuide | *Deep Clone > AutoCAD Commands That Use Deep Clone and Wblock Clone* ([Autodesk DevGuide](https://help.autodesk.com/view/OARX/2023/ENU/?guid=GUID-E503DE6C-DA0A-4FDF-A466-96F6DF471F85)) | **HOST FACT (`HOST_FACT_SOURCE_VERIFIED`):** Formally catalogs native command cloning mechanisms: `COPY`, `ARRAY`, `MIRROR` (when original objects are preserved), and `INSERT` (drawing into drawing) use `deepClone`. `WBLOCK`, `COPYCLIP`, and `PASTECLIP` use `wblockClone` (clipboard operations copy to/from a temporary clipboard database via `wblockClone`). When `MIRROR` erases original objects, `deepClone` is NOT used and original objects are transformed in place. `EXPLODE` does not use `deepClone` (creates component entities from block definition geometry). |
+| **SRC-F1-10** | Autodesk Managed Reference: DocumentCollection & Document Lifecycle Events | AutoCAD 2023 Managed .NET API (`AcMgd.dll`) | `Autodesk.AutoCAD.ApplicationServices.DocumentCollection`, `Document` ([Autodesk Managed Ref](https://help.autodesk.com/view/OARX/2023/ENU/?guid=OARX-ManagedRefDevGuide-Autodesk_AutoCAD_ApplicationServices_DocumentCollection)) | **HOST FACT (`HOST_FACT_SOURCE_VERIFIED`):** `DocumentCollection.DocumentCreated` fires when a document is opened/created. `Document.CommandEnded`, `CommandCancelled`, `CommandFailed` fire per document upon command completion. .NET event subscription is not retroactive to pre-existing instances. **TTC POLICY (`PROJECT_POLICY / ARCHITECTURAL_CONSEQUENCE`):** Enumerating `Application.DocumentManager` during startup initialization is required to attach handlers to documents open prior to plugin load. |
 
 ---
 
@@ -149,28 +150,35 @@
 
 ### API-F1-07: Post-Command Metadata Reconciliation and AutoCAD Undo Stack Integration
 
-- **Topic:** Does a managed write transaction executed inside `Document.CommandEnded` automatically join the preceding native command's undo group, or does it create a separate user-visible undo step?
-- **Host Mechanism:** AutoCAD's internal command processor wraps native commands (e.g. `COPY`, `ARRAY`) in an internal Undo group. Managed transactions executed from document command handlers execute after the command finishes.
+- **Topic:** Does a managed write transaction executed from or immediately following `Document.CommandEnded` automatically join the preceding native command's undo group, or does it require a deferred execution context?
+- **Host Mechanism:** AutoCAD's internal command processor wraps native commands (e.g. `COPY`, `ARRAY`, `INSERT`, `PASTECLIP`) in an internal Undo group. Managed transactions executed from document command handlers execute after the native command completes.
 - **Documented Semantics & Uncertainty:**
   - The exact behavior of AutoCAD's Undo stack when an external managed transaction commits in `CommandEnded` has not been empirically proven for AutoCAD 2023.
   - Potential Risk: If the reconciliation transaction forms a separate undo record, pressing `UNDO` once may roll back the metadata update while leaving the cloned geometry in the drawing, creating duplicate UUID instances.
   - **Classification:** `BUILD_VALIDATION_REQUIRED` / `HOST_TEST_REQUIRED`.
-- **Architectural Policy:**
-  - SPEC freezes the **behavioral invariant**: After any clone + UNDO/REDO sequence, the active database MUST NOT contain duplicate active `TTC_OBJECT_ID` instances.
-  - Empirical verification via host test suite in BUILD (`TEST-F1-21`) tests `COPY` $\to$ reconcile $\to$ `UNDO` $\to$ inspect $\to$ `REDO` $\to$ inspect.
+- **Architectural Policy & Permitted Mechanisms (Addressing R3-F01):**
+  - `Document.CommandEnded` identifies a safe reconciliation opportunity.
+  - The implementation MAY:
+    - **Mechanism A:** Reconcile persistently directly under `DocumentLock` + `Transaction`; or
+    - **Mechanism B:** Schedule/defer persistent reconciliation to another controlled execution context,
+    provided that BUILD host validation proves host stability and UNDO/REDO identity invariants.
+  - Neither mechanism is assumed universally safe or universally forbidden prior to host testing.
+  - SPEC freezes the **behavioral invariant**: After any clone + UNDO/REDO sequence, the active drawing database MUST NOT contain duplicate active `TTC_OBJECT_ID` instances.
+  - Empirical verification via host test suite in BUILD (`TEST-F1-21`) tests native commands (`COPY`, `ARRAY`, `MIRROR`, `PASTECLIP`, `INSERT`) $\to$ reconcile $\to$ `UNDO` $\to$ inspect $\to$ `REDO` $\to$ inspect.
 
 ---
 
 ### API-F1-08: Application Startup Open-Document Event Subscription
 
 - **Topic:** Event handler registration for documents already open in AutoCAD prior to plugin initialization.
-- **Host Mechanism:** `Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager`.
-- **Documented Semantics:**
-  - When a plugin is loaded via `NETLOAD` or on-demand autoloading while AutoCAD has existing open drawings, `DocumentCollection.DocumentCreated` will NOT fire for pre-existing documents.
-  - Subscribing only to `DocumentCreated` leaves pre-existing drawings un-hooked.
-- **TTC Architectural Rule (`PROJECT_POLICY`):**
-  - In `IExtensionApplication.Initialize()`, the subscription service must enumerate `Application.DocumentManager`, attach handlers (`CommandEnded`, `CommandCancelled`, `CommandFailed`) once to each open document, and subscribe to `DocumentCreated` for subsequent documents.
-- **Verification Status:** `HOST_FACT_SOURCE_VERIFIED` (Managed .NET API lifecycle behavior).
+- **Host Mechanism:** `Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager`, `DocumentCollection.DocumentCreated` (SRC-F1-10).
+- **Documented Semantics (SRC-F1-10):**
+  - In the AutoCAD Managed .NET API, subscribing to `DocumentCollection.DocumentCreated` registers a handler for future document creation/open events.
+  - Event subscriptions in .NET are not retroactive to pre-existing objects.
+  - If AutoCAD already has drawings open when TTC CAD is initialized (e.g. via `NETLOAD` or on-demand loading), `DocumentCreated` will NOT fire for those pre-existing documents.
+- **TTC Architectural Rule (`PROJECT_POLICY / ARCHITECTURAL_CONSEQUENCE`):**
+  - Because subscription is non-retroactive, `IExtensionApplication.Initialize()` MUST enumerate `Application.DocumentManager`, attach handlers (`CommandEnded`, `CommandCancelled`, `CommandFailed`) once to each open document, and subscribe to `DocumentCreated` for subsequent documents (`TEST-F1-26`).
+- **Verification Status:** `HOST_FACT_SOURCE_VERIFIED` (SRC-F1-10) / `PROJECT_POLICY`.
 
 ---
 
@@ -205,6 +213,6 @@
 | Pre-save mutation safety (`BeginSave`) | `HOST_TEST_REQUIRED` | Unverified; must be tested in BUILD before SPEC can rely on pre-save writes. |
 | WBLOCK / Clipboard cloning (deepClone / wblockClone) | `HOST_TEST_REQUIRED` | Requires automated test in BUILD with real AutoCAD database. |
 | Associative Array internal structure | `HOST_TEST_REQUIRED` | Requires investigation in BUILD to determine block/item indexing. |
-| Undo/Redo integration for post-command reconciliation | `BUILD_VALIDATION_REQUIRED` / `HOST_TEST_REQUIRED` | Invariant frozen in SPEC; exact host grouping verified in BUILD (`TEST-F1-21`). |
-| Startup open-document enumeration | `HOST_FACT_SOURCE_VERIFIED` | Required in `Initialize()` to attach handlers to pre-existing documents (`TEST-F1-26`). |
+| Undo/Redo integration for post-command reconciliation | `BUILD_VALIDATION_REQUIRED` / `HOST_TEST_REQUIRED` | Invariant frozen in SPEC; candidate mechanisms A/B verified in BUILD (`TEST-F1-21`). |
+| Startup open-document enumeration | `HOST_FACT_SOURCE_VERIFIED` (SRC-F1-10) / `PROJECT_POLICY` | Required in `Initialize()` to attach handlers to pre-existing documents (`TEST-F1-26`). |
 | Missing-XData authoritative fallback discovery | `PROPOSED_SPEC_CONTRACT` / `HOST_TEST_REQUIRED` | Generic audit/rebuild service verified in BUILD (`TEST-F1-27`). |

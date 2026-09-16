@@ -687,3 +687,64 @@ Independent technical re-review: `REV-F1-SPEC-001-R3`. F1 Work Order and BUILD r
 - **Resolution Date:** 2026-09-16
 - **Recorded In:** Post-Correction Continuity Reconciliation
 - **Reason:** Reconciled historical completion commit `75905ba6887b4f1b55c8908667cfcec3053a7a80` in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-16 / AG-F1-010
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-010`
+- **Task ID:** `F1-SPEC-CORRECTION-003`
+- **Lifecycle Stage:** `SPEC_CORRECTION`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Spec Review:** `REV-F1-SPEC-001-R3` (`NEEDS_FIX / RETURN_TO_SPEC_CORRECTION`)
+- **Work Order:** `NONE` (Specification Correction Stage Only)
+- **Starting Commit:** `2e25d6205c9ca0e8260c2755935995dc593d00d6`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+Resolve all findings R3-F01 through R3-F05 from independent technical review `REV-F1-SPEC-001-R3` in the F1 Specification (`SPEC-FOUNDATION-F1-001` v0.4.0), update host API verification evidence, update design errata, update issue registry, and prepare for independent technical re-review `REV-F1-SPEC-001-R4`:
+1. Persist `REV-F1-SPEC-001-R3` into Section 10 of `docs/tranches/F1/REVIEW.md` and mark read-only.
+2. Resolve R3-F01: Harmonize command-boundary reconciliation authority and execution matrix. Database reactors remain strictly observation and invalidation only (zero database write operations, zero transaction creation). For command-boundary persistent reconciliation after native commands, formalize candidate Mechanism A (active `DocumentLock` + `Transaction` directly in `CommandEnded`) and candidate Mechanism B (deferred/scheduled execution via `Application.Idle`). Classify both mechanisms as `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED` in `TEST-F1-15` and `TEST-F1-21`. Append superseding errata in Section 17.1 of `DESIGN.md`.
+3. Resolve R3-F02: Clarify unit conversion numeric precision verification in §3.3, `AC-F1-04`, and `TEST-F1-28`. Replace vague numerical acceptance phrasing with an explicit deterministic test suite of coordinate values (`0.0`, `1.0`, `-1.0`, `0.001`, `1250.75`, `500000.0`) and classify comparison policy as a `TEST_IMPLEMENTATION_DETAIL` (e.g. bounded relative/ULP comparison in the test harness) to avoid inventing a domain engineering tolerance for machine rounding errors. Append Section 17.2 in `DESIGN.md` deprecating `< 1e-9 mm>`.
+4. Resolve R3-F03: Establish a normative 4-row Schema Compatibility Matrix in §9.2 and §9.3 for runtime `1.0.x`: exact match (`1.0.x`) read/write normal; future patch (`1.0.y`) read/write normal; future minor (`1.N.x`, N > 0) read/write with unrecognized fields preserved verbatim and version string preserved verbatim without downward downgrade; future major (`2.x.x`) triggers read-only protection with structured status `UNSUPPORTED_SCHEMA` (mutation blocked, geometry preserved). Replace unsupported "defaults older minor versions" wording with explicit forward compatibility rules.
+5. Resolve R3-F04: Formalize command categorization in §10.1: Category A (active database direct clone/mutation: `COPY`, `ARRAY`, `MIRROR` preserve-source, `PASTECLIP`, `INSERT`, `ERASE`, `OOPS`) subject to the Undo/Redo invariant where active drawing database must not contain duplicate active UUIDs; Category B (`WBLOCK` cross-database export) where exported entities receive fresh identities upon insertion into an active database and do not participate in source drawing's Undo stack. Add `INSERT` to `AC-F1-18` and `TEST-F1-21`.
+6. Resolve R3-F05: Document Autodesk Document & DocumentCollection lifecycle events in `API_VERIFICATION.md` under verified source `SRC-F1-10`. Update `API-F1-08` and link `SRC-F1-10`. Frame non-retroactivity of .NET event subscription as `PROJECT_POLICY / ARCHITECTURAL_CONSEQUENCE`.
+7. Update `docs/tranches/F1/ISSUES.md` (all 10 canonical issues updated to Spec `v0.4.0` and `REV-F1-SPEC-001-R4` pending authority), `docs/tranches/F1/README.md`, `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, and `governance/AGENT_HANDOFF.md`.
+8. Maintain strict build lock: zero production code changes, zero F0 changes, no Work Order, build NOT authorized.
+
+---
+
+### Execution Details
+- **Review Persisted:** `REV-F1-SPEC-001-R3` recorded in `docs/tranches/F1/REVIEW.md` Section 10 (marked read-only).
+- **Specification Corrected:** `docs/tranches/F1/SPEC.md` updated to `SPEC-FOUNDATION-F1-001` v0.4.0 (`CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING`) resolving R3-F01–R3-F05.
+- **Design Errata Appended:** `docs/tranches/F1/DESIGN.md` Section 17 appended with superseding errata for reactor vs command-boundary writes (§17.1) and numeric precision boundary (§17.2).
+- **API Verification Updated:** `docs/tranches/F1/API_VERIFICATION.md` updated with `SRC-F1-10`, candidate reconciliation mechanisms A and B in `API-F1-07`, and architectural consequence framing in `API-F1-08`.
+- **Issue Registry Updated:** `docs/tranches/F1/ISSUES.md` updated across all 10 canonical issues to reference Spec v0.4.0 and `REV-F1-SPEC-001-R4` pending authority.
+- **Tranche Front-Door Updated:** `docs/tranches/F1/README.md` updated.
+- **Master Status Registers Updated:** `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, and `governance/AGENT_HANDOFF.md` updated.
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Work Order / Build:** NOT created / NOT AUTHORIZED.
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent technical re-review: `REV-F1-SPEC-001-R4` on `SPEC-FOUNDATION-F1-001` v0.4.0. F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent reviewer approval and Product Owner freeze.
+

@@ -502,3 +502,22 @@ Per Autodesk ObjectARX documentation (*AutoCAD Commands That Use Deep Clone and 
 ### 16.6 Downstream De-coupling & Canonical Status Codes (Addressing F08, F09)
 - Downstream rules (specific clearance layer names, dynamic block behavior, mirroring polarity, nesting levels) are de-normativized in F1 and reserved for Tranches P1, P2, P6, and M1.
 - Missing or malformed metadata consistently evaluates to the single canonical status code `METADATA_INCOMPLETE` (`UNREGISTERED_TTC_ASSET` is non-normative/deprecated).
+
+---
+
+## Section 17: Post-Spec Clarification / REV-F1-SPEC-001-R3
+
+> **Authority & Status:** Append-only design errata and superseding clarifications recording architectural alignments following external specification review `REV-F1-SPEC-001-R3` (`NEEDS_FIX / RETURN_TO_SPEC_CORRECTION`).
+> Earlier sections remain preserved as historical design baselines; `docs/tranches/F1/SPEC.md` (`v0.4.0`) remains the sole normative authority for implementation.
+
+### 17.1 Superseding Clarification on Command-Boundary Reconciliation (Addressing R3-F01)
+- Earlier wording in §16.4 that categorically prohibited writes in all command-boundary handlers is superseded.
+- Database reactor callbacks (`ObjectModified`, `ObjectErased`, etc.) remain strictly `OBSERVATION_ONLY` (zero database writes).
+- Document command-boundary handlers (`CommandEnded`, `CommandCancelled`, `CommandFailed` on `Autodesk.AutoCAD.ApplicationServices.Document`) identify safe reconciliation opportunities.
+- Persistent reconciliation immediately following command boundaries is permitted as a candidate implementation mechanism (either directly under `DocumentLock` + `Transaction`, or via a scheduled/deferred execution context), but remains `HOST_TEST_REQUIRED` / `BUILD_VALIDATION_REQUIRED` regarding host stability and Undo grouping.
+- The frozen requirement is the resulting behavioral invariant (no duplicate active UUIDs in database after clone + Undo/Redo sequence), not an assumption about undocumented host Undo grouping.
+
+### 17.2 Deprecation of `< 1e-9 mm` Numerical Threshold (Addressing R3-F02)
+- Errata on §16.5: The numerical threshold `< 1e-9 mm` is deprecated, superseded, and non-normative.
+- Unit conversion contracts use explicit physical conversion constants (`MillimetersPerDrawingUnit`) evaluated in IEEE 754 double precision tested against deterministic reference values. No artificial floating-point tolerance number is frozen as an engineering tolerance.
+

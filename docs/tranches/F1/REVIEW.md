@@ -13,15 +13,15 @@
 
 - **Tranche:** F1 — Common CAD Contracts
 - **Lifecycle Stage:** SPEC_CORRECTION
-- **Current Review:** `REV-F1-SPEC-001-R2`
+- **Current Review:** `REV-F1-SPEC-001-R3`
 - **Current Result:** `NEEDS_FIX`
 - **Current Disposition:** `RETURN_TO_SPEC_CORRECTION`
-- **F1 SPEC:** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
+- **F1 SPEC:** `CORRECTION_IN_PROGRESS`
 - **Spec Freeze:** `NOT AUTHORIZED`
 - **Work Order:** `NOT AUTHORIZED`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
-- **Expected Next Review:** `REV-F1-SPEC-001-R3`
+- **Expected Next Review:** `REV-F1-SPEC-001-R4`
 
 
 
@@ -301,3 +301,45 @@ After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-001`.
 - **Production Build Authorization:** `NONE`
 
 After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-002`.
+
+---
+
+## 10. Independent Re-Review: REV-F1-SPEC-001-R3
+
+- **Review ID:** `REV-F1-SPEC-001-R3`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Date:** 2026-09-16
+- **Reviewed HEAD:** `2e25d6205c9ca0e8260c2755935995dc593d00d6`
+- **Reviewed Artifact:** `SPEC-FOUNDATION-F1-001 v0.3.0` (`docs/tranches/F1/SPEC.md`)
+- **Previous Review:** `REV-F1-SPEC-001-R2`
+- **Governance Result:** `PASS`
+- **Technical Result:** `NEEDS_FIX`
+- **Review Result:** `NEEDS_FIX`
+- **Disposition:** `RETURN_TO_SPEC_CORRECTION`
+
+### Previous Finding Closure State (R2-F01–R2-F06)
+- **R2-F01 — Numerical precision threshold:** `RESOLVED_IN_PRINCIPLE / PRECISION_IMPROVEMENT_NEEDED` (Removed `< 1e-9 mm`, but test acceptance requires deterministic reference-based values).
+- **R2-F02 — Undo/Redo behavioral invariant:** `RESOLVED` (Frozen database invariant in §10.1; host grouping marked `BUILD_VALIDATION_REQUIRED`).
+- **R2-F03 — Existing documents startup subscription:** `RESOLVED` (§12.2, TEST-F1-26, per-document isolation in §12.4).
+- **R2-F04 — Dimensional conversion names:** `RESOLVED` (`MillimetersPerDrawingUnit`, `ExpectedInsertionScale`).
+- **R2-F05 — MISSING_BLOCK_ASSET clarification:** `RESOLVED` (§14 domain 12, §15 deterministic failure matrix).
+- **R2-F06 — Authoritative fallback discovery:** `RESOLVED` (§7.2, §8.4 `ITtcMetadataAuditService`, TEST-F1-27).
+
+### New / Residual Findings
+- **R3-F01 — HIGH — Align command-boundary reconciliation authority:** Reconcile conflicting descriptions of command-boundary mutation. Database reactors remain strictly observation-only (zero writes). Document command-boundary handlers (`CommandEnded`, `CommandCancelled`, `CommandFailed`) detect reconciliation work. Persistent reconciliation directly under `DocumentLock` + `Transaction` or via scheduled/deferred context is permitted as an implementation mechanism whose exact host/undo safety is `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED`. The frozen requirement is the resulting behavioral invariant.
+- **R3-F02 — MEDIUM — Make numerical conversion acceptance deterministic:** Replace vague numerical acceptance wording ("within machine epsilon", "standard engineering coordinates", "exact mathematical reference values") with a deterministic reference-based test suite in `TEST-F1-28` using explicit test coordinates (0, 1, -1, small coordinate, typical coordinate, large coordinate). Define comparison criterion using software numerical policy appropriate for IEEE 754 doubles as a `TEST_IMPLEMENTATION_DETAIL`. Deprecate historical `< 1e-9 mm>` in DESIGN.
+- **R3-F03 — MEDIUM — Define one schema compatibility matrix:** Create one normative matrix in §9: `1.0.x` on `1.0.x` supported read/write; `1.0.x` on future `1.N.x` reads known fields, preserves unknown fields, performs writes only if unknown fields are preserved, and does not downgrade schema version; `1.0.x` on `2.x.x` triggers `UNSUPPORTED_SCHEMA` (read-only protection, no mutation, geometry preserved); malformed triggers `INVALID_METADATA`. Remove unsupported "defaults older minor versions" wording.
+- **R3-F04 — MEDIUM — Align Undo/Redo normative scope and test coverage:** Explicitly distinguish Category A (active database clone/mutation commands: `COPY`, `ARRAY`, `MIRROR` preserve-source, `PASTECLIP`, `INSERT`, `ERASE/OOPS`) with Undo/Redo invariant from Category B (cross-database export: `WBLOCK`, requiring source integrity and independent target identities under AC-F1-12/TEST-F1-12). Align `AC-F1-18` and `TEST-F1-21` to include `INSERT`.
+- **R3-F05 — LOW — Complete API source traceability:** Add official Autodesk documentation source `SRC-F1-10` covering Managed .NET Document and DocumentCollection events, and link from `API-F1-08`. Frame non-retroactive event subscription as `PROJECT_POLICY / ARCHITECTURAL_CONSEQUENCE`.
+
+### Authority
+- **F1 SPEC CORRECTION:** `AUTHORIZED`
+- **F1 SPEC FREEZE:** `NOT AUTHORIZED`
+- **WORK ORDER:** `NOT AUTHORIZED`
+- **BUILD:** `NOT AUTHORIZED`
+- **Production Build Authorization:** `NONE`
+- **Next Task:** `F1-SPEC-CORRECTION-003`
+- **Expected Next Review:** `REV-F1-SPEC-001-R4`
+
+After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-003`.
