@@ -20,7 +20,7 @@ Frozen Implementation Baseline:
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD contains or descends from F1 SPEC correction commit of task F1-SPEC-CORRECTION-002.
+Current HEAD contains or descends from F1 SPEC correction commit of task F1-SPEC-CORRECTION-002 (`75905ba6887b4f1b55c8908667cfcec3053a7a80`).
 
 Development Model:
 SPEC-FIRST PER TRANCHE
