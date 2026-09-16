@@ -16,7 +16,7 @@
 - **Current Review:** `REV-F1-SPEC-001-R2`
 - **Current Result:** `NEEDS_FIX`
 - **Current Disposition:** `RETURN_TO_SPEC_CORRECTION`
-- **F1 SPEC:** `CORRECTION_IN_PROGRESS`
+- **F1 SPEC:** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
 - **Spec Freeze:** `NOT AUTHORIZED`
 - **Work Order:** `NOT AUTHORIZED`
 - **Build:** `NOT AUTHORIZED`

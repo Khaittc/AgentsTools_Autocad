@@ -146,6 +146,6 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent Technical Re-Review of Tranche F1 SPEC (`REV-F1-SPEC-001-R2` on `SPEC-FOUNDATION-F1-001` v0.2.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent review approval and Product Owner freeze.
+Independent Technical Re-Review of Tranche F1 SPEC (`REV-F1-SPEC-001-R3` on `SPEC-FOUNDATION-F1-001` v0.3.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent review approval and Product Owner freeze.
 
 Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED for build. Production code mutation outside frozen F0 baseline requires explicit reopen authority.
