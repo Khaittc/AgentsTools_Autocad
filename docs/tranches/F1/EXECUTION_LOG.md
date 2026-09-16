@@ -617,3 +617,62 @@ Independent technical re-review: `REV-F1-SPEC-001-R2`. F1 Work Order and BUILD r
 - **Resolution Date:** 2026-09-16
 - **Recorded In:** Re-Review Preparation Task (`REV-F1-SPEC-001-R2 Preparation`)
 - **Reason:** Reconciled historical completion commit `27a2e820c6ac9ae59a8d220a5f0184f088c0a0dc` in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-16 / AG-F1-009
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-009`
+- **Task ID:** `F1-SPEC-CORRECTION-002`
+- **Lifecycle Stage:** `SPEC_CORRECTION`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Spec Review:** `REV-F1-SPEC-001-R2` (`NEEDS_FIX / RETURN_TO_SPEC_CORRECTION`)
+- **Work Order:** `NONE` (Specification Correction Stage Only)
+- **Starting Commit:** `91f7a19821e0717bfe6efd87ccd8c14a7e14b65d`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+Resolve all findings R2-F01 through R2-F06 from independent technical review `REV-F1-SPEC-001-R2` in the F1 Specification (`SPEC-FOUNDATION-F1-001` v0.3.0), update host API verification evidence, update issue registry, and prepare for independent technical re-review `REV-F1-SPEC-001-R3`:
+1. Persist `REV-F1-SPEC-001-R2` into Section 9 of `docs/tranches/F1/REVIEW.md` and mark read-only.
+2. Resolve R2-F01 & R2-F04: Remove inappropriate `< 1e-9 mm` floating-point bound from `AC-F1-04`; formalize explicit dimensional constant `MillimetersPerDrawingUnit` and conversion formula $ExpectedInsertionScale = MillimetersPerAssetUnit / MillimetersPerDrawingUnit$ evaluated in IEEE 754 double precision (`TEST-F1-28`). Prohibit using linear geometric tolerance $\varepsilon = 10^{-4}\text{ mm}$ as a general floating-point precision bound.
+3. Resolve R2-F02: Freeze the behavioral invariant for native UNDO/REDO sequences (§10.1)—active drawing database must never contain duplicate active `TTC_OBJECT_ID` instances; undone clones lose active identity; redone clones restore distinct identities. Classify exact AutoCAD transaction grouping as `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED` in `TEST-F1-21`.
+4. Resolve R2-F03: Formalize startup document enumeration in `IExtensionApplication.Initialize()` across `Application.DocumentManager` before hooking `DocumentCreated` (§12.2, `TEST-F1-26`). Explicitly scope dirty flags, caches, and change sets per document/database (§12.4).
+5. Resolve R2-F05: Redefine `MISSING_BLOCK_ASSET` strictly as external catalog/library asset resolution failure rather than impossible database block table record corruption (§14 domain 12, §15).
+6. Resolve R2-F06: Specify `ITtcMetadataAuditService` / `IEntityIdentityAuditService` (§8.4) for authoritative fallback discovery and secondary XData rebuild when fast-query `"TTC_CAD"` XData is missing; strictly prohibit full scans during high-frequency cursor/point events (`TEST-F1-27`).
+7. Expand BUILD validation test suite from 25 to 28 tests (`TEST-F1-01`..`TEST-F1-28`).
+8. Update `API_VERIFICATION.md` (API-F1-07..09) and `ISSUES.md` (all 10 issues to Spec v0.3.0 and `REV-F1-SPEC-001-R3` pending authority).
+9. Update continuity artifacts (`README.md`, `TRANCHE_STATUS.md`, `PROJECT_PROGRESS.md`, `AGENT_HANDOFF.md`).
+10. Maintain strict build lock: zero production code changes, zero F0 changes, no Work Order, build NOT authorized.
+
+---
+
+### Execution Details
+- **Review Persisted:** `REV-F1-SPEC-001-R2` recorded in `docs/tranches/F1/REVIEW.md` Section 9 (marked read-only).
+- **Specification Corrected:** `docs/tranches/F1/SPEC.md` updated to `SPEC-FOUNDATION-F1-001` v0.3.0 (`CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING`) resolving R2-F01–R2-F06.
+- **API Verification Updated:** `docs/tranches/F1/API_VERIFICATION.md` updated with API-F1-07 (Undo stack integration), API-F1-08 (Startup open-document enumeration), and API-F1-09 (Authoritative fallback discovery).
+- **Issue Registry Updated:** `docs/tranches/F1/ISSUES.md` updated across all 10 canonical issues to reference Spec v0.3.0 and `REV-F1-SPEC-001-R3` pending authority.
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Work Order / Build:** NOT created / NOT AUTHORIZED.
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent technical re-review: `REV-F1-SPEC-001-R3`. F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent reviewer approval and Product Owner freeze.

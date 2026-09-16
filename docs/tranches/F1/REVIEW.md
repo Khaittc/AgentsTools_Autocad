@@ -13,7 +13,7 @@
 
 - **Tranche:** F1 — Common CAD Contracts
 - **Lifecycle Stage:** SPEC_CORRECTION
-- **Current Review:** `REV-F1-SPEC-001`
+- **Current Review:** `REV-F1-SPEC-001-R2`
 - **Current Result:** `NEEDS_FIX`
 - **Current Disposition:** `RETURN_TO_SPEC_CORRECTION`
 - **F1 SPEC:** `CORRECTION_IN_PROGRESS`
@@ -21,7 +21,7 @@
 - **Work Order:** `NOT AUTHORIZED`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
-- **Expected Next Review:** `REV-F1-SPEC-001-R2`
+- **Expected Next Review:** `REV-F1-SPEC-001-R3`
 
 
 
@@ -257,3 +257,47 @@ After recording, this file is READ-ONLY for task `F1-SPEC-001`.
 - **Production Build Authorization:** `NONE`
 
 After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-001`.
+
+---
+
+## 9. Independent Re-Review: REV-F1-SPEC-001-R2
+
+- **Review ID:** `REV-F1-SPEC-001-R2`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Date:** 2026-09-16
+- **Reviewed HEAD:** `91f7a19821e0717bfe6efd87ccd8c14a7e14b65d`
+- **Reviewed Artifact:** `SPEC-FOUNDATION-F1-001 v0.2.0` (`docs/tranches/F1/SPEC.md`)
+- **Previous Review:** `REV-F1-SPEC-001`
+- **Governance Result:** `PASS`
+- **Technical Result:** `NEEDS_FIX`
+- **Review Result:** `NEEDS_FIX`
+- **Disposition:** `RETURN_TO_SPEC_CORRECTION`
+
+### Previous Finding Closure State (F01–F09)
+- **F01 — Cross-DWG identity semantics:** `RESOLVED` (§5.1, §5.3, §10, §11, AC-F1-12, TEST-F1-12).
+- **F02 — XRecord DXF codes and capacity:** `RESOLVED` (§7.1, §7.3, SRC-F1-03, API-F1-03).
+- **F03 — Native clone mechanisms:** `RESOLVED` (§10, API_VERIFICATION.md).
+- **F04 — Command-boundary lifecycle events:** `RESOLVED` (§12.2, §13, AC-F1-21, TEST-F1-15).
+- **F05 — AC to BUILD test traceability:** `RESOLVED` (§17, TEST-F1-01..25).
+- **F06 — Proxy compatibility evidence:** `RESOLVED` (AC-F1-23, TEST-F1-07, §18.4).
+- **F07 — Unit precision & block defaults:** `PARTIALLY_RESOLVED` (Asset units default to mm fixed, but introduced unauthorized `< 1e-9 mm` bound).
+- **F08 — Downstream scope leakage:** `RESOLVED` (§14, §19).
+- **F09 — Canonical failure statuses:** `RESOLVED` (§7.2, §9.2, §15, AC-F1-16).
+
+### New / Residual Findings
+- **R2-F01 — MEDIUM — Unauthorized numerical precision threshold:** `AC-F1-04` specified `maximum numerical deviation < 1e-9 mm` without architectural authority. The linear coincidence tolerance $\varepsilon = 10^{-4}\text{ mm}$ must not be reused as a generic floating-point conversion accuracy threshold. Rewrite unit conversion contract to use explicit authoritative physical conversion constants (`MillimetersPerDrawingUnit`) and IEEE 754 `double` precision.
+- **R2-F02 — MEDIUM — Undo/Redo integrity risk for post-command identity reconciliation:** Command-boundary reconciliation in `Document.CommandEnded` may have a different Undo boundary from native clone commands. Freeze the behavioral invariant: after any clone + subsequent UNDO/REDO sequence, the active database must not contain independently active TTC-managed instances sharing one valid `TTC_OBJECT_ID`. Mark exact AutoCAD Undo stack integration as `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED`.
+- **R2-F03 — LOW — Existing documents not explicitly subscribed at plugin initialization:** Plugin initialization (`IExtensionApplication.Initialize()`) must enumerate open documents in `Application.DocumentManager`, attach handlers (`CommandEnded`, `CommandCancelled`, `CommandFailed`) once per document, and subscribe to `DocumentCreated` for future documents.
+- **R2-F04 — LOW — Unit conversion notation is dimensionally ambiguous:** Expressions like $Factor = DrawingUnit / Millimeter$ and $Scale = AssetUnit / DrawingUnit$ are ambiguous. Introduce explicit dimensional names: `MillimetersPerDrawingUnit`, `MillimetersPerAssetUnit`, and `ExpectedInsertionScale = MillimetersPerAssetUnit / MillimetersPerDrawingUnit`.
+- **R2-F05 — LOW — MISSING_BLOCK_ASSET semantics are ambiguous:** Define `MISSING_BLOCK_ASSET` as a TTC/library-level condition (requested `TTC_LIBRARY_ID` cannot resolve to usable block asset, source block definition unavailable, library file unavailable) rather than an impossible healthy database condition where a valid `BlockReference` points to a non-existent `BlockTableRecord`.
+- **R2-F06 — MEDIUM — Missing authoritative fallback discovery when XData index is absent:** Fast selection query targeting `"TTC_CAD"` XData cannot discover entities when XData is missing. Define a generic F1 audit/index rebuild service (`ITtcMetadataAuditService` / `IEntityIdentityAuditService`) capable of bounded authoritative discovery from ExtensionDictionary / `TTC_METADATA_HEADER` and index rebuilding at safe boundaries.
+
+### Authority
+- **F1 SPEC CORRECTION:** `AUTHORIZED`
+- **F1 SPEC FREEZE:** `NOT AUTHORIZED`
+- **WORK ORDER:** `NOT AUTHORIZED`
+- **BUILD:** `NOT AUTHORIZED`
+- **Production Build Authorization:** `NONE`
+
+After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-002`.

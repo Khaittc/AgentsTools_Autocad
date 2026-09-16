@@ -147,6 +147,48 @@
 
 ---
 
+### API-F1-07: Post-Command Metadata Reconciliation and AutoCAD Undo Stack Integration
+
+- **Topic:** Does a managed write transaction executed inside `Document.CommandEnded` automatically join the preceding native command's undo group, or does it create a separate user-visible undo step?
+- **Host Mechanism:** AutoCAD's internal command processor wraps native commands (e.g. `COPY`, `ARRAY`) in an internal Undo group. Managed transactions executed from document command handlers execute after the command finishes.
+- **Documented Semantics & Uncertainty:**
+  - The exact behavior of AutoCAD's Undo stack when an external managed transaction commits in `CommandEnded` has not been empirically proven for AutoCAD 2023.
+  - Potential Risk: If the reconciliation transaction forms a separate undo record, pressing `UNDO` once may roll back the metadata update while leaving the cloned geometry in the drawing, creating duplicate UUID instances.
+  - **Classification:** `BUILD_VALIDATION_REQUIRED` / `HOST_TEST_REQUIRED`.
+- **Architectural Policy:**
+  - SPEC freezes the **behavioral invariant**: After any clone + UNDO/REDO sequence, the active database MUST NOT contain duplicate active `TTC_OBJECT_ID` instances.
+  - Empirical verification via host test suite in BUILD (`TEST-F1-21`) tests `COPY` $\to$ reconcile $\to$ `UNDO` $\to$ inspect $\to$ `REDO` $\to$ inspect.
+
+---
+
+### API-F1-08: Application Startup Open-Document Event Subscription
+
+- **Topic:** Event handler registration for documents already open in AutoCAD prior to plugin initialization.
+- **Host Mechanism:** `Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager`.
+- **Documented Semantics:**
+  - When a plugin is loaded via `NETLOAD` or on-demand autoloading while AutoCAD has existing open drawings, `DocumentCollection.DocumentCreated` will NOT fire for pre-existing documents.
+  - Subscribing only to `DocumentCreated` leaves pre-existing drawings un-hooked.
+- **TTC Architectural Rule (`PROJECT_POLICY`):**
+  - In `IExtensionApplication.Initialize()`, the subscription service must enumerate `Application.DocumentManager`, attach handlers (`CommandEnded`, `CommandCancelled`, `CommandFailed`) once to each open document, and subscribe to `DocumentCreated` for subsequent documents.
+- **Verification Status:** `HOST_FACT_SOURCE_VERIFIED` (Managed .NET API lifecycle behavior).
+
+---
+
+### API-F1-09: Authoritative Fallback Discovery when Secondary XData Index is Absent
+
+- **Topic:** Locating TTC-managed entities when derivative `"TTC_CAD"` XData has been stripped, corrupted, or not yet created.
+- **Host Mechanism:** Fast query using `Editor.SelectAll()` with `SelectionFilter` depends entirely on the presence of `"TTC_CAD"` extended data. It cannot find entities where XData is missing.
+- **Architectural Solution:**
+  - Bounded Authoritative Discovery Service (`ITtcMetadataAuditService` / `IEntityIdentityAuditService`):
+    - Enumerates database entities at authorized boundaries;
+    - Inspects `ExtensionDictionary` directly for authoritative `TTC_METADATA_HEADER` XRecord;
+    - Classifies entities with valid XRecord but missing XData as `XDATA_INDEX_OUT_OF_SYNC`;
+    - Rebuilds and resynchronizes derivative XData at safe write boundaries.
+  - Prohibited during high-frequency events (`PointMonitor`, cursor moves).
+- **Verification Status:** `PROPOSED_SPEC_CONTRACT` / `HOST_TEST_REQUIRED` (`TEST-F1-27`).
+
+---
+
 ## 3. Host Verification Classification Summary
 
 | Investigation Area | Classification | Notes / Action for Later Stages |
@@ -163,3 +205,6 @@
 | Pre-save mutation safety (`BeginSave`) | `HOST_TEST_REQUIRED` | Unverified; must be tested in BUILD before SPEC can rely on pre-save writes. |
 | WBLOCK / Clipboard cloning (deepClone / wblockClone) | `HOST_TEST_REQUIRED` | Requires automated test in BUILD with real AutoCAD database. |
 | Associative Array internal structure | `HOST_TEST_REQUIRED` | Requires investigation in BUILD to determine block/item indexing. |
+| Undo/Redo integration for post-command reconciliation | `BUILD_VALIDATION_REQUIRED` / `HOST_TEST_REQUIRED` | Invariant frozen in SPEC; exact host grouping verified in BUILD (`TEST-F1-21`). |
+| Startup open-document enumeration | `HOST_FACT_SOURCE_VERIFIED` | Required in `Initialize()` to attach handlers to pre-existing documents (`TEST-F1-26`). |
+| Missing-XData authoritative fallback discovery | `PROPOSED_SPEC_CONTRACT` / `HOST_TEST_REQUIRED` | Generic audit/rebuild service verified in BUILD (`TEST-F1-27`). |

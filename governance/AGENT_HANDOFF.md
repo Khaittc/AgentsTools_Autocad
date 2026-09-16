@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-16 20:00:00 +07:00
+2026-09-16 21:00:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-6f54532beae065919091eabe6b3dcc452c4eece3
+91f7a19821e0717bfe6efd87ccd8c14a7e14b65d
 
 Approved Execution Baseline:
 NONE (F1 Build NOT AUTHORIZED; F0 Baseline: 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf)
@@ -20,7 +20,7 @@ Frozen Implementation Baseline:
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD contains or descends from F1 SPEC correction commit of task F1-SPEC-CORRECTION-001.
+Current HEAD contains or descends from F1 SPEC correction commit of task F1-SPEC-CORRECTION-002.
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -41,13 +41,13 @@ Design Status:
 DESIGN-FOUNDATION-F1-001 (v0.3.0) — COMPLETE / PASS_TO_SPEC (REV-F1-DESIGN-001-R3 PASS)
 
 Current Spec Document:
-SPEC-FOUNDATION-F1-001 (v0.2.0) (CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING)
+SPEC-FOUNDATION-F1-001 (v0.3.0) (CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING)
 
 Spec Frozen:
 NO (Pending independent re-review and Product Owner freeze)
 
 Latest Review:
-REV-F1-SPEC-001 (NEEDS_FIX / RETURN_TO_SPEC_CORRECTION)
+REV-F1-SPEC-001-R2 (NEEDS_FIX / RETURN_TO_SPEC_CORRECTION)
 
 Current Frozen Authority:
 docs/tranches/F0/SPEC.md — FROZEN v1.0.0
@@ -74,10 +74,10 @@ F1 Tranche:
 SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
 
 Last Completed Task:
-F1-SPEC-CORRECTION-001
+F1-SPEC-CORRECTION-002
 
 Last Agent:
-Antigravity / AG-F1-008
+Antigravity / AG-F1-009
 
 Last Result:
 SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
@@ -92,7 +92,7 @@ Next Tranche:
 P1 — Component Library (BLOCKED by F1)
 
 Next Authorized Action:
-Independent Technical Re-Review of Tranche F1 SPEC (`REV-F1-SPEC-001-R2` on `SPEC-FOUNDATION-F1-001` v0.2.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent review approval and Product Owner freeze.
+Independent Technical Re-Review of Tranche F1 SPEC (`REV-F1-SPEC-001-R3` on `SPEC-FOUNDATION-F1-001` v0.3.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent review approval and Product Owner freeze.
 
 F1 Production Build:
 NOT AUTHORIZED
@@ -126,16 +126,13 @@ Required First Reads:
 18. docs/tranches/F0/REVIEW.md
 
 Handoff Notes:
-Task F1-SPEC-CORRECTION-001 (Session AG-F1-008) resolved all findings F01 through F09 from independent technical review REV-F1-SPEC-001 (NEEDS_FIX / RETURN_TO_SPEC_CORRECTION) on commit 6f54532beae065919091eabe6b3dcc452c4eece3:
-1. Persisted REV-F1-SPEC-001 verbatim into Section 8 of docs/tranches/F1/REVIEW.md; updated Section 1 status and marked file read-only.
-2. Formalized TTC_OBJECT_ID cross-DWG uniqueness (F01) across §5.1, §5.3, §10, §11, AC-F1-12, and TEST-F1-12. Distinct physical/semantic equipment or cable tray components across drawings MUST receive distinct fresh UUIDv4s. Lineage-unverified collisions evaluate to COLLISION_UNRESOLVED.
-3. Specified standard DXF Group Code 1 (DxfCode.Text) for XRecord key/value encoding (F02) in §7.1 and §7.3; noted that group codes 1000–1071 are reserved strictly for XData; corrected capacity statement to reference the AutoCAD database architecture ~2 GB limit while keeping TTC records compact.
-4. Corrected native command clone mechanisms (F03) in §10 table: COPY, ARRAY, MIRROR (source preserved), and INSERT (drawing) use deepClone; COPYCLIP, PASTECLIP, and WBLOCK use wblockClone; MIRROR (source erased) transforms in-place without deepClone; EXPLODE creates primitives from definition geometry without cloning.
-5. Replaced Editor.CommandEnded with Document.CommandEnded, Document.CommandCancelled, and Document.CommandFailed (F04) on Autodesk.AutoCAD.ApplicationServices.Document in §12.2 and §13. Specified observation-only reactors, document collection attachment lifecycle, and DocumentLock & Transaction requirements for subsequent reconciliation.
-6. Expanded BUILD validation test suite from 14 to 25 tests (F05) in §17 (TEST-F1-01 through TEST-F1-25), establishing a complete 1:1 / N:1 mapping to all 25 Acceptance Criteria.
-7. Removed PROXYNOTICE = 0 override (F06); verified default host warnings PROXYNOTICE = 1 active, asserting zero proxy entities/objects in database (AC-F1-23, TEST-F1-07).
-8. Replaced 'zero scaling error' with testable IEEE 754 double-precision limit < 1e-9 mm (F07) in AC-F1-04; removed millimeter default for undeclared block definition units (§14 item 2, evaluating to UNRESOLVED).
-9. De-normativized downstream scope in §14 (F08): generic clearance layers without freezing TTC_CLEARANCE_*; static vs dynamic block capability without freezing P1 catalog rules; AllowMirroring flag without freezing P6 polarity rules; 1-level nesting recommendation preserved as advisory guideline.
-10. Standardized on single canonical failure status METADATA_INCOMPLETE (F09) in §7.2, §9, §15, and AC-F1-16; removed non-normative UNREGISTERED_TTC_ASSET.
-11. Updated docs/tranches/F1/API_VERIFICATION.md, docs/tranches/F1/DESIGN.md (appended Section 16 errata), docs/tranches/F1/ISSUES.md (10 issues to SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW), docs/tranches/F1/README.md, docs/tranches/TRANCHE_STATUS.md, governance/PROJECT_PROGRESS.md, and docs/tranches/F1/EXECUTION_LOG.md.
-12. Preserved 100% frozen integrity of Tranche F0 and production code paths (zero production changes). Next authorized action is independent technical re-review REV-F1-SPEC-001-R2. F1 Work Order and BUILD remain strictly NOT AUTHORIZED.
+Task F1-SPEC-CORRECTION-002 (Session AG-F1-009) resolved all findings R2-F01 through R2-F06 from independent technical review REV-F1-SPEC-001-R2 (NEEDS_FIX / RETURN_TO_SPEC_CORRECTION) on commit 91f7a19821e0717bfe6efd87ccd8c14a7e14b65d:
+1. Persisted REV-F1-SPEC-001-R2 verbatim into Section 9 of docs/tranches/F1/REVIEW.md; updated Section 1 status and marked file read-only.
+2. Resolved R2-F01 & R2-F04: Replaced improper `< 1e-9 mm` in AC-F1-04 with explicit physical conversion constants evaluated in IEEE 754 double precision (`TEST-F1-28`). Standardized dimensional constant `MillimetersPerDrawingUnit` and conversion formula `ExpectedInsertionScale = MillimetersPerAssetUnit / MillimetersPerDrawingUnit`. Prohibited using `\varepsilon = 10^{-4} mm` as a general floating-point precision bound.
+3. Resolved R2-F02: Froze the behavioral invariant for native UNDO/REDO sequences (§10.1)—the active drawing database must never contain duplicate active `TTC_OBJECT_ID` instances; undone clones lose active identity; redone clones restore distinct identities. Classified exact AutoCAD transaction grouping as `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED` in `TEST-F1-21` without presuming unsupported internal host APIs.
+4. Resolved R2-F03: Formalized startup document enumeration in `IExtensionApplication.Initialize()` across `Application.DocumentManager` before hooking `DocumentCreated` (§12.2, `TEST-F1-26`). Explicitly scoped dirty flags, caches, and change sets per document/database (§12.4).
+5. Resolved R2-F05: Redefined `MISSING_BLOCK_ASSET` strictly as external catalog/library asset resolution failure rather than impossible database block table record corruption (§14 domain 12, §15).
+6. Resolved R2-F06: Specified `ITtcMetadataAuditService` / `IEntityIdentityAuditService` (§8.4) for authoritative fallback discovery and secondary XData rebuild when fast-query `"TTC_CAD"` XData is missing; strictly prohibited full scans during high-frequency cursor/point events (`TEST-F1-27`).
+7. Expanded BUILD validation test suite from 25 to 28 tests (`TEST-F1-01` through `TEST-F1-28`).
+8. Updated docs/tranches/F1/API_VERIFICATION.md (API-F1-07..09), docs/tranches/F1/ISSUES.md (all 10 issues to Spec v0.3.0 and R3 pending authority), docs/tranches/F1/README.md, docs/tranches/TRANCHE_STATUS.md, governance/PROJECT_PROGRESS.md, and docs/tranches/F1/EXECUTION_LOG.md.
+9. Preserved 100% frozen integrity of Tranche F0 and production code paths (zero production changes). Next authorized action is independent technical re-review REV-F1-SPEC-001-R3. F1 Work Order and BUILD remain strictly NOT AUTHORIZED.
