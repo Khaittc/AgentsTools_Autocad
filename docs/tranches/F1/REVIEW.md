@@ -1,4 +1,4 @@
-﻿# Tranche F1: Common CAD Contracts 鈥?Independent Review Log
+# Tranche F1: Common CAD Contracts 鈥?Independent Review Log
 
 > [!IMPORTANT]
 > **Role Separation Notice:**
@@ -11,15 +11,17 @@
 
 ## 1. Status Summary
 
-- **Tranche:** F1 鈥?Common CAD Contracts
-- **Lifecycle Stage:** SPEC
-- **Current Review:** `REV-F1-DESIGN-001-R3`
-- **Current Result:** `PASS`
-- **Current Disposition:** `PASS_TO_SPEC`
-- **F1 DESIGN:** `COMPLETE / REVIEWED_PASS`
-- **F1 SPEC:** `AUTHORIZED / DRAFT_IN_PROGRESS`
+- **Tranche:** F1 — Common CAD Contracts
+- **Lifecycle Stage:** SPEC_CORRECTION
+- **Current Review:** `REV-F1-SPEC-001`
+- **Current Result:** `NEEDS_FIX`
+- **Current Disposition:** `RETURN_TO_SPEC_CORRECTION`
+- **F1 SPEC:** `CORRECTION_IN_PROGRESS`
+- **Spec Freeze:** `NOT AUTHORIZED`
+- **Work Order:** `NOT AUTHORIZED`
+- **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
-- **Expected Next Review:** Independent Technical Review of F1 SPEC
+- **Expected Next Review:** `REV-F1-SPEC-001-R2`
 
 
 
@@ -220,3 +222,38 @@ After recording, this file is READ-ONLY for the remainder of task `F1-DESIGN-COR
 - **Production Build Authorization:** `NONE`
 
 After recording, this file is READ-ONLY for task `F1-SPEC-001`.
+
+---
+
+## 8. Independent Review: REV-F1-SPEC-001
+
+- **Review ID:** `REV-F1-SPEC-001`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Date:** 2026-09-16
+- **Reviewed Commit:** `6f54532beae065919091eabe6b3dcc452c4eece3`
+- **Reviewed Artifact:** `SPEC-FOUNDATION-F1-001 v0.1.0` (`docs/tranches/F1/SPEC.md`)
+- **Result:** `NEEDS_FIX`
+- **Disposition:** `RETURN_TO_SPEC_CORRECTION`
+- **Governance Compliance:** `PASS`
+- **Technical Specification:** `NEEDS_FIX`
+
+### Findings Summary
+- **F01 — CRITICAL — TTC_OBJECT_ID cross-DWG uniqueness semantics:** `SPEC.md` §5 limits `TTC_OBJECT_ID` identity/uniqueness to a single AutoCAD database, contradicting global instance uniqueness across drawings and creating ambiguity for WBLOCK, INSERT, COPYCLIP, PASTECLIP. Independent drawing-object instances across drawings must have globally unique IDs.
+- **F02 — HIGH — Invalid XRecord DXF code definition:** `SPEC.md` §7.3 specifies `DxfCode.Text (1000 or 1)` for XRecord key/value data. In AutoCAD, XRecord uses standard group codes below 1000 (e.g. 1 / `DxfCode.Text`); group codes 1000+ are strictly reserved for XData. 1000 must not be specified as interchangeable XRecord text code. Correct capacity wording from 2 GB per object to accurate XRecord capacity.
+- **F03 — HIGH — Native clone mechanism inaccuracies:** Correct §10 clone mechanism table and `API_VERIFICATION.md`: COPY, ARRAY, MIRROR (source preserved), and INSERT drawing use deepClone; COPYCLIP, PASTECLIP, WBLOCK use wblockClone; MIRROR (source erased) transforms in-place without deepClone; EXPLODE does not clone.
+- **F04 — HIGH — Command-boundary API/context correction:** DESIGN/SPEC refer to `Editor.CommandEnded`, but managed .NET event is `Document.CommandEnded`. Document registration lifecycle, DocumentLock/Transaction requirements for reconciliation, and handling for `CommandEnded`, `CommandCancelled`, `CommandFailed` must be specified. Reactors remain observation-only. Add BUILD host validation for command-boundary reconciliation.
+- **F05 — HIGH — Acceptance Criteria to BUILD-test traceability incomplete:** 25 ACs must map explicitly to concrete named BUILD tests. Every AC with `AUTOCAD_HOST_TEST` must map to at least one named `TEST-F1-xx`. Add tests to cover WBLOCK, INSERT, COPYCLIP/PASTECLIP, ERASE, OOPS, UNDO, REDO, SAVE/REOPEN, BLOCK REDEFINE, orphan XData, malformed metadata, unsupported schema, mismatch recovery, reactor safety, modeless DocumentLock, transaction rollback, zero-doc safety, vanilla DWG.
+- **F06 — HIGH — Invalid proxy compatibility evidence:** `TEST-F1-07` verifying `PROXYNOTICE = 0` suppresses warnings rather than proving zero proxy objects. Must use genuine validation without altering workstation settings.
+- **F07 — MEDIUM — Unit conversion precision and asset-unit default:** `AC-F1-04` absolute "zero scaling error" must be replaced with deterministic numerical precision requirement. Missing asset-unit metadata must not silently become millimeters at F1 common level.
+- **F08 — MEDIUM — Downstream scope leakage in Common Block Contract:** De-normativize F1 rules belonging to downstream owners (exact `TTC_CLEARANCE_*` layer naming to C1, vendor catalog static block mandate to P1, electrical mirror polarity to P6). Reclassify as downstream recommendations.
+- **F09 — MEDIUM — Schema/recovery ambiguity:** Remove ambiguous wording such as `METADATA_INCOMPLETE (or UNREGISTERED_TTC_ASSET)`. Use one canonical machine-readable failure status (`METADATA_INCOMPLETE`). Clarify v1.0.0 behavior; do not claim migration for undefined older schemas.
+
+### Authority
+- **F1 SPEC CORRECTION:** `AUTHORIZED`
+- **F1 SPEC FREEZE:** `NOT AUTHORIZED`
+- **WORK ORDER:** `NOT AUTHORIZED`
+- **BUILD:** `NOT AUTHORIZED`
+- **Production Build Authorization:** `NONE`
+
+After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-001`.

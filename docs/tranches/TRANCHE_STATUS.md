@@ -11,7 +11,7 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 | Tranche ID | Capability | Depends On | Spec Status | Work Order | Build Status | Frozen? | Current Disposition |
 |:---:|---|---|:---:|:---:|:---:|:---:|---|
 | **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `EXECUTED / WO-F0-001` | `COMPLETE` | YES | **COMPLETE / FROZEN** (Baseline: `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`; REV-F0-002-R3 PASS; 13/13 AC PASS; 9/9 issues resolved; F0 mutation CLOSED) |
-| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `DRAFT (v0.1.0) / PROPOSED_FOR_REVIEW` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` | NO | **SPEC_DRAFT_AUTHORED / INDEPENDENT_REVIEW_PENDING** (REV-F1-DESIGN-001-R3 PASS; SPEC-FOUNDATION-F1-001 v0.1.0 authored in AG-F1-007; 10 issues SPEC_PROPOSED; pending independent Spec review; build NOT AUTHORIZED) |
+| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `CORRECTED_DRAFT (v0.2.0) / INDEPENDENT_RE_REVIEW_PENDING` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` | NO | **SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING** (REV-F1-SPEC-001 NEEDS_FIX recorded; SPEC-FOUNDATION-F1-001 v0.2.0 corrected in AG-F1-008 resolving F01–F09; 10 issues SPEC_CORRECTED; pending independent Spec re-review REV-F1-SPEC-001-R2; build NOT AUTHORIZED) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` | `NONE` | `BLOCKED` | NO | **BLOCKED_BY_UPSTREAM** (Spec evidence exists in `docs/03_FEATURE_SPEC_TTCPANELPLACE.md`; awaiting F1/P1) |
 | **P3** | **DIN Rail (`TTCRAIL`)** | P2 | `PLANNED` | `NONE` | `BLOCKED` | NO | `PLANNED` |

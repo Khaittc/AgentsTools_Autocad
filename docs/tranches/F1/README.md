@@ -2,8 +2,8 @@
 
 - **Tranche:** F1 — Common CAD Contracts
 - **Capability:** Common CAD Contracts & Data Abstractions
-- **Lifecycle Stage:** SPEC
-- **Current Status:** `SPEC_DRAFT_AUTHORED / INDEPENDENT_REVIEW_PENDING`
+- **Lifecycle Stage:** SPEC_CORRECTION
+- **Current Status:** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
 
 ---
 
@@ -12,14 +12,14 @@
 - **Dependency:** F0 — AutoCAD Foundation (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
 - **Intake:** `INTAKE-FOUNDATION-F1-001` — `COMPLETE / PASS_TO_DESIGN` ([INTAKE.md](./INTAKE.md))
 - **Design:** `DESIGN-FOUNDATION-F1-001` (v0.3.0) — `COMPLETE / REVIEWED_PASS / PASS_TO_SPEC` ([DESIGN.md](./DESIGN.md))
-- **Latest Review:** `REV-F1-DESIGN-001-R3` — `PASS / PASS_TO_SPEC` ([REVIEW.md](./REVIEW.md))
+- **Latest Review:** `REV-F1-SPEC-001` — `NEEDS_FIX / RETURN_TO_SPEC_CORRECTION` ([REVIEW.md](./REVIEW.md))
 - **API Verification:** Architectural Host Evidence ([API_VERIFICATION.md](./API_VERIFICATION.md))
-- **Spec:** `SPEC-FOUNDATION-F1-001` (v0.1.0) — `DRAFT / PROPOSED_FOR_REVIEW` ([SPEC.md](./SPEC.md))
+- **Spec:** `SPEC-FOUNDATION-F1-001` (v0.2.0) — `CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING` ([SPEC.md](./SPEC.md))
 - **Spec Frozen:** `NO`
 - **Work Order:** `NONE`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
-- **Issue Registry:** `ISSUE-F1-001` through `ISSUE-F1-010` (10 registered; all `SPEC_PROPOSED_RESOLVED_PENDING_REVIEW`) ([ISSUES.md](./ISSUES.md))
+- **Issue Registry:** `ISSUE-F1-001` through `ISSUE-F1-010` (10 registered; all `SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`) ([ISSUES.md](./ISSUES.md))
 - **Execution Log:** [EXECUTION_LOG.md](./EXECUTION_LOG.md)
 
 ---
@@ -37,7 +37,7 @@ Tranche F1 establishes the common cross-feature contracts that downstream tranch
 
 ## 3. Immediate Next Authorized Action
 
-Independent Technical Review of F1 SPEC (`SPEC-FOUNDATION-F1-001` v0.1.0).
+Independent Technical Re-Review of F1 SPEC (`REV-F1-SPEC-001-R2` on `SPEC-FOUNDATION-F1-001` v0.2.0).
 
 ---
 

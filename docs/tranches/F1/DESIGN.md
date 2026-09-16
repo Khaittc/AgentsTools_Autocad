@@ -465,3 +465,40 @@ During the future BUILD stage, following frozen SPEC and approved Work Order, th
 8. **TEST-F1-08 (Decoupling Integrity):** 100% automated test confirming `TTC.CadTools.Core.dll` contains zero references to Autodesk assemblies (`BUILD_VALIDATION`).
 9. **TEST-F1-09 (Pre-Save Mutation Safety):** Verify whether `Database.BeginSave` can safely execute write transactions or if it must be strictly read-only (`BUILD_VALIDATION`).
 10. **TEST-F1-10 (Mirror Command Deep-Clone Selective Behavior):** Verify that `MIRROR` with source preservation creates a new Handle and duplicate XRecord, while `MIRROR` with source deletion transforms the entity in place without a new Handle (`BUILD_VALIDATION`).
+
+---
+
+## Section 16: Post-Design Clarifications & Errata (REV-F1-SPEC-001)
+
+> **Authority & Status:** Append-only design errata and clarifications recording architectural alignments following external specification review `REV-F1-SPEC-001` (`NEEDS_FIX / RETURN_TO_SPEC_CORRECTION`).
+> Earlier sections remain preserved as historical design baselines (`v0.3.0`); the authoritative normative requirements are formalized in `docs/tranches/F1/SPEC.md` (`v0.2.0`).
+
+### 16.1 Identity Semantics & Cross-Drawing Uniqueness (Addressing F01)
+- `TTC_OBJECT_ID` is a globally unique canonical UUIDv4 identifying a specific physical/semantic equipment or cable tray component.
+- Across multiple drawings within a project, two distinct physical components must possess distinct `TTC_OBJECT_ID`s.
+- When an entity is inserted, imported, or pasted across drawings, its identity must be reconciled so that independent instances never collide. If lineage is unknown, it is classified as `COLLISION_UNRESOLVED`.
+
+### 16.2 Metadata Encoding & Storage Architecture (Addressing F02)
+- In the AutoCAD Managed .NET API, `Xrecord` data is encoded in `ResultBuffer` chains using standard DXF group codes < 1000 (specifically Group Code 1 / `DxfCode.Text` for string keys and values). Group codes in the 1000–1071 range are reserved exclusively for Extended Data (`XData`).
+- While `Xrecord` capacity is bounded by the ~2 GB AutoCAD database object architectural limit (`AcDbXrecord::kMaxDataSize`), TTC metadata records must remain compact (< a few KB).
+
+### 16.3 Native Clone Mechanism Formalization (Addressing F03)
+Per Autodesk ObjectARX documentation (*AutoCAD Commands That Use Deep Clone and Wblock Clone*):
+- `COPY`, `ARRAY`, `MIRROR` (with source objects preserved), and `INSERT` (inserting an external DWG into the active database) execute `deepClone`.
+- `WBLOCK`, `COPYCLIP`, and `PASTECLIP` execute `wblockClone` across database boundaries (via clipboard DWG).
+- `MIRROR` (with source objects erased) transforms geometry in place without cloning and without generating a new `Handle`.
+- `EXPLODE` creates primitive entities from block definition geometry; it does not clone the block reference.
+
+### 16.4 Command-Boundary Audit & Reactor Lifecycles (Addressing F04)
+- Command boundary events reside on `Autodesk.AutoCAD.ApplicationServices.Document` (`CommandEnded`, `CommandCancelled`, `CommandFailed`), NOT on `Editor`.
+- All database event reactors and command boundary handlers are strictly observation-only; write transactions inside event callbacks are prohibited.
+- Subsequent identity reconciliation or cache rebuilds require an explicit `DocumentLock` and an independent database `Transaction`.
+
+### 16.5 Proxy Entity Discipline & Unit Precision (Addressing F06, F07)
+- Default host proxy alerts remain active (`PROXYNOTICE = 1`); F1 architectural contracts mandate that DWG databases produced or modified by TTC tools contain zero custom classes/proxy entities.
+- Coordinate transformations and unit conversions are bounded by double-precision mathematical limits (error $< 10^{-9}\text{ mm}$); absolute "zero error" is physically impossible in IEEE 754 floating-point arithmetic.
+- When `INSUNITS = 0` or block definition units are undeclared, physical units evaluate strictly to `UNRESOLVED`; no implicit millimeter assumption is permitted.
+
+### 16.6 Downstream De-coupling & Canonical Status Codes (Addressing F08, F09)
+- Downstream rules (specific clearance layer names, dynamic block behavior, mirroring polarity, nesting levels) are de-normativized in F1 and reserved for Tranches P1, P2, P6, and M1.
+- Missing or malformed metadata consistently evaluates to the single canonical status code `METADATA_INCOMPLETE` (`UNREGISTERED_TTC_ASSET` is non-normative/deprecated).

@@ -532,3 +532,77 @@ Independent technical re-review: `REV-F1-DESIGN-001-R3`. F1 SPEC and BUILD remai
 
 ### Next Required Action
 Independent technical review of Tranche F1 SPEC (`SPEC-FOUNDATION-F1-001` v0.1.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent review approval and Product Owner freeze.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F1-007
+- **Task ID:** F1-SPEC-001
+- **Resolved Ending Commit:** `6f54532beae065919091eabe6b3dcc452c4eece3`
+- **Resolution Date:** 2026-09-16
+- **Recorded In:** Session `AG-F1-008` (`F1-SPEC-CORRECTION-001`)
+- **Reason:** Reconciled historical completion commit `6f54532beae065919091eabe6b3dcc452c4eece3` in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-16 / AG-F1-008
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-008`
+- **Task ID:** `F1-SPEC-CORRECTION-001`
+- **Lifecycle Stage:** `SPEC_CORRECTION`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Spec Review:** `REV-F1-SPEC-001` (`NEEDS_FIX / RETURN_TO_SPEC_CORRECTION`)
+- **Work Order:** `NONE` (Specification Correction Stage Only)
+- **Starting Commit:** `6f54532beae065919091eabe6b3dcc452c4eece3`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+Resolve all findings F01 through F09 from independent technical review `REV-F1-SPEC-001` in the F1 Specification (`SPEC-FOUNDATION-F1-001` v0.2.0), update host API verification evidence, update issue registry, and prepare for independent technical re-review `REV-F1-SPEC-001-R2`:
+1. Persist `REV-F1-SPEC-001` into Section 8 of `docs/tranches/F1/REVIEW.md` and mark read-only.
+2. Correct `TTC_OBJECT_ID` cross-DWG uniqueness semantics (F01).
+3. Specify standard DXF Group Code 1 for XRecord key/value pairs and reserve codes 1000+ strictly for XData; correct capacity statement (F02).
+4. Correct native AutoCAD command cloning mechanisms (F03).
+5. Replace `Editor.CommandEnded` with `Document.CommandEnded`, `CommandCancelled`, `CommandFailed` on `Autodesk.AutoCAD.ApplicationServices.Document` (F04).
+6. Expand BUILD validation test suite to 25 tests (`TEST-F1-01`..`TEST-F1-25`) mapping 1:1/N:1 to all 25 ACs (F05).
+7. Remove `PROXYNOTICE = 0` override; maintain default `PROXYNOTICE = 1` host warnings (F06).
+8. Replace 'zero scaling error' with double-precision error bound $< 10^{-9}\text{ mm}$; remove millimeter default for undeclared block units (F07).
+9. De-normativize downstream rules (clearance layer names, dynamic catalog rules, mirroring polarity, nesting) from F1 (F08).
+10. Standardize on single canonical failure status `METADATA_INCOMPLETE`; remove non-normative `UNREGISTERED_TTC_ASSET` (F09).
+11. Update `API_VERIFICATION.md`, `DESIGN.md` (append Section 16 errata), and `ISSUES.md` (10 issues to `SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`).
+12. Update continuity artifacts (`README.md`, `TRANCHE_STATUS.md`, `PROJECT_PROGRESS.md`, `AGENT_HANDOFF.md`).
+13. Maintain strict build lock: zero production code changes, zero F0 changes, no Work Order, build NOT authorized.
+
+---
+
+### Execution Details
+- **Review Persisted:** `REV-F1-SPEC-001` recorded in `docs/tranches/F1/REVIEW.md` Section 8 (marked read-only).
+- **Specification Corrected:** `docs/tranches/F1/SPEC.md` updated to `SPEC-FOUNDATION-F1-001` v0.2.0 (`CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING`) resolving F01–F09.
+- **API Verification Updated:** `docs/tranches/F1/API_VERIFICATION.md` updated with accurate clone command mechanics, DXF group code rules, and Document command events.
+- **Design Errata Appended:** `docs/tranches/F1/DESIGN.md` Section 16 appended with post-design clarifications.
+- **Issue Registry Updated:** `docs/tranches/F1/ISSUES.md` updated across all 10 canonical issues to `SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`.
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Work Order / Build:** NOT created / NOT AUTHORIZED.
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent technical re-review: `REV-F1-SPEC-001-R2`. F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent reviewer approval and Product Owner freeze.
