@@ -20,7 +20,7 @@ Frozen Implementation Baseline:
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD contains or descends from F1 SPEC correction commit of task F1-SPEC-CORRECTION-004.
+Current HEAD contains or descends from F1 SPEC correction commit of task F1-SPEC-CORRECTION-004 (`55a9b8cd3045c139436609d562924b82ee7bc091`).
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -126,7 +126,7 @@ Required First Reads:
 18. docs/tranches/F0/REVIEW.md
 
 Handoff Notes:
-Task F1-SPEC-CORRECTION-004 (Session AG-F1-011) resolved all findings R4-F01 through R4-F03 from independent technical review REV-F1-SPEC-001-R4 (NEEDS_FIX / RETURN_TO_SPEC_CORRECTION) on commit c19ef54cbbe22561076221a54e8cf82431275f73:
+Task F1-SPEC-CORRECTION-004 (Session AG-F1-011) resolved all findings R4-F01 through R4-F03 from independent technical review REV-F1-SPEC-001-R4 (NEEDS_FIX / RETURN_TO_SPEC_CORRECTION) on commit c19ef54cbbe22561076221a54e8cf82431275f73, committed in `55a9b8cd3045c139436609d562924b82ee7bc091`:
 1. Persisted REV-F1-SPEC-001-R4 verbatim into Section 11 of docs/tranches/F1/REVIEW.md; updated Section 1 status summary to `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING` (resolving R4-F03); marked file read-only for F1-SPEC-CORRECTION-004.
 2. Resolved R4-F01: Separated the 10 persistent Entity Metadata Failure Classifications (§15.1) from transient Operation Execution Results (§15.2) with explicit rule `OperationExecutionResult != EntityFailureClassification`. Defined `OPERATION_ABORTED_PRESERVATION_RISK` under §15.2 and §9.3 for lossless forward compatibility write aborts when future-minor unrecognized fields cannot be guaranteed. Added to `AC-F1-17`, mapped in §20 to `ISSUE-F1-007`, and verified by new test `TEST-F1-29`.
 3. Resolved R4-F02: Corrected §10.1.2 item 1 citation from `AC-F1-10` to `AC-F1-07`, `AC-F1-12`. Formalized WBLOCK target DWG export postcondition in §10 table and §10.1.2 item 2: target DWG exported via WBLOCK considered a valid TTC artifact MUST persist distinct `TTC_OBJECT_ID` values; target is not promoted or accepted as a valid project drawing while containing duplicate IDs; exact host clone mechanism remains `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED`. Updated `TEST-F1-12` to independently inspect target DWG persistence, and updated §20 traceability for `ISSUE-F1-005`.
