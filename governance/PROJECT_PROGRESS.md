@@ -77,9 +77,9 @@ Status: ACTIVE_GOVERNANCE
 - **F0 Tranche Status:** `FROZEN`
 - **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `APPROVED_FOR_EXECUTION / EXECUTED (COMPLETE)`)
 - **F0 Production Mutation:** `CLOSED / REQUIRES REOPEN AUTHORITY`
-- **Current Production Focus:** `F1 — SPEC_DRAFT_AUTHORED / INDEPENDENT_REVIEW_PENDING`
+- **Current Production Focus:** `F1 — SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
 - **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
-- **Next Lifecycle Action:** `Independent Review of F1 SPEC`
+- **Next Lifecycle Action:** `Independent Technical Re-Review of F1 SPEC (REV-F1-SPEC-001-R2)`
 
 ---
 
