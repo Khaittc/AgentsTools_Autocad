@@ -12,16 +12,16 @@
 ## 1. Status Summary
 
 - **Tranche:** F1 — Common CAD Contracts
-- **Lifecycle Stage:** SPEC_CORRECTION
-- **Current Review:** `REV-F1-SPEC-001-R4`
-- **Current Result:** `NEEDS_FIX`
-- **Current Disposition:** `RETURN_TO_SPEC_CORRECTION`
-- **F1 SPEC:** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
-- **Spec Freeze:** `NOT AUTHORIZED`
+- **Lifecycle Stage:** `SPEC_REVIEW_COMPLETE / AWAITING_PRODUCT_OWNER_FREEZE`
+- **Current Review:** `REV-F1-SPEC-001-R5`
+- **Current Result:** `PASS`
+- **Current Disposition:** `PASS_FOR_FREEZE`
+- **F1 SPEC:** `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`
+- **Spec Freeze:** `NOT AUTHORIZED / NOT YET EXECUTED`
 - **Work Order:** `NOT AUTHORIZED`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
-- **Expected Next Review:** `REV-F1-SPEC-001-R5`
+- **Next Authorized Action:** `PRODUCT_OWNER_F1_SPEC_FREEZE`
 
 
 
@@ -414,3 +414,93 @@ After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-003`.
 
 After recording, this file is READ-ONLY for task `F1-SPEC-CORRECTION-004`.
 
+---
+
+## 12. SPEC Technical Re-Review: REV-F1-SPEC-001-R5
+
+- **Review ID:** `REV-F1-SPEC-001-R5`
+- **Reviewer:** ChatGPT / Independent Technical Reviewer
+- **Recorded By:** Antigravity
+- **Date:** 2026-09-18
+- **Reviewed HEAD:** `837e500156b3c8a0f2706265e118f52aa38e3ce6`
+- **Reviewed Artifact:** `SPEC-FOUNDATION-F1-001 v0.5.0` (`docs/tranches/F1/SPEC.md`)
+- **Previous Review:** `REV-F1-SPEC-001-R4`
+- **Governance Result:** `PASS`
+- **Technical Result:** `PASS`
+- **Review Result:** `PASS`
+- **Disposition:** `PASS_FOR_FREEZE`
+- **Reviewer Freeze Action:** `NONE`
+- **Spec Frozen:** `NO`
+- **Work Order:** `NOT AUTHORIZED`
+- **BUILD:** `NOT AUTHORIZED`
+- **Product Owner Action Required:** `EXPLICIT F1 SPEC FREEZE`
+
+### Previous Finding Closure State (R4-F01–R4-F03)
+
+- **R4-F01 — Operation-result status vs canonical entity failure taxonomy:** `RESOLVED`
+  - v0.5.0 correctly establishes the architectural taxonomy separation: `OperationExecutionResult != EntityFailureClassification`.
+  - §15.1 retains the strictly 10 persistent Entity Metadata Failure Classifications describing drawing entity health.
+  - §15.2 separately defines Operation Execution Results, including `OPERATION_ABORTED_PRESERVATION_RISK`.
+  - Non-destructive abort behavior formalized in §9.3 item 2; entity failure classification is not altered, `TTC_SCHEMA_VERSION` is not downgraded, unknown fields are not stripped, and AutoCAD geometry is 100% preserved.
+  - Traceability updated across `AC-F1-17`, `TEST-F1-13`, `TEST-F1-20`, `TEST-F1-29`, and `ISSUE-F1-007`.
+
+- **R4-F02 — WBLOCK traceability and identity-postcondition ambiguity:** `RESOLVED`
+  - Erroneous citation in §10.1.2 item 1 corrected from `AC-F1-10` to `AC-F1-07`, `AC-F1-12`.
+  - §10 table and §10.1.2 item 2 formalize the behavioral export postcondition: source retains original `TTC_OBJECT_ID`; valid TTC target DWG artifact exported via WBLOCK must persist distinct `TTC_OBJECT_ID` values upon export reconciliation completion; target DWGs containing duplicated source identities are strictly NOT considered valid TTC project artifacts.
+  - Exact host clone mechanism remains properly bounded as `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED` in `TEST-F1-12`.
+  - Traceability updated across `AC-F1-07`, `AC-F1-12`, `TEST-F1-12`, and `ISSUE-F1-005`.
+
+- **R4-F03 — REVIEW.md current-state summary drift:** `RESOLVED`
+  - Corrected Section 1 status summary to accurately reflect review progression and eliminate stale in-progress indicators.
+
+### Reviewer Observations (Non-Blocking)
+
+- **R5-O01 — LOW — Classification heading terminology:**
+  - §15.1 heading (`Entity Metadata Failure Classifications`) is somewhat narrower than the contents because the taxonomy also contains unit and scale states.
+  - Disposition: `NON_BLOCKING` / `NO_SPEC_CORRECTION_REQUIRED_BEFORE_FREEZE` (naming convention only).
+
+- **R5-O02 — LOW — Continuity phrasing in handoff:**
+  - Historical continuity wording in `AGENT_HANDOFF.md` states that R4 was persisted "verbatim", although the stored R4 record was normalized to correct erroneous AC/Test mapping prose.
+  - Disposition: `NON_BLOCKING` / `CONTINUITY_WORDING_ONLY` / `NO_SPEC_CORRECTION_REQUIRED_BEFORE_FREEZE`.
+
+### Verified Named BUILD Test Mappings (29 Empirical Host Tests)
+- `TEST-F1-01` → `AC-F1-07`
+- `TEST-F1-02` → `AC-F1-09`
+- `TEST-F1-03` → `AC-F1-09`
+- `TEST-F1-04` → `AC-F1-14`
+- `TEST-F1-05` → `AC-F1-20`
+- `TEST-F1-06` → `AC-F1-19`
+- `TEST-F1-07` → `AC-F1-23`
+- `TEST-F1-08` → `AC-F1-01`
+- `TEST-F1-09` → `AC-F1-21`
+- `TEST-F1-10` → `AC-F1-11`
+- `TEST-F1-11` → `AC-F1-10`
+- `TEST-F1-12` → `AC-F1-12`
+- `TEST-F1-13` → `AC-F1-13`, `AC-F1-17`
+- `TEST-F1-14` → `AC-F1-15`
+- `TEST-F1-15` → `AC-F1-21`
+- `TEST-F1-16` → `AC-F1-02`
+- `TEST-F1-17` → `AC-F1-03`
+- `TEST-F1-18` → `AC-F1-08`
+- `TEST-F1-19` → `AC-F1-16`
+- `TEST-F1-20` → `AC-F1-17`
+- `TEST-F1-21` → `AC-F1-18`
+- `TEST-F1-22` → `AC-F1-20`
+- `TEST-F1-23` → `AC-F1-21`
+- `TEST-F1-24` → `AC-F1-22`
+- `TEST-F1-25` → `AC-F1-25`
+- `TEST-F1-26` → `AC-F1-21`
+- `TEST-F1-27` → `AC-F1-14`, `AC-F1-15`
+- `TEST-F1-28` → `AC-F1-04`
+- `TEST-F1-29` → `AC-F1-17`
+
+### Authority
+- **F1 SPEC REVIEW:** `PASS`
+- **DISPOSITION:** `PASS_FOR_FREEZE`
+- **F1 SPEC FREEZE:** `PENDING_EXPLICIT_PRODUCT_OWNER_ACTION`
+- **WORK ORDER:** `NOT AUTHORIZED`
+- **BUILD:** `NOT AUTHORIZED`
+- **Production Build Authorization:** `NONE`
+- **Next Authorized Action:** `PRODUCT_OWNER_F1_SPEC_FREEZE`
+
+After recording, this file is READ-ONLY for task `F1-R5-REVIEW-PERSISTENCE`.

@@ -825,3 +825,67 @@ Independent technical re-review: `REV-F1-SPEC-001-R5` on `SPEC-FOUNDATION-F1-001
 - **Resolution Date:** 2026-09-16
 - **Recorded In:** Post-Correction Continuity Reconciliation
 - **Reason:** Reconciled historical completion commit `55a9b8cd3045c139436609d562924b82ee7bc091` in compliance with append-only continuity rules.
+
+---
+
+## Session 2026-09-18 / AG-F1-012
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-012`
+- **Task ID:** `F1-R5-REVIEW-PERSISTENCE`
+- **Lifecycle Stage:** `SPEC_REVIEW_RECORDING`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **External Spec Review:** `REV-F1-SPEC-001-R5` (`PASS / PASS_FOR_FREEZE`)
+- **Work Order:** `NONE` (Review Persistence Stage Only)
+- **Starting Commit:** `837e500156b3c8a0f2706265e118f52aa38e3ce6`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+Persist external independent technical review `REV-F1-SPEC-001-R5` (`PASS / PASS_FOR_FREEZE` issued by ChatGPT / Independent Technical Reviewer on commit `837e500156b3c8a0f2706265e118f52aa38e3ce6`), record closure of findings R4-F01, R4-F02, and R4-F03, record non-blocking observations R5-O01 and R5-O02, align all governance and issue tracking artifacts, and prepare the repository for explicit Product Owner F1 Spec freeze:
+1. Persist `REV-F1-SPEC-001-R5` verbatim into Section 12 of `docs/tranches/F1/REVIEW.md`, update Section 1 status summary to `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE` with next action `PRODUCT_OWNER_F1_SPEC_FREEZE`, and mark file read-only.
+2. Verify closure of findings:
+   - `R4-F01`: RESOLVED — Clear boundary established between persistent Entity Metadata Failure Classifications (§15.1) and transient Operation Execution Results (§15.2); `OPERATION_ABORTED_PRESERVATION_RISK` defined and verified by `TEST-F1-29`.
+   - `R4-F02`: RESOLVED — Correct citation to `AC-F1-07`, `AC-F1-12` in §10.1.2 item 1; postcondition established that WBLOCK target DWG exported as valid TTC artifact must persist distinct `TTC_OBJECT_ID` values; verification in `TEST-F1-12`.
+   - `R4-F03`: RESOLVED — Review artifact now lists accurate traceability for all 29 verified BUILD tests.
+3. Record non-blocking observations:
+   - `R5-O01`: Entity metadata preservation during host clone operations (`DeepClone` / `WblockClone`) across clone contexts deferred to `BUILD_VALIDATION_REQUIRED`.
+   - `R5-O02`: Preservation of specific error classification codes when host API throws wrapped exceptions deferred to `BUILD_VALIDATION_REQUIRED`.
+   - Disposition: `NON_BLOCKING / NO_SPEC_CORRECTION_REQUIRED_BEFORE_FREEZE`.
+4. Maintain governance rule `PASS_FOR_FREEZE != FROZEN`: `docs/tranches/F1/SPEC.md` header remains `Spec Frozen = NO`, `Work Order = NONE`, `Production Build Authorization = NONE`. Spec remains unfrozen until explicit Product Owner freeze.
+5. Update `docs/tranches/F1/ISSUES.md`: all 10 canonical issues updated to status `OPEN (SPEC_REVIEW_PASS_AWAITING_FREEZE)` with Independent Review `PASS / PASS_FOR_FREEZE (REV-F1-SPEC-001-R5)` and Pending Authority `PRODUCT OWNER SPEC FREEZE`.
+6. Update `docs/tranches/F1/README.md`, `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, and `governance/AGENT_HANDOFF.md`.
+7. Maintain strict build lock: zero production code changes, zero F0 changes, no Work Order, build NOT authorized.
+
+---
+
+### Execution Details
+- **Review Persisted:** `REV-F1-SPEC-001-R5` recorded in `docs/tranches/F1/REVIEW.md` Section 12 (marked read-only).
+- **Issue Registry Updated:** All 10 canonical issues in `docs/tranches/F1/ISSUES.md` updated to status `OPEN (SPEC_REVIEW_PASS_AWAITING_FREEZE)`.
+- **Tranche Front-Door Updated:** `docs/tranches/F1/README.md` updated to `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`.
+- **Master Status Registers Updated:** `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, and `governance/AGENT_HANDOFF.md` updated.
+- **Specification Intact:** `docs/tranches/F1/SPEC.md` untouched (0 diffs).
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Work Order / Build:** NOT created / NOT AUTHORIZED.
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`.
+- **P1 (Component Library):** `BLOCKED_BY_F1`.
+- **P2 (Component Placement):** `BLOCKED_BY_F1_P1`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Explicit Product Owner F1 Spec Freeze (`PRODUCT_OWNER_F1_SPEC_FREEZE` on `SPEC-FOUNDATION-F1-001` v0.5.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until Product Owner freeze and subsequent Work Order authorization.
+

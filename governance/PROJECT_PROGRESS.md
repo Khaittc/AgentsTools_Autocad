@@ -1,9 +1,9 @@
 # TTC CAD — Project Progress
 
 Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))<br>
-Current Lifecycle Stage: SPEC_CORRECTION (Tranche F1)<br>
+Current Lifecycle Stage: SPEC_REVIEW_COMPLETE / AWAITING_PRODUCT_OWNER_FREEZE (Tranche F1)<br>
 Current Completed Tranche: F0 — FROZEN<br>
-Current Production Focus: F1 — SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING<br>
+Current Production Focus: F1 — REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE<br>
 Status: ACTIVE_GOVERNANCE
 
 ---
@@ -77,30 +77,30 @@ Status: ACTIVE_GOVERNANCE
 - **F0 Tranche Status:** `FROZEN`
 - **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `APPROVED_FOR_EXECUTION / EXECUTED (COMPLETE)`)
 - **F0 Production Mutation:** `CLOSED / REQUIRES REOPEN AUTHORITY`
-- **Current Production Focus:** `F1 — SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
+- **Current Production Focus:** `F1 — REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`
 - **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
-- **Next Lifecycle Action:** `Independent Technical Re-Review of F1 SPEC (REV-F1-SPEC-001-R5)`
+- **Next Lifecycle Action:** `Explicit Product Owner F1 Spec Freeze (PRODUCT_OWNER_F1_SPEC_FREEZE)`
 
 ---
 
 ## 3.2. Tranche F1 Specification State
 
 - **Tranche:** F1 — Common CAD Contracts
-- **Lifecycle Stage:** SPEC_CORRECTION
-- **Status:** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
+- **Lifecycle Stage:** `SPEC_REVIEW_COMPLETE / AWAITING_PRODUCT_OWNER_FREEZE`
+- **Status:** `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`
 - **Intake Status:** `COMPLETE / PASS_TO_DESIGN` ([docs/tranches/F1/INTAKE.md](../docs/tranches/F1/INTAKE.md))
 - **Design Status:** `COMPLETE / PASS_TO_SPEC` ([docs/tranches/F1/DESIGN.md](../docs/tranches/F1/DESIGN.md))
 - **Latest Design Review:** `REV-F1-DESIGN-001-R3` (`PASS / PASS_TO_SPEC` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
-- **Latest Spec Review:** `REV-F1-SPEC-001-R4` (`NEEDS_FIX / RETURN_TO_SPEC_CORRECTION` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
+- **Latest Spec Review:** `REV-F1-SPEC-001-R5` (`PASS / PASS_FOR_FREEZE` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
 - **Spec Document:** `SPEC-FOUNDATION-F1-001` (v0.5.0) ([docs/tranches/F1/SPEC.md](../docs/tranches/F1/SPEC.md))
-- **Spec Frozen:** `NO` (Corrected draft proposed for independent re-review)
+- **Spec Frozen:** `NO` (Reviewed PASS; awaiting explicit Product Owner freeze)
 - **API Verification:** Host Evidence Preserved ([docs/tranches/F1/API_VERIFICATION.md](../docs/tranches/F1/API_VERIFICATION.md))
-- **F1 SPEC:** `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`
+- **F1 SPEC:** `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`
 - **Work Order:** `NONE`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
 - **P1/P2/M&E:** `BLOCKED`
-- **Next Authorized Action:** Independent technical re-review of F1 SPEC (`REV-F1-SPEC-001-R5` on `SPEC-FOUNDATION-F1-001` v0.5.0)
+- **Next Authorized Action:** Explicit Product Owner F1 Spec Freeze (`PRODUCT_OWNER_F1_SPEC_FREEZE` on `SPEC-FOUNDATION-F1-001` v0.5.0)
 
 ---
 
@@ -109,7 +109,7 @@ Status: ACTIVE_GOVERNANCE
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
 | **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `EXECUTED / WO-F0-001` | `COMPLETE / FROZEN` (Baseline `9892f905...`) |
-| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `CORRECTED_DRAFT (v0.5.0)` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING`) |
+| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `REVIEWED_PASS (v0.5.0)` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F1_P1) |
 | **P3..P9** | **Panel Designer Capabilities** | Upstream | `PLANNED` | `NONE` | `BLOCKED` |
@@ -123,11 +123,11 @@ Status: ACTIVE_GOVERNANCE
 - **Approved Active Work Orders:** `NONE` (`WO-F0-001` EXECUTED / CLOSED)
 - **Draft Work Orders:** `NONE`
 - **Production Code Files:** `17 .cs files across Core, Infrastructure, AutoCAD, Tests (FROZEN)`
-- **Gate Result:** `F1_SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`
+- **Gate Result:** `F1_SPEC_REVIEW_PASS_AWAITING_PRODUCT_OWNER_FREEZE`
 
 ### Downstream Scope Controls:
 1. F0 is complete, 13/13 AC verified PASS, reviewed PASS (`REV-F0-002-R3`), and FROZEN.
-2. Tranche F1 is in SPEC_CORRECTION stage (`SPEC-FOUNDATION-F1-001` v0.5.0 corrected in AG-F1-011 addressing REV-F1-SPEC-001-R4 findings R4-F01–R4-F03, 10 canonical issues updated to SPEC_CORRECTED, pending independent technical re-review REV-F1-SPEC-001-R5). F1 Work Order and BUILD remain strictly unauthorized.
+2. Tranche F1 is in SPEC_REVIEW_COMPLETE stage (`SPEC-FOUNDATION-F1-001` v0.5.0 reviewed PASS in REV-F1-SPEC-001-R5 / PASS_FOR_FREEZE, 10 canonical issues updated to OPEN (SPEC_REVIEW_PASS_AWAITING_FREEZE), awaiting explicit Product Owner F1 Spec freeze). F1 Work Order and BUILD remain strictly unauthorized.
 3. Downstream tranches (P1, P2, M&E) remain strictly locked and BLOCKED.
 
 ---
@@ -146,6 +146,6 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Independent Technical Re-Review of Tranche F1 SPEC (`REV-F1-SPEC-001-R5` on `SPEC-FOUNDATION-F1-001` v0.5.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent review approval and Product Owner freeze.
+Explicit Product Owner F1 Spec Freeze (`PRODUCT_OWNER_F1_SPEC_FREEZE` on `SPEC-FOUNDATION-F1-001` v0.5.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until Product Owner freeze and subsequent Work Order authorization.
 
 Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED for build. Production code mutation outside frozen F0 baseline requires explicit reopen authority.

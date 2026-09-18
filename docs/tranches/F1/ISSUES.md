@@ -8,13 +8,13 @@
 ### 1. Registry Summary
 
 - **Total Registered Issues:** 10
-- **Status:** ALL OPEN (`SPEC_CORRECTED`)
-- **Current Lifecycle Gate:** `SPEC_RE_REVIEW` (External Independent Review `REV-F1-SPEC-001-R5` Pending)
+- **Status:** ALL OPEN (`SPEC_REVIEW_COMPLETE / AWAITING_PRODUCT_OWNER_FREEZE`)
+- **Current Lifecycle Gate:** `SPEC_REVIEW_COMPLETE` (Independent Review `REV-F1-SPEC-001-R5` PASS / `PASS_FOR_FREEZE`; Awaiting Product Owner Freeze)
 - **Issues Blocking BUILD Entry:** 10 (Must be formalized in SPEC and approved before Work Order / BUILD)
 - **Disposition Breakdown:**
-  - `SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`: 10 (`ISSUE-F1-001` through `ISSUE-F1-010`)
+  - `SPEC_CORRECTED_REVIEWED_PASS`: 10 (`ISSUE-F1-001` through `ISSUE-F1-010`)
 - **Target Resolution Gates:**
-  - `SPEC_FREEZE`: 10 (Formalized and corrected in `SPEC-FOUNDATION-F1-001` v0.5.0; awaiting independent Spec re-review `REV-F1-SPEC-001-R5` & Product Owner freeze)
+  - `SPEC_FREEZE`: 10 (Formalized in `SPEC-FOUNDATION-F1-001` v0.5.0; Independent Review `REV-F1-SPEC-001-R5` PASS / `PASS_FOR_FREEZE`; awaiting Product Owner freeze)
 - **Verification Evidence Gate:**
   - `BUILD_VALIDATION`: 10 (Empirical runtime host evidence to be collected during BUILD stage via `TEST-F1-01`..`TEST-F1-29`)
 
@@ -24,23 +24,23 @@
 
 | Intake Question ID | Question Topic | Source Document | Canonical Issue ID | Blocks BUILD? | Required Closure Gate | Current Status | Verification Evidence Gate |
 |---|---|---|---|:---:|:---:|:---:|:---:|
-| `OQ-F1-01` | Drawing-unit enforcement vs validation/warning | `INTAKE.md` §12 | **ISSUE-F1-001** | YES | `SPEC_FREEZE` | **SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW** | `BUILD_VALIDATION` |
-| `OQ-F1-02` | Handling non-millimeter, unitless, and conflicted DWGs | `INTAKE.md` §12 | **ISSUE-F1-002** | YES | `SPEC_FREEZE` | **SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW** | `BUILD_VALIDATION` |
-| `OQ-F1-03` | Geometric tolerance model: single $\varepsilon$ vs typed tolerances | `INTAKE.md` §12 | **ISSUE-F1-003** | YES | `SPEC_FREEZE` | **SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW** | `BUILD_VALIDATION` |
-| `OQ-F1-04` | `TTC_OBJECT_ID` generation format & uniqueness scope | `INTAKE.md` §12 | **ISSUE-F1-004** | YES | `SPEC_FREEZE` | **SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW** | `BUILD_VALIDATION` |
-| `OQ-F1-05` | Identity lifecycle under native clone/copy operations | `INTAKE.md` §12 | **ISSUE-F1-005** | YES | `SPEC_FREEZE` | **SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW** | `BUILD_VALIDATION` |
-| `OQ-F1-06` | Metadata storage split: XData vs Extension Dictionary/XRecord | `INTAKE.md` §12 | **ISSUE-F1-006** | YES | `SPEC_FREEZE` | **SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW** | `BUILD_VALIDATION` |
-| `OQ-F1-07` | Schema versioning, migration, and backward compatibility | `INTAKE.md` §12 | **ISSUE-F1-007** | YES | `SPEC_FREEZE` | **SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW** | `BUILD_VALIDATION` |
-| `OQ-F1-08` | Native AutoCAD event/reactor strategy vs command-boundary audit | `INTAKE.md` §12 | **ISSUE-F1-008** | YES | `SPEC_FREEZE` | **SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW** | `BUILD_VALIDATION` |
-| `OQ-F1-09` | Mechanical block asset contracts, scaling, and orientation rules | `INTAKE.md` §12 | **ISSUE-F1-009** | YES | `SPEC_FREEZE` | **SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW** | `BUILD_VALIDATION` |
-| `OQ-F1-010` | Corrupt, orphan, or missing metadata recovery strategy | `INTAKE.md` §12 | **ISSUE-F1-010** | YES | `SPEC_FREEZE` | **SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW** | `BUILD_VALIDATION` |
+| `OQ-F1-01` | Drawing-unit enforcement vs validation/warning | `INTAKE.md` §12 | **ISSUE-F1-001** | YES | `SPEC_FREEZE` | **SPEC_REVIEW_PASS_AWAITING_FREEZE** | `BUILD_VALIDATION` |
+| `OQ-F1-02` | Handling non-millimeter, unitless, and conflicted DWGs | `INTAKE.md` §12 | **ISSUE-F1-002** | YES | `SPEC_FREEZE` | **SPEC_REVIEW_PASS_AWAITING_FREEZE** | `BUILD_VALIDATION` |
+| `OQ-F1-03` | Geometric tolerance model: single $\varepsilon$ vs typed tolerances | `INTAKE.md` §12 | **ISSUE-F1-003** | YES | `SPEC_FREEZE` | **SPEC_REVIEW_PASS_AWAITING_FREEZE** | `BUILD_VALIDATION` |
+| `OQ-F1-04` | `TTC_OBJECT_ID` generation format & uniqueness scope | `INTAKE.md` §12 | **ISSUE-F1-004** | YES | `SPEC_FREEZE` | **SPEC_REVIEW_PASS_AWAITING_FREEZE** | `BUILD_VALIDATION` |
+| `OQ-F1-05` | Identity lifecycle under native clone/copy operations | `INTAKE.md` §12 | **ISSUE-F1-005** | YES | `SPEC_FREEZE` | **SPEC_REVIEW_PASS_AWAITING_FREEZE** | `BUILD_VALIDATION` |
+| `OQ-F1-06` | Metadata storage split: XData vs Extension Dictionary/XRecord | `INTAKE.md` §12 | **ISSUE-F1-006** | YES | `SPEC_FREEZE` | **SPEC_REVIEW_PASS_AWAITING_FREEZE** | `BUILD_VALIDATION` |
+| `OQ-F1-07` | Schema versioning, migration, and backward compatibility | `INTAKE.md` §12 | **ISSUE-F1-007** | YES | `SPEC_FREEZE` | **SPEC_REVIEW_PASS_AWAITING_FREEZE** | `BUILD_VALIDATION` |
+| `OQ-F1-08` | Native AutoCAD event/reactor strategy vs command-boundary audit | `INTAKE.md` §12 | **ISSUE-F1-008** | YES | `SPEC_FREEZE` | **SPEC_REVIEW_PASS_AWAITING_FREEZE** | `BUILD_VALIDATION` |
+| `OQ-F1-09` | Mechanical block asset contracts, scaling, and orientation rules | `INTAKE.md` §12 | **ISSUE-F1-009** | YES | `SPEC_FREEZE` | **SPEC_REVIEW_PASS_AWAITING_FREEZE** | `BUILD_VALIDATION` |
+| `OQ-F1-010` | Corrupt, orphan, or missing metadata recovery strategy | `INTAKE.md` §12 | **ISSUE-F1-010** | YES | `SPEC_FREEZE` | **SPEC_REVIEW_PASS_AWAITING_FREEZE** | `BUILD_VALIDATION` |
 
 ---
 
 ## 3. Canonical Issues Register
 
 ### ISSUE-F1-001: Drawing-Unit Enforcement vs Validation/Warning Policy
-- **Status:** OPEN (`SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`)
+- **Status:** OPEN (`SPEC_REVIEW_PASS_AWAITING_FREEZE`)
 - **Severity:** HIGH
 - **Category:** DOMAIN / UNITS
 - **Owner:** Product Owner / Architect
@@ -59,12 +59,13 @@
   - Host adapter performs conversion at boundary using explicit conversion constants (`MillimetersPerDrawingUnit`); unit conversion executes in IEEE 754 double precision with deterministic reference value matching and round-trip identity fidelity (`AC-F1-04`, `TEST-F1-28`, addressing R2-F01, R2-F04, R3-F02).
   - `UNRESOLVED` and `UNIT_CONFIGURATION_CONFLICT` deterministically block physical-unit commands; zero silent conversion or silent `INSUNITS` mutation.
   - Downstream modules (e.g. P2) may constrain allowed `RESOLVED` units to millimeters without hard-coding into F1 common engine.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Independent Review:** PASS / `PASS_FOR_FREEZE` (`REV-F1-SPEC-001-R5`)
+- **Pending Authority:** PRODUCT OWNER SPEC FREEZE
 
 ---
 
 ### ISSUE-F1-002: Unit Authority, Unitless DWGs, and Configuration Conflicts
-- **Status:** OPEN (`SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`)
+- **Status:** OPEN (`SPEC_REVIEW_PASS_AWAITING_FREEZE`)
 - **Severity:** HIGH
 - **Category:** DOMAIN / UNITS
 - **Owner:** Architect
@@ -80,12 +81,13 @@
   - Explicit rule: `MEASUREMENT` MUST NOT determine physical units; `LUNITS` MUST NOT determine physical units; `INSUNITSDEFSOURCE` / `TARGET` are insertion scaling defaults only and MUST NOT prove model units.
   - Drawing with `INSUNITS = 0` without project config evaluates to `UNRESOLVED` and never silently defaults to millimeters (`AC-F1-03`).
   - Contradiction between non-zero `INSUNITS` and project config triggers `UNIT_CONFIGURATION_CONFLICT` and blocks physical operations without silent rescaling.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Independent Review:** PASS / `PASS_FOR_FREEZE` (`REV-F1-SPEC-001-R5`)
+- **Pending Authority:** PRODUCT OWNER SPEC FREEZE
 
 ---
 
 ### ISSUE-F1-003: Geometric Tolerance Model: Single Scalar vs Typed Tolerances
-- **Status:** OPEN (`SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`)
+- **Status:** OPEN (`SPEC_REVIEW_PASS_AWAITING_FREEZE`)
 - **Severity:** MEDIUM
 - **Category:** ARCHITECTURE / CORE_MATH
 - **Owner:** Core Developer
@@ -107,12 +109,13 @@
   - Removed unauthorized precision threshold `< 1e-9 mm>` from `AC-F1-04`; unit conversions use authoritative physical conversion constants (`MillimetersPerDrawingUnit`) evaluated in IEEE 754 double precision (`TEST-F1-28`).
   - All other tolerance categories (`AngularAlignment`, `ZeroLength`, `ScaleComparison`) explicitly marked `NO GLOBAL VALUE IN F1 v1`; must be supplied by caller or downstream spec.
   - Raw floating-point equality comparison prohibited across all geometry routines.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Independent Review:** PASS / `PASS_FOR_FREEZE` (`REV-F1-SPEC-001-R5`)
+- **Pending Authority:** PRODUCT OWNER SPEC FREEZE
 
 ---
 
 ### ISSUE-F1-004: TTC_OBJECT_ID Generation Format and Uniqueness Scope
-- **Status:** OPEN (`SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`)
+- **Status:** OPEN (`SPEC_REVIEW_PASS_AWAITING_FREEZE`)
 - **Severity:** HIGH
 - **Category:** ARCHITECTURE / IDENTITY
 - **Owner:** Architect
@@ -128,12 +131,13 @@
   - Format formalized: RFC 4122 Version 4 UUID canonical lower-case string (`Guid.ToString("D")`, 36 characters).
   - Role prefix rejected: Pure UUID without object-type slug; semantic classification resides independently in `TTC_OBJECT_TYPE` to prevent identity mutation on reclassification.
   - Uniqueness invariant (Addressing F01): No two independent TTC objects in a database—or across separate drawings within a project—may share the same valid `TTC_OBJECT_ID`. Distinct physical/semantic instances across drawings MUST possess distinct UUIDs (`AC-F1-12`, `TEST-F1-12`).
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Independent Review:** PASS / `PASS_FOR_FREEZE` (`REV-F1-SPEC-001-R5`)
+- **Pending Authority:** PRODUCT OWNER SPEC FREEZE
 
 ---
 
 ### ISSUE-F1-005: Identity Lifecycle Under Native Clone / Copy Operations
-- **Status:** OPEN (`SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`)
+- **Status:** OPEN (`SPEC_REVIEW_PASS_AWAITING_FREEZE`)
 - **Severity:** CRITICAL
 - **Category:** CAD_API / LIFECYCLE
 - **Owner:** AutoCAD Specialist
@@ -161,12 +165,13 @@
   - Two-state lineage model formalized (§11): State A (`PROVENANCE_KNOWN`) updates clone UUID atomically; State B (`PROVENANCE_UNKNOWN`) classifies `COLLISION_UNRESOLVED` without silent survivor guessing or Handle-age heuristics.
   - Generic `IEntityIdentityAuditService` specified for collision reporting.
   - Empirical host tests (`TEST-F1-02`, `TEST-F1-03`, `TEST-F1-10`, `TEST-F1-11`, `TEST-F1-12`, `TEST-F1-15`, `TEST-F1-21`) established as BUILD acceptance evidence.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Independent Review:** PASS / `PASS_FOR_FREEZE` (`REV-F1-SPEC-001-R5`)
+- **Pending Authority:** PRODUCT OWNER SPEC FREEZE
 
 ---
 
 ### ISSUE-F1-006: Metadata Storage Split: XData vs Extension Dictionary / XRecord
-- **Status:** OPEN (`SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`)
+- **Status:** OPEN (`SPEC_REVIEW_PASS_AWAITING_FREEZE`)
 - **Severity:** HIGH
 - **Category:** ARCHITECTURE / PERSISTENCE
 - **Owner:** Architect
@@ -187,12 +192,13 @@
   - Added Authoritative Fallback Discovery & Index Rebuild Service (§8.4, addressing R2-F06): when entities lack fast-query XData (external clean, script strip), authoritative extension dictionary scan discovers entities and rebuilds index without loss; full scan strictly prohibited during cursor/point monitoring (`TEST-F1-27`).
   - Missing/incomplete metadata fails with single canonical status `METADATA_INCOMPLETE` (`AC-F1-16`, addressing F09); geometry 100% preserved; zero silent reconstruction.
   - Fast selection filtering via `Editor.SelectAll()` verified with `TEST-F1-04`.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Independent Review:** PASS / `PASS_FOR_FREEZE` (`REV-F1-SPEC-001-R5`)
+- **Pending Authority:** PRODUCT OWNER SPEC FREEZE
 
 ---
 
 ### ISSUE-F1-007: Metadata Schema Versioning, Migration, and Backward Compatibility
-- **Status:** OPEN (`SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`)
+- **Status:** OPEN (`SPEC_REVIEW_PASS_AWAITING_FREEZE`)
 - **Severity:** MEDIUM
 - **Category:** ARCHITECTURE / PERSISTENCE
 - **Owner:** Architect
@@ -212,12 +218,13 @@
   - Normative Schema Compatibility Matrix formalized (§9.2, addressing R3-F03) for runtime 1.0.x: exact match (1.0.x) read/write normal; future patch (1.0.y) read/write normal; future minor (1.N.x, N > 0) read/write with unrecognized fields preserved verbatim and version string preserved verbatim without downward downgrade; future major (2.x.x) triggers read-only protection with structured status `UNSUPPORTED_SCHEMA` (mutation blocked, geometry preserved).
   - Replaced unsupported "defaults older minor versions" wording with explicit forward compatibility rules; malformed schema classified `INVALID_METADATA` without host crash.
   - Explicit taxonomy separation formalized (§9.3, §15.2, addressing R4-F01): `OperationExecutionResult != EntityFailureClassification`. If future-minor unrecognized fields cannot be guaranteed during a write operation, the transaction aborts non-destructively returning `OperationResult.Code = OPERATION_ABORTED_PRESERVATION_RISK`, without altering entity failure classification, schema version, or stripping unknown fields (`AC-F1-17`, `TEST-F1-29`).
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Independent Review:** PASS / `PASS_FOR_FREEZE` (`REV-F1-SPEC-001-R5`)
+- **Pending Authority:** PRODUCT OWNER SPEC FREEZE
 
 ---
 
 ### ISSUE-F1-008: Native AutoCAD Event/Reactor Strategy vs Command-Boundary Audit
-- **Status:** OPEN (`SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`)
+- **Status:** OPEN (`SPEC_REVIEW_PASS_AWAITING_FREEZE`)
 - **Severity:** HIGH
 - **Category:** CAD_API / HOST_STABILITY
 - **Owner:** AutoCAD Specialist
@@ -241,12 +248,13 @@
   - Cache invalidation contract specified (§12.2): ephemeral caches marked dirty on modification, invalidated on document switch, reconstructed at command boundaries.
   - Safe reconciliation writes require an explicit `DocumentLock` and database `Transaction`.
   - `Database.BeginSave` mutation classified as non-dependency (`BUILD_VALIDATION_REQUIRED` / optional investigation).
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Independent Review:** PASS / `PASS_FOR_FREEZE` (`REV-F1-SPEC-001-R5`)
+- **Pending Authority:** PRODUCT OWNER SPEC FREEZE
 
 ---
 
 ### ISSUE-F1-009: Mechanical Block Asset Contracts, Scaling, and Orientation Rules
-- **Status:** OPEN (`SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`)
+- **Status:** OPEN (`SPEC_REVIEW_PASS_AWAITING_FREEZE`)
 - **Severity:** MEDIUM
 - **Category:** DOMAIN / ASSET_MANAGEMENT
 - **Owner:** Lead Draftsperson / Architect
@@ -264,12 +272,13 @@
   - Clarified `MISSING_BLOCK_ASSET` (§14 domain 12, §15.1, addressing R2-F05): represents external library/catalog asset resolution failure, not an impossible BlockTable corruption state where a BlockReference exists without a BlockTableRecord.
   - Undeclared block units evaluate strictly to `UNRESOLVED` (never assumed millimeter).
   - Downstream scope de-normativized in F1 (addressing F08): generic clearance layers without freezing `TTC_CLEARANCE_*`; static vs dynamic block capability without freezing P1 catalog rules; `AllowMirroring` flag without freezing P6 polarity rules; 1-level nesting recommendation preserved as advisory guideline.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Independent Review:** PASS / `PASS_FOR_FREEZE` (`REV-F1-SPEC-001-R5`)
+- **Pending Authority:** PRODUCT OWNER SPEC FREEZE
 
 ---
 
 ### ISSUE-F1-010: Corrupt, Orphan, or Missing Metadata Recovery Strategy
-- **Status:** OPEN (`SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW`)
+- **Status:** OPEN (`SPEC_REVIEW_PASS_AWAITING_FREEZE`)
 - **Severity:** MEDIUM
 - **Category:** DOMAIN / ROBUSTNESS
 - **Owner:** Architect
@@ -291,4 +300,5 @@
   - Orphan clearance envelopes detected and offered for safe removal.
   - Missing block library definitions classified as `MISSING_BLOCK_ASSET` (addressing R2-F05).
   - Missing XRecord with XData classified as `METADATA_INCOMPLETE` (`AC-F1-16`); geometry preserved; zero silent reconstruction.
-- **Pending Authority:** Independent Technical Re-Review (`REV-F1-SPEC-001-R5`) and Product Owner freeze of `SPEC-FOUNDATION-F1-001`.
+- **Independent Review:** PASS / `PASS_FOR_FREEZE` (`REV-F1-SPEC-001-R5`)
+- **Pending Authority:** PRODUCT OWNER SPEC FREEZE

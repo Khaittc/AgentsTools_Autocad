@@ -1,7 +1,7 @@
 # TTC CAD — Current Agent Handoff
 
 Updated:
-2026-09-16 22:35:00 +07:00
+2026-09-18 08:55:00 +07:00
 
 Repository:
 Khaittc/AgentsTools_Autocad
@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-c19ef54cbbe22561076221a54e8cf82431275f73
+837e500156b3c8a0f2706265e118f52aa38e3ce6
 
 Approved Execution Baseline:
 NONE (F1 Build NOT AUTHORIZED; F0 Baseline: 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf)
@@ -20,7 +20,7 @@ Frozen Implementation Baseline:
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD contains or descends from F1 SPEC correction commit of task F1-SPEC-CORRECTION-004 (`55a9b8cd3045c139436609d562924b82ee7bc091`).
+Current HEAD contains or descends from F1 review persistence commit of task F1-R5-REVIEW-PERSISTENCE (`837e500156b3c8a0f2706265e118f52aa38e3ce6`).
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -29,10 +29,10 @@ Current Tranche:
 F1 — Common CAD Contracts
 
 Current Lifecycle Stage:
-SPEC_CORRECTION
+SPEC_REVIEW_COMPLETE / AWAITING_PRODUCT_OWNER_FREEZE
 
 Current Status:
-SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
+REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE
 
 Intake Status:
 INTAKE-FOUNDATION-F1-001 — COMPLETE / PASS_TO_DESIGN (REV-F1-INTAKE-001-R3 PASS)
@@ -41,13 +41,13 @@ Design Status:
 DESIGN-FOUNDATION-F1-001 (v0.3.0) — COMPLETE / PASS_TO_SPEC (REV-F1-DESIGN-001-R3 PASS)
 
 Current Spec Document:
-SPEC-FOUNDATION-F1-001 (v0.5.0) (CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING)
+SPEC-FOUNDATION-F1-001 (v0.5.0) (REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE)
 
 Spec Frozen:
-NO (Pending independent re-review and Product Owner freeze)
+NO (Reviewed PASS; awaiting explicit Product Owner freeze)
 
 Latest Review:
-REV-F1-SPEC-001-R4 (NEEDS_FIX / RETURN_TO_SPEC_CORRECTION)
+REV-F1-SPEC-001-R5 (PASS / PASS_FOR_FREEZE)
 
 Current Frozen Authority:
 docs/tranches/F0/SPEC.md — FROZEN v1.0.0
@@ -71,19 +71,19 @@ F0 Tranche:
 FROZEN
 
 F1 Tranche:
-SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
+REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE
 
 Last Completed Task:
-F1-SPEC-CORRECTION-004
+F1-R5-REVIEW-PERSISTENCE
 
 Last Agent:
-Antigravity / AG-F1-011
+Antigravity / AG-F1-012
 
 Last Result:
-SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING
+REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE
 
 Open Blocking Issues:
-10 blocking BUILD entry (10 SPEC_CORRECTED_PENDING_INDEPENDENT_RE_REVIEW in docs/tranches/F1/ISSUES.md; required closure gate: SPEC_FREEZE; verification evidence gate: BUILD_VALIDATION)
+10 blocking BUILD entry (10 OPEN (SPEC_REVIEW_PASS_AWAITING_FREEZE) in docs/tranches/F1/ISSUES.md; required closure gate: SPEC_FREEZE; verification evidence gate: BUILD_VALIDATION)
 
 Open Non-Blocking Issues:
 0
@@ -92,18 +92,18 @@ Next Tranche:
 P1 — Component Library (BLOCKED by F1)
 
 Next Authorized Action:
-Independent Technical Re-Review of Tranche F1 SPEC (`REV-F1-SPEC-001-R5` on `SPEC-FOUNDATION-F1-001` v0.5.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until independent review approval and Product Owner freeze.
+Explicit Product Owner F1 Spec Freeze (`PRODUCT_OWNER_F1_SPEC_FREEZE` on `SPEC-FOUNDATION-F1-001` v0.5.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until Product Owner freeze and subsequent Work Order authorization.
 
 F1 Production Build:
 NOT AUTHORIZED
 
 Forbidden Next Actions:
-- Freezing F1 SPEC without independent review approval and explicit Product Owner freeze
+- Freezing F1 SPEC without explicit Product Owner freeze authority
 - Creating F1 Work Order
 - F1 production code creation (BUILD NOT AUTHORIZED)
 - F0 production code mutation without reopen authority
 - P1, P2, M&E implementation (BLOCKED)
-- Self-approving SPEC
+- Self-approving SPEC freeze or prematurely closing canonical issues
 
 Required First Reads:
 1. governance/ANTIGRAVITY_INSTRUCTIONS.md
@@ -126,10 +126,11 @@ Required First Reads:
 18. docs/tranches/F0/REVIEW.md
 
 Handoff Notes:
-Task F1-SPEC-CORRECTION-004 (Session AG-F1-011) resolved all findings R4-F01 through R4-F03 from independent technical review REV-F1-SPEC-001-R4 (NEEDS_FIX / RETURN_TO_SPEC_CORRECTION) on commit c19ef54cbbe22561076221a54e8cf82431275f73, committed in `55a9b8cd3045c139436609d562924b82ee7bc091`:
-1. Persisted REV-F1-SPEC-001-R4 verbatim into Section 11 of docs/tranches/F1/REVIEW.md; updated Section 1 status summary to `SPEC_CORRECTED / INDEPENDENT_RE_REVIEW_PENDING` (resolving R4-F03); marked file read-only for F1-SPEC-CORRECTION-004.
-2. Resolved R4-F01: Separated the 10 persistent Entity Metadata Failure Classifications (§15.1) from transient Operation Execution Results (§15.2) with explicit rule `OperationExecutionResult != EntityFailureClassification`. Defined `OPERATION_ABORTED_PRESERVATION_RISK` under §15.2 and §9.3 for lossless forward compatibility write aborts when future-minor unrecognized fields cannot be guaranteed. Added to `AC-F1-17`, mapped in §20 to `ISSUE-F1-007`, and verified by new test `TEST-F1-29`.
-3. Resolved R4-F02: Corrected §10.1.2 item 1 citation from `AC-F1-10` to `AC-F1-07`, `AC-F1-12`. Formalized WBLOCK target DWG export postcondition in §10 table and §10.1.2 item 2: target DWG exported via WBLOCK considered a valid TTC artifact MUST persist distinct `TTC_OBJECT_ID` values; target is not promoted or accepted as a valid project drawing while containing duplicate IDs; exact host clone mechanism remains `BUILD_VALIDATION_REQUIRED / HOST_TEST_REQUIRED`. Updated `TEST-F1-12` to independently inspect target DWG persistence, and updated §20 traceability for `ISSUE-F1-005`.
-4. Updated `docs/tranches/F1/ISSUES.md`: all 10 canonical issues updated to Spec `v0.5.0` and Pending Authority `REV-F1-SPEC-001-R5`; updated `ISSUE-F1-005` (WBLOCK export postcondition), `ISSUE-F1-007` (taxonomy separation, preservation abort, `TEST-F1-29`), and `ISSUE-F1-010` (§15.1 vs §15.2 separation).
-5. Updated `docs/tranches/F1/README.md`, `docs/tranches/TRANCHE_STATUS.md`, and `governance/PROJECT_PROGRESS.md` to reflect Spec `v0.5.0`, `REV-F1-SPEC-001-R4` recorded, and `REV-F1-SPEC-001-R5` pending.
-6. Preserved 100% frozen integrity of Tranche F0 and production code paths (zero production changes; zero F0 changes). Next authorized action is independent technical re-review `REV-F1-SPEC-001-R5`. F1 Work Order and BUILD remain strictly NOT AUTHORIZED.
+Task F1-R5-REVIEW-PERSISTENCE (Session AG-F1-012) persisted the external independent technical review REV-F1-SPEC-001-R5 (PASS / PASS_FOR_FREEZE) issued by ChatGPT / Independent Technical Reviewer on commit 837e500156b3c8a0f2706265e118f52aa38e3ce6:
+1. Persisted REV-F1-SPEC-001-R5 into Section 12 of docs/tranches/F1/REVIEW.md; updated Section 1 status summary to `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE` with next action `PRODUCT_OWNER_F1_SPEC_FREEZE`; marked file read-only.
+2. Verified formal closure of all R4 findings: R4-F01 (RESOLVED — separation of entity metadata failure classifications from operation execution results, OPERATION_ABORTED_PRESERVATION_RISK, TEST-F1-29), R4-F02 (RESOLVED — citation correction and WBLOCK target DWG uniqueness postcondition), and R4-F03 (RESOLVED — accurate traceability for verified BUILD test mappings).
+3. Recorded non-blocking observations R5-O01 (Host clone-context distinction during DeepClone/WblockClone for entity metadata preservation deferred to BUILD_VALIDATION_REQUIRED) and R5-O02 (Exact error code preservation when host API throws wrapped exception deferred to BUILD_VALIDATION_REQUIRED). Disposition: NON_BLOCKING / NO_SPEC_CORRECTION_REQUIRED_BEFORE_FREEZE.
+4. Maintained governance invariant `PASS_FOR_FREEZE != FROZEN`: `SPEC.md` header remains `Spec Frozen = NO`, `Work Order = NONE`, `Production Build Authorization = NONE`. Spec remains unfrozen until explicit Product Owner freeze.
+5. Updated `docs/tranches/F1/ISSUES.md`: all 10 canonical issues updated to status `OPEN (SPEC_REVIEW_PASS_AWAITING_FREEZE)`, Independent Review `PASS / PASS_FOR_FREEZE (REV-F1-SPEC-001-R5)`, Pending Authority `PRODUCT OWNER SPEC FREEZE`. Canonical issues remain open until the SPEC_FREEZE gate.
+6. Updated `docs/tranches/F1/README.md`, `docs/tranches/TRANCHE_STATUS.md`, and `governance/PROJECT_PROGRESS.md` to reflect `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`.
+7. Preserved 100% frozen integrity: zero changes to `production/**`, zero changes to `docs/tranches/F0/**`, zero changes to `SPEC.md`, `DESIGN.md`, or `API_VERIFICATION.md`. Next authorized action is explicit Product Owner F1 Spec Freeze (`PRODUCT_OWNER_F1_SPEC_FREEZE`). F1 Work Order and BUILD remain strictly NOT AUTHORIZED.
