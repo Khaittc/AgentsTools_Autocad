@@ -900,3 +900,29 @@ Explicit Product Owner F1 Spec Freeze (`PRODUCT_OWNER_F1_SPEC_FREEZE` on `SPEC-F
 - **Recorded In:** Post-Review-Persistence Continuity Reconciliation
 - **Reason:** Reconciled historical completion commit `aa595df1235cea56bfa0d1d5b9d4ae0f698b782d` in compliance with append-only continuity rules.
 
+---
+
+### AG-F1-012 Review Persistence Clarification (Task: F1-R5-CONTINUITY-CLARIFICATION)
+
+- **Date:** 2026-09-18
+- **Task ID:** `F1-R5-CONTINUITY-CLARIFICATION`
+- **Context:** Continuity clarification for Session `AG-F1-012` (`F1-R5-REVIEW-PERSISTENCE`)
+
+The authoritative persisted independent review is [`docs/tranches/F1/REVIEW.md`](./REVIEW.md) Section 12.
+
+The `AG-F1-012` Objective and Details summary contained three inaccurate descriptive summaries. They do not alter the persisted review result.
+
+Correct interpretation:
+- **R4-F03:** `RESOLVED` — `REVIEW.md` current-state summary drift.
+- **R5-O01:** `LOW` — Classification heading terminology (§15.1 heading "Entity Metadata Failure Classifications" is somewhat narrower than the contents because the taxonomy also contains unit and scale states; `NON_BLOCKING` / `NO_SPEC_CORRECTION_REQUIRED_BEFORE_FREEZE`).
+- **R5-O02:** `LOW` — Continuity phrasing in handoff regarding "verbatim" persistence (historical `AGENT_HANDOFF.md` wording said R4 was persisted "verbatim", while the stored R4 record was normalized to correct erroneous AC/Test mapping prose; `NON_BLOCKING` / `CONTINUITY_WORDING_ONLY` / `NO_SPEC_CORRECTION_REQUIRED_BEFORE_FREEZE`).
+
+Review `REV-F1-SPEC-001-R5` remains:
+- **Result:** `PASS`
+- **Disposition:** `PASS_FOR_FREEZE`
+- **Spec Frozen:** `NO`
+- **Next Authorized Action:** `PRODUCT_OWNER_F1_SPEC_FREEZE`
+
+No Spec correction is required. This addendum supersedes only the inaccurate continuity summary, not the review itself.
+
+
