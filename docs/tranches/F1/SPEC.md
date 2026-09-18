@@ -2,24 +2,27 @@
 
 - **Spec ID:** `SPEC-FOUNDATION-F1-001`
 - **Title:** Common CAD Contracts
-- **Version:** `0.5.0`
-- **Status:** `CORRECTED_DRAFT / INDEPENDENT_RE_REVIEW_PENDING`
-- **Lifecycle Stage:** `SPEC_CORRECTION`
+- **Version:** `1.0.0`
+- **Status:** `FROZEN`
+- **Lifecycle Stage:** `SPEC_FROZEN`
 - **Tranche:** F1 — Common CAD Contracts
 - **Dependency:** Tranche F0 — AutoCAD Foundation (`FROZEN v1.0.0`, Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
 - **Design Authority:** `DESIGN-FOUNDATION-F1-001` v0.3.0 (`COMPLETE / REVIEWED_PASS / PASS_TO_SPEC`)
-- **Latest External Review:** `REV-F1-SPEC-001-R4` — `NEEDS_FIX / RETURN_TO_SPEC_CORRECTION`
+- **Latest External Review:** `REV-F1-SPEC-001-R5` — `PASS / PASS_FOR_FREEZE`
+- **Spec Frozen:** `YES`
+- **Freeze Authority:** `PRODUCT OWNER`
+- **Product Owner Freeze Decision:** `APPROVED`
+- **Freeze Date:** `2026-09-18`
 - **Target Host Baseline:** AutoCAD 2023 Managed .NET API (C#, .NET Framework 4.8)
-- **Production Build Authorization:** `NONE`
-- **SPEC Freeze Authority:** `NONE`
 - **Work Order:** `NONE`
+- **Production Build Authorization:** `NONE`
 
 > [!IMPORTANT]
-> **Specification Governance & Non-Approval Notice:**
-> 1. Antigravity is the authoring/recording agent. Antigravity MUST NOT self-approve or freeze this specification.
-> 2. This document represents a formal CORRECTED DRAFT specification submitted for independent technical re-review (`REV-F1-SPEC-001-R5`).
-> 3. Statements marked `PROPOSED_SPEC_CONTRACT` are technical proposals pending independent review and explicit Product Owner freeze. They must NOT be represented as already approved by the Product Owner.
-> 4. Work Order creation is strictly **NOT AUTHORIZED**. Production code modification (`production/**`) is strictly **NOT AUTHORIZED**.
+> **Specification Governance & Frozen Baseline Notice:**
+> 1. This specification is **FROZEN (v1.0.0)** under explicit Product Owner authorization following independent review `REV-F1-SPEC-001-R5` (`PASS / PASS_FOR_FREEZE`).
+> 2. The technical contracts and architectural requirements defined herein constitute an immutable engineering baseline. Any technical contract changes require an explicit Spec reopen and formal change-control process.
+> 3. Work Order currently does NOT exist (`Work Order: NONE`).
+> 4. BUILD remains strictly **NOT AUTHORIZED** until an approved Work Order exists. Production code creation or modification (`production/**`) is strictly **NOT AUTHORIZED**.
 
 ---
 

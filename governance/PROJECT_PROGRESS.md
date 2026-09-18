@@ -1,9 +1,9 @@
 # TTC CAD — Project Progress
 
 Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))<br>
-Current Lifecycle Stage: SPEC_REVIEW_COMPLETE / AWAITING_PRODUCT_OWNER_FREEZE (Tranche F1)<br>
+Current Lifecycle Stage: F1 SPEC FROZEN / WORK_ORDER_PENDING<br>
 Current Completed Tranche: F0 — FROZEN<br>
-Current Production Focus: F1 — REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE<br>
+Current Production Focus: F1 — SPEC_FROZEN / WORK_ORDER_PENDING<br>
 Status: ACTIVE_GOVERNANCE
 
 ---
@@ -77,30 +77,30 @@ Status: ACTIVE_GOVERNANCE
 - **F0 Tranche Status:** `FROZEN`
 - **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `APPROVED_FOR_EXECUTION / EXECUTED (COMPLETE)`)
 - **F0 Production Mutation:** `CLOSED / REQUIRES REOPEN AUTHORITY`
-- **Current Production Focus:** `F1 — REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`
+- **Current Production Focus:** `F1 — SPEC_FROZEN / WORK_ORDER_PENDING`
 - **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
-- **Next Lifecycle Action:** `Explicit Product Owner F1 Spec Freeze (PRODUCT_OWNER_F1_SPEC_FREEZE)`
+- **Next Lifecycle Action:** `Author F1 Work Order (AUTHOR F1 WORK ORDER)`
 
 ---
 
 ## 3.2. Tranche F1 Specification State
 
 - **Tranche:** F1 — Common CAD Contracts
-- **Lifecycle Stage:** `SPEC_REVIEW_COMPLETE / AWAITING_PRODUCT_OWNER_FREEZE`
-- **Status:** `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`
+- **Lifecycle Stage:** `SPEC_FROZEN / WORK_ORDER_PENDING`
+- **Status:** `FROZEN`
 - **Intake Status:** `COMPLETE / PASS_TO_DESIGN` ([docs/tranches/F1/INTAKE.md](../docs/tranches/F1/INTAKE.md))
 - **Design Status:** `COMPLETE / PASS_TO_SPEC` ([docs/tranches/F1/DESIGN.md](../docs/tranches/F1/DESIGN.md))
 - **Latest Design Review:** `REV-F1-DESIGN-001-R3` (`PASS / PASS_TO_SPEC` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
 - **Latest Spec Review:** `REV-F1-SPEC-001-R5` (`PASS / PASS_FOR_FREEZE` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
-- **Spec Document:** `SPEC-FOUNDATION-F1-001` (v0.5.0) ([docs/tranches/F1/SPEC.md](../docs/tranches/F1/SPEC.md))
-- **Spec Frozen:** `NO` (Reviewed PASS; awaiting explicit Product Owner freeze)
+- **Spec Document:** `SPEC-FOUNDATION-F1-001` (v1.0.0) ([docs/tranches/F1/SPEC.md](../docs/tranches/F1/SPEC.md))
+- **Spec Frozen:** `YES` (Frozen v1.0.0 under explicit Product Owner authorization)
 - **API Verification:** Host Evidence Preserved ([docs/tranches/F1/API_VERIFICATION.md](../docs/tranches/F1/API_VERIFICATION.md))
-- **F1 SPEC:** `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`
+- **F1 SPEC:** `FROZEN (v1.0.0)`
 - **Work Order:** `NONE`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
 - **P1/P2/M&E:** `BLOCKED`
-- **Next Authorized Action:** Explicit Product Owner F1 Spec Freeze (`PRODUCT_OWNER_F1_SPEC_FREEZE` on `SPEC-FOUNDATION-F1-001` v0.5.0)
+- **Next Authorized Action:** Author F1 Work Order (`AUTHOR F1 WORK ORDER` based on frozen `SPEC-FOUNDATION-F1-001` v1.0.0)
 
 ---
 
@@ -109,7 +109,7 @@ Status: ACTIVE_GOVERNANCE
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
 | **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `EXECUTED / WO-F0-001` | `COMPLETE / FROZEN` (Baseline `9892f905...`) |
-| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `REVIEWED_PASS (v0.5.0)` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE`) |
+| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `FROZEN (v1.0.0)` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`SPEC FROZEN / WORK ORDER AUTHORING AUTHORIZED`) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F1_P1) |
 | **P3..P9** | **Panel Designer Capabilities** | Upstream | `PLANNED` | `NONE` | `BLOCKED` |
@@ -123,11 +123,11 @@ Status: ACTIVE_GOVERNANCE
 - **Approved Active Work Orders:** `NONE` (`WO-F0-001` EXECUTED / CLOSED)
 - **Draft Work Orders:** `NONE`
 - **Production Code Files:** `17 .cs files across Core, Infrastructure, AutoCAD, Tests (FROZEN)`
-- **Gate Result:** `F1_SPEC_REVIEW_PASS_AWAITING_PRODUCT_OWNER_FREEZE`
+- **Gate Result:** `F1_SPEC_FROZEN_WORK_ORDER_PENDING`
 
 ### Downstream Scope Controls:
 1. F0 is complete, 13/13 AC verified PASS, reviewed PASS (`REV-F0-002-R3`), and FROZEN.
-2. Tranche F1 is in SPEC_REVIEW_COMPLETE stage (`SPEC-FOUNDATION-F1-001` v0.5.0 reviewed PASS in REV-F1-SPEC-001-R5 / PASS_FOR_FREEZE, 10 canonical issues updated to OPEN (SPEC_REVIEW_PASS_AWAITING_FREEZE), awaiting explicit Product Owner F1 Spec freeze). F1 Work Order and BUILD remain strictly unauthorized.
+2. Tranche F1 specification is FROZEN (`SPEC-FOUNDATION-F1-001` v1.0.0 frozen under explicit Product Owner authorization, `REV-F1-SPEC-001-R5` PASS / `PASS_FOR_FREEZE`, all 10 canonical issues resolved at `SPEC_FREEZE`). F1 Work Order authoring is authorized; BUILD remains strictly unauthorized.
 3. Downstream tranches (P1, P2, M&E) remain strictly locked and BLOCKED.
 
 ---
@@ -146,6 +146,6 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Explicit Product Owner F1 Spec Freeze (`PRODUCT_OWNER_F1_SPEC_FREEZE` on `SPEC-FOUNDATION-F1-001` v0.5.0). F1 Work Order and BUILD remain strictly NOT AUTHORIZED until Product Owner freeze and subsequent Work Order authorization.
+Author F1 Work Order (`AUTHOR F1 WORK ORDER` on frozen `SPEC-FOUNDATION-F1-001` v1.0.0). F1 BUILD remains strictly NOT AUTHORIZED until Work Order authorization is approved.
 
 Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED for build. Production code mutation outside frozen F0 baseline requires explicit reopen authority.

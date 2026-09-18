@@ -11,8 +11,8 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 | Tranche ID | Capability | Depends On | Spec Status | Work Order | Build Status | Frozen? | Current Disposition |
 |:---:|---|---|:---:|:---:|:---:|:---:|---|
 | **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `EXECUTED / WO-F0-001` | `COMPLETE` | YES | **COMPLETE / FROZEN** (Baseline: `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`; REV-F0-002-R3 PASS; 13/13 AC PASS; 9/9 issues resolved; F0 mutation CLOSED) |
-| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `REVIEWED_PASS (v0.5.0) / AWAITING_PRODUCT_OWNER_FREEZE` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` | NO | **SPEC_REVIEW_PASS / AWAITING_PRODUCT_OWNER_FREEZE** (REV-F1-SPEC-001-R5 PASS / PASS_FOR_FREEZE recorded; SPEC-FOUNDATION-F1-001 v0.5.0 reviewed PASS; 10 issues SPEC_REVIEW_PASS_AWAITING_FREEZE; pending explicit Product Owner F1 Spec freeze; build NOT AUTHORIZED) |
-| **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F1) |
+| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `FROZEN (v1.0.0)` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` | YES | **SPEC FROZEN / WORK ORDER AUTHORING AUTHORIZED** (`SPEC-FOUNDATION-F1-001` v1.0.0 frozen under explicit Product Owner authorization; `REV-F1-SPEC-001-R5` PASS / `PASS_FOR_FREEZE`; 10/10 issues resolved at `SPEC_FREEZE`; Work Order authoring authorized; build NOT AUTHORIZED) |
+| **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` | NO | `PLANNED` (Blocked by F1 implementation) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` | `NONE` | `BLOCKED` | NO | **BLOCKED_BY_UPSTREAM** (Spec evidence exists in `docs/03_FEATURE_SPEC_TTCPANELPLACE.md`; awaiting F1/P1) |
 | **P3** | **DIN Rail (`TTCRAIL`)** | P2 | `PLANNED` | `NONE` | `BLOCKED` | NO | `PLANNED` |
 | **P4** | **Wiring Duct (`TTCDUCT`)** | P2 | `PLANNED` | `NONE` | `BLOCKED` | NO | `PLANNED` |
@@ -30,7 +30,7 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 ## 2. Hard Build Gate Summary
 
 - **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
-- **Frozen Specs:** `F0 — docs/tranches/F0/SPEC.md v1.0.0`
+- **Frozen Specs:** `F0 — docs/tranches/F0/SPEC.md v1.0.0; F1 — docs/tranches/F1/SPEC.md v1.0.0`
 - **Approved Active Work Orders:** `NONE` (WO-F0-001 EXECUTED / CLOSED)
 - **Draft Work Orders:** `NONE`
 - **Production Code Status:** `F0_FROZEN` (`production/TTC.CadTools.sln` implemented at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`, 45/45 automated tests passing, 13/13 AC PASS, AutoCAD 2023 desktop validated, tranche frozen)
