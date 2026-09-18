@@ -1008,7 +1008,7 @@ Author F1 Work Order (`AUTHOR F1 WORK ORDER` based on frozen `SPEC-FOUNDATION-F1
 - **Tranche:** `F1 — Common CAD Contracts`
 - **Work Order:** `WO-F1-001` (`DRAFT / PENDING_INDEPENDENT_REVIEW`)
 - **Starting Commit:** `cf3168e87d9dafa6f0184875837893614b6bd555`
-- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Ending Commit:** `ae680f7eb6f8902be79407117703591364662d8b`
 - **Frozen Specification:** `SPEC-FOUNDATION-F1-001` v1.0.0
 - **Frozen Spec Baseline:** `7941d89abbb0c809f571b19689442a21189a5103`
 - **Upstream Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
@@ -1032,7 +1032,7 @@ Author the draft production Work Order `WO-F1-001` (`docs/tranches/F1/WORK_ORDER
 ### Execution Details
 - **Pre-Flight Verified:** Clean working tree, HEAD `cf3168e87d9dafa6f0184875837893614b6bd555`, 0 diffs on `docs/tranches/F1/SPEC.md` against frozen baseline `7941d89abbb0c809f571b19689442a21189a5103`.
 - **F0 Test Suite Verified:** `dotnet test production/TTC.CadTools.Tests/TTC.CadTools.Tests.csproj` executed: 45 passed, 0 failed, 0 skipped.
-- **Work Order Created:** `docs/tranches/F1/WORK_ORDER.md` (`WO-F1-001`, Status: `DRAFT / PENDING_INDEPENDENT_REVIEW`).
+- **Work Order Created:** `docs/tranches/F1/WORK_ORDER.md` (`WO-F1-001`, Status: `DRAFT / PENDING_INDEPENDENT_REVIEW`, Commit: `ae680f7eb6f8902be79407117703591364662d8b`).
 - **Core Governance Invariants Preserved:**
   * Execution Authorization: `NOT AUTHORIZED`
   * Production Build Authorization: `NONE`
@@ -1058,5 +1058,16 @@ Author the draft production Work Order `WO-F1-001` (`docs/tranches/F1/WORK_ORDER
 
 ### Next Required Action
 Independent Technical Review of Work Order `WO-F1-001` (`REV-WO-F1-001-001`). F1 BUILD remains strictly NOT AUTHORIZED until Work Order authorization is approved.
+
+---
+
+### Historical Session Addendum (Post-Commit Reconciliation)
+
+- **Session ID:** AG-F1-014
+- **Task ID:** F1-WORK-ORDER-AUTHORING-001
+- **Resolved Ending Commit:** `ae680f7eb6f8902be79407117703591364662d8b`
+- **Resolution Date:** 2026-09-18
+- **Recorded In:** Post-Work-Order-Authoring Continuity Reconciliation
+- **Reason:** Reconciled historical completion commit in compliance with append-only continuity rules.
 
 

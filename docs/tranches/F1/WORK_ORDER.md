@@ -12,7 +12,7 @@ Reviewer: Independent Technical Reviewer / Product Owner<br>
 Date: 2026-09-18<br>
 Frozen Spec: docs/tranches/F1/SPEC.md (v1.0.0, FROZEN)<br>
 Frozen Spec Commit: 7941d89abbb0c809f571b19689442a21189a5103<br>
-Work Order Preparation Commit: Resolve via Git commit carrying Task: F1-WORK-ORDER-AUTHORING-001, Session: AG-F1-014, Work-Order: WO-F1-001, Stage: WORK_ORDER_REVIEW_PENDING<br>
+Work Order Preparation Commit: ae680f7eb6f8902be79407117703591364662d8b<br>
 Approved Execution Baseline: NONE<br>
 Approval Authority: TTC CAD Product Owner / Operator Instruction<br>
 Approval Review: PENDING — REV-WO-F1-001-001<br>
