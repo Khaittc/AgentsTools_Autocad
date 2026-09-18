@@ -10,7 +10,10 @@ Branch:
 simulator
 
 Baseline Commit:
-aa595df1235cea56bfa0d1d5b9d4ae0f698b782d
+7941d89abbb0c809f571b19689442a21189a5103
+
+F1 Frozen Spec Baseline:
+7941d89abbb0c809f571b19689442a21189a5103 (SPEC-FOUNDATION-F1-001 v1.0.0 FROZEN)
 
 Approved Execution Baseline:
 NONE (F1 Build NOT AUTHORIZED; F0 Baseline: 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf)
@@ -20,7 +23,7 @@ Frozen Implementation Baseline:
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD contains or descends from F1 review persistence commit of task F1-R5-REVIEW-PERSISTENCE (`aa595df1235cea56bfa0d1d5b9d4ae0f698b782d`).
+Current HEAD contains or descends from F1 Spec freeze commit (`7941d89abbb0c809f571b19689442a21189a5103`).
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -129,7 +132,7 @@ Required First Reads:
 18. docs/tranches/F0/REVIEW.md
 
 Handoff Notes:
-Task PRODUCT_OWNER_F1_SPEC_FREEZE (Session AG-F1-013) executed the explicit Product Owner decision to freeze Tranche F1 Specification (SPEC-FOUNDATION-F1-001 v1.0.0):
+Task PRODUCT_OWNER_F1_SPEC_FREEZE (Session AG-F1-013) executed the explicit Product Owner decision to freeze Tranche F1 Specification (SPEC-FOUNDATION-F1-001 v1.0.0), established at frozen baseline `7941d89abbb0c809f571b19689442a21189a5103`:
 1. Verified reviewed artifact `SPEC-FOUNDATION-F1-001` v0.5.0 against reviewed commit `837e500156b3c8a0f2706265e118f52aa38e3ce6` with zero technical diffs, backed by independent review `REV-F1-SPEC-001-R5` (`PASS / PASS_FOR_FREEZE`).
 2. Promoted specification release from `CORRECTED_DRAFT` (v0.5.0) to `FROZEN` (v1.0.0) in `docs/tranches/F1/SPEC.md` under explicit Product Owner freeze authority, preserving 100% of normative technical contracts.
 3. Closed all 10 canonical issues (`ISSUE-F1-001` through `ISSUE-F1-010`) in `docs/tranches/F1/ISSUES.md` at the `SPEC_FREEZE` gate as `RESOLVED_AT_SPEC_FREEZE`; empirical runtime evidence requirements preserved under `BUILD_VALIDATION`.

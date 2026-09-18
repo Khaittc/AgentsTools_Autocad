@@ -94,6 +94,7 @@ Status: ACTIVE_GOVERNANCE
 - **Latest Spec Review:** `REV-F1-SPEC-001-R5` (`PASS / PASS_FOR_FREEZE` in [docs/tranches/F1/REVIEW.md](../docs/tranches/F1/REVIEW.md))
 - **Spec Document:** `SPEC-FOUNDATION-F1-001` (v1.0.0) ([docs/tranches/F1/SPEC.md](../docs/tranches/F1/SPEC.md))
 - **Spec Frozen:** `YES` (Frozen v1.0.0 under explicit Product Owner authorization)
+- **F1 Frozen Spec Baseline:** `7941d89abbb0c809f571b19689442a21189a5103`
 - **API Verification:** Host Evidence Preserved ([docs/tranches/F1/API_VERIFICATION.md](../docs/tranches/F1/API_VERIFICATION.md))
 - **F1 SPEC:** `FROZEN (v1.0.0)`
 - **Work Order:** `NONE`

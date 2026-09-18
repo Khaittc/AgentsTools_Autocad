@@ -18,7 +18,7 @@
 - **Spec Frozen:** `YES`
 - **Freeze Authority:** `PRODUCT OWNER`
 - **Product Owner Freeze Decision:** `APPROVED`
-- **Frozen Baseline:** PENDING (established at freeze commit)
+- **Frozen Baseline:** `7941d89abbb0c809f571b19689442a21189a5103`
 - **Work Order:** `NONE`
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`

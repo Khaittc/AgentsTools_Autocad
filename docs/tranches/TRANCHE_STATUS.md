@@ -30,7 +30,7 @@ Development Model: Spec-First Per Tranche ([TTC-GOV-001](../../governance/DECISI
 ## 2. Hard Build Gate Summary
 
 - **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
-- **Frozen Specs:** `F0 — docs/tranches/F0/SPEC.md v1.0.0; F1 — docs/tranches/F1/SPEC.md v1.0.0`
+- **Frozen Specs:** `F0 — docs/tranches/F0/SPEC.md v1.0.0 (Baseline: 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf); F1 — docs/tranches/F1/SPEC.md v1.0.0 (Baseline: 7941d89abbb0c809f571b19689442a21189a5103)`
 - **Approved Active Work Orders:** `NONE` (WO-F0-001 EXECUTED / CLOSED)
 - **Draft Work Orders:** `NONE`
 - **Production Code Status:** `F0_FROZEN` (`production/TTC.CadTools.sln` implemented at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`, 45/45 automated tests passing, 13/13 AC PASS, AutoCAD 2023 desktop validated, tranche frozen)
