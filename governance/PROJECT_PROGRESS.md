@@ -1,9 +1,9 @@
 # TTC CAD — Project Progress
 
 Development Model: SPEC-FIRST PER TRANCHE ([TTC-GOV-001](./DECISION_LOG.md))<br>
-Current Lifecycle Stage: F1 SPEC FROZEN / WORK_ORDER_PENDING<br>
+Current Lifecycle Stage: F1 WORK_ORDER_DRAFT / PENDING_INDEPENDENT_REVIEW<br>
 Current Completed Tranche: F0 — FROZEN<br>
-Current Production Focus: F1 — SPEC_FROZEN / WORK_ORDER_PENDING<br>
+Current Production Focus: F1 — WORK_ORDER_DRAFT / PENDING_INDEPENDENT_REVIEW<br>
 Status: ACTIVE_GOVERNANCE
 
 ---
@@ -77,16 +77,16 @@ Status: ACTIVE_GOVERNANCE
 - **F0 Tranche Status:** `FROZEN`
 - **Work Order:** `WO-F0-001` ([docs/tranches/F0/WORK_ORDER.md](../docs/tranches/F0/WORK_ORDER.md) — Status: `APPROVED_FOR_EXECUTION / EXECUTED (COMPLETE)`)
 - **F0 Production Mutation:** `CLOSED / REQUIRES REOPEN AUTHORITY`
-- **Current Production Focus:** `F1 — SPEC_FROZEN / WORK_ORDER_PENDING`
+- **Current Production Focus:** `F1 — WORK_ORDER_DRAFT / PENDING_INDEPENDENT_REVIEW`
 - **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
-- **Next Lifecycle Action:** `Author F1 Work Order (AUTHOR F1 WORK ORDER)`
+- **Next Lifecycle Action:** `Independent Technical Review of WO-F1-001 (REV-WO-F1-001-001)`
 
 ---
 
 ## 3.2. Tranche F1 Specification State
 
 - **Tranche:** F1 — Common CAD Contracts
-- **Lifecycle Stage:** `SPEC_FROZEN / WORK_ORDER_PENDING`
+- **Lifecycle Stage:** `WORK_ORDER_DRAFT / PENDING_INDEPENDENT_REVIEW`
 - **Status:** `FROZEN`
 - **Intake Status:** `COMPLETE / PASS_TO_DESIGN` ([docs/tranches/F1/INTAKE.md](../docs/tranches/F1/INTAKE.md))
 - **Design Status:** `COMPLETE / PASS_TO_SPEC` ([docs/tranches/F1/DESIGN.md](../docs/tranches/F1/DESIGN.md))
@@ -97,11 +97,11 @@ Status: ACTIVE_GOVERNANCE
 - **F1 Frozen Spec Baseline:** `7941d89abbb0c809f571b19689442a21189a5103`
 - **API Verification:** Host Evidence Preserved ([docs/tranches/F1/API_VERIFICATION.md](../docs/tranches/F1/API_VERIFICATION.md))
 - **F1 SPEC:** `FROZEN (v1.0.0)`
-- **Work Order:** `NONE`
+- **Work Order:** `WO-F1-001` ([docs/tranches/F1/WORK_ORDER.md](../docs/tranches/F1/WORK_ORDER.md) — Status: `DRAFT / PENDING_INDEPENDENT_REVIEW`)
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
 - **P1/P2/M&E:** `BLOCKED`
-- **Next Authorized Action:** Author F1 Work Order (`AUTHOR F1 WORK ORDER` based on frozen `SPEC-FOUNDATION-F1-001` v1.0.0)
+- **Next Authorized Action:** Independent Technical Review of Work Order `WO-F1-001` (`REV-WO-F1-001-001`). F1 BUILD remains strictly NOT AUTHORIZED until Work Order approval.
 
 ---
 
@@ -110,7 +110,7 @@ Status: ACTIVE_GOVERNANCE
 | Tranche | Capability | Dependency | Spec Status | Work Order | Build Status |
 |:---:|---|---|:---:|:---:|:---:|
 | **F0** | **AutoCAD Foundation** | Product Baseline | `FROZEN (v1.0.0)` | `EXECUTED / WO-F0-001` | `COMPLETE / FROZEN` (Baseline `9892f905...`) |
-| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `FROZEN (v1.0.0)` | `NONE` | `NOT_STARTED / NOT AUTHORIZED` (`SPEC FROZEN / WORK ORDER AUTHORING AUTHORIZED`) |
+| **F1** | **Common CAD Contracts** | F0 (SATISFIED) | `FROZEN (v1.0.0)` | `DRAFT / WO-F1-001` | `NOT_STARTED / NOT AUTHORIZED` (`WORK ORDER REVIEW PENDING`) |
 | **P1** | **Component Library** | F0, F1 | `NOT_STARTED` | `NONE` | `BLOCKED` (PLANNED / BLOCKED_BY_F1) |
 | **P2** | **Component Placement (`TTCPANELPLACE`)** | F0, F1, P1 | `DRAFT` (Awaiting Human Review) | `NONE` | `BLOCKED` (BLOCKED_BY_F1_P1) |
 | **P3..P9** | **Panel Designer Capabilities** | Upstream | `PLANNED` | `NONE` | `BLOCKED` |
@@ -122,13 +122,13 @@ Status: ACTIVE_GOVERNANCE
 
 - **Production Build Authorization:** `NONE` (F0 mutation CLOSED; F1 NOT AUTHORIZED)
 - **Approved Active Work Orders:** `NONE` (`WO-F0-001` EXECUTED / CLOSED)
-- **Draft Work Orders:** `NONE`
+- **Draft Work Orders:** `WO-F1-001 (docs/tranches/F1/WORK_ORDER.md — Status: DRAFT / PENDING_INDEPENDENT_REVIEW)`
 - **Production Code Files:** `17 .cs files across Core, Infrastructure, AutoCAD, Tests (FROZEN)`
-- **Gate Result:** `F1_SPEC_FROZEN_WORK_ORDER_PENDING`
+- **Gate Result:** `F1_WORK_ORDER_DRAFT_PENDING_INDEPENDENT_REVIEW`
 
 ### Downstream Scope Controls:
 1. F0 is complete, 13/13 AC verified PASS, reviewed PASS (`REV-F0-002-R3`), and FROZEN.
-2. Tranche F1 specification is FROZEN (`SPEC-FOUNDATION-F1-001` v1.0.0 frozen under explicit Product Owner authorization, `REV-F1-SPEC-001-R5` PASS / `PASS_FOR_FREEZE`, all 10 canonical issues resolved at `SPEC_FREEZE`). F1 Work Order authoring is authorized; BUILD remains strictly unauthorized.
+2. Tranche F1 specification is FROZEN (`SPEC-FOUNDATION-F1-001` v1.0.0 frozen under explicit Product Owner authorization, `REV-F1-SPEC-001-R5` PASS / `PASS_FOR_FREEZE`, all 10 canonical issues resolved at `SPEC_FREEZE`). Draft Work Order `WO-F1-001` authored and awaiting independent review (`REV-WO-F1-001-001`); BUILD remains strictly unauthorized.
 3. Downstream tranches (P1, P2, M&E) remain strictly locked and BLOCKED.
 
 ---
@@ -147,6 +147,6 @@ The intake, design, and feature specification authored for `TTCPANELPLACE` remai
 ## 7. Next Authorized Action
 
 **Immediate Next Authorized Action:**
-Author F1 Work Order (`AUTHOR F1 WORK ORDER` on frozen `SPEC-FOUNDATION-F1-001` v1.0.0). F1 BUILD remains strictly NOT AUTHORIZED until Work Order authorization is approved.
+Independent Technical Review of Work Order `WO-F1-001` (`REV-WO-F1-001-001`). F1 BUILD remains strictly NOT AUTHORIZED until Work Order authorization is approved.
 
 Downstream tranches (F1, P1, P2, M&E) remain strictly NOT AUTHORIZED for build. Production code mutation outside frozen F0 baseline requires explicit reopen authority.

@@ -2,7 +2,7 @@
 
 - **Tranche:** F1 — Common CAD Contracts
 - **Capability:** Common CAD Contracts & Data Abstractions
-- **Lifecycle Stage:** `SPEC_FROZEN / WORK_ORDER_PENDING`
+- **Lifecycle Stage:** `WORK_ORDER_DRAFT / PENDING_INDEPENDENT_REVIEW`
 - **Current Status:** `FROZEN`
 
 ---
@@ -19,7 +19,7 @@
 - **Freeze Authority:** `PRODUCT OWNER`
 - **Product Owner Freeze Decision:** `APPROVED`
 - **Frozen Baseline:** `7941d89abbb0c809f571b19689442a21189a5103`
-- **Work Order:** `NONE`
+- **Work Order:** `WO-F1-001 (DRAFT / PENDING_INDEPENDENT_REVIEW)` ([WORK_ORDER.md](./WORK_ORDER.md))
 - **Build:** `NOT AUTHORIZED`
 - **Production Build Authorization:** `NONE`
 - **Issue Registry:** `ISSUE-F1-001` through `ISSUE-F1-010` (10 registered; all `RESOLVED_AT_SPEC_FREEZE`) ([ISSUES.md](./ISSUES.md))
@@ -40,7 +40,7 @@ Tranche F1 establishes the common cross-feature contracts that downstream tranch
 
 ## 3. Immediate Next Authorized Action
 
-Author F1 Work Order (`AUTHOR F1 WORK ORDER` based on frozen `SPEC-FOUNDATION-F1-001` v1.0.0).
+Independent Technical Review of Work Order `WO-F1-001` (`REV-WO-F1-001-001`). F1 BUILD remains strictly NOT AUTHORIZED until Work Order approval.
 
 ---
 

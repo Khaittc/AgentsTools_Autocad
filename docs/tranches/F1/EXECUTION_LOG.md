@@ -996,4 +996,67 @@ Author F1 Work Order (`AUTHOR F1 WORK ORDER` based on frozen `SPEC-FOUNDATION-F1
 - **Recorded In:** Post-Freeze Continuity Reconciliation
 - **Reason:** Reconciled authoritative F1 frozen spec baseline and completion commit in compliance with append-only continuity rules.
 
+---
+
+## Session 2026-09-18 / AG-F1-014
+
+### Identity
+- **Agent:** Antigravity
+- **Session ID:** `AG-F1-014`
+- **Task ID:** `F1-WORK-ORDER-AUTHORING-001`
+- **Lifecycle Stage:** `WORK_ORDER_DRAFT / PENDING_INDEPENDENT_REVIEW`
+- **Tranche:** `F1 — Common CAD Contracts`
+- **Work Order:** `WO-F1-001` (`DRAFT / PENDING_INDEPENDENT_REVIEW`)
+- **Starting Commit:** `cf3168e87d9dafa6f0184875837893614b6bd555`
+- **Ending Commit:** PENDING (reconciled post-commit per governance)
+- **Frozen Specification:** `SPEC-FOUNDATION-F1-001` v1.0.0
+- **Frozen Spec Baseline:** `7941d89abbb0c809f571b19689442a21189a5103`
+- **Upstream Dependency:** `F0 — AutoCAD Foundation` (`FROZEN / SATISFIED` at baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`)
+- **Current Production Build Authorization:** `NONE`
+
+---
+
+### Objective
+Author the draft production Work Order `WO-F1-001` (`docs/tranches/F1/WORK_ORDER.md`) for Tranche F1 Common CAD Contracts based strictly on frozen specification `SPEC-FOUNDATION-F1-001` v1.0.0:
+1. Verify repository state, clean working tree, and confirm zero diff on `docs/tranches/F1/SPEC.md` against frozen baseline `7941d89abbb0c809f571b19689442a21189a5103`.
+2. Verify upstream F0 baseline by executing test runner on `production/TTC.CadTools.Tests` asserting 45/45 automated tests pass.
+3. Author `docs/tranches/F1/WORK_ORDER.md` with initial status `DRAFT / PENDING_INDEPENDENT_REVIEW`, Execution Authorization `NOT AUTHORIZED`, and Production Build Authorization `NONE`.
+4. Define all 10 core workstreams (Workstreams A through J) covering pure Core contracts, host unit resolver, authoritative metadata persistence (XRecord DXF group code 1 + XData fast-query index), schema forward compatibility (lossless unknown key preservation, `OPERATION_ABORTED_PRESERVATION_RISK`), native clone lifecycle & Category A UNDO/REDO identity invariance, audit services (`ITtcMetadataAuditService`, `IEntityIdentityAuditService`), document lifecycle & observation-only reactors, candidate reconciliation mechanisms (Mechanism A vs B), cross-DWG WBLOCK postcondition, and common block validation.
+5. Provide complete trace matrices for all 25 acceptance criteria (`AC-F1-01` to `AC-F1-25`) and all 29 tests (`TEST-F1-01` to `TEST-F1-29`), including dedicated protocols for 7 high-risk tests (`TEST-F1-09`, `TEST-F1-12`, `TEST-F1-15`, `TEST-F1-21`, `TEST-F1-26`, `TEST-F1-27`, `TEST-F1-29`).
+6. Detail 11 execution phases (Phase 0 to Phase 10), pre-flight checks, stop conditions, worker autonomy boundaries, completion packet format, and authorization blocks.
+7. Update tracking and continuity artifacts (`docs/tranches/F1/README.md`, `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, `governance/AGENT_HANDOFF.md`).
+8. Maintain strict build lock: zero production code changes, zero F0 changes, review log read-only, build NOT authorized.
+
+---
+
+### Execution Details
+- **Pre-Flight Verified:** Clean working tree, HEAD `cf3168e87d9dafa6f0184875837893614b6bd555`, 0 diffs on `docs/tranches/F1/SPEC.md` against frozen baseline `7941d89abbb0c809f571b19689442a21189a5103`.
+- **F0 Test Suite Verified:** `dotnet test production/TTC.CadTools.Tests/TTC.CadTools.Tests.csproj` executed: 45 passed, 0 failed, 0 skipped.
+- **Work Order Created:** `docs/tranches/F1/WORK_ORDER.md` (`WO-F1-001`, Status: `DRAFT / PENDING_INDEPENDENT_REVIEW`).
+- **Core Governance Invariants Preserved:**
+  * Execution Authorization: `NOT AUTHORIZED`
+  * Production Build Authorization: `NONE`
+  * Approved Execution Baseline: `NONE`
+  * Review Status: `PENDING — REV-WO-F1-001-001`
+- **Specification & Review Files Intact:** `docs/tranches/F1/SPEC.md` untouched (0 diffs); `docs/tranches/F1/REVIEW.md` kept strictly read-only.
+- **Production Code Mutation:** ZERO (`production/**` verified unmodified).
+- **Frozen F0 Status:** ZERO modifications (`docs/tranches/F0/**` verified untouched).
+- **Continuity Updated:** `docs/tranches/F1/README.md`, `docs/tranches/TRANCHE_STATUS.md`, `governance/PROJECT_PROGRESS.md`, `governance/AGENT_HANDOFF.md`.
+
+---
+
+### Downstream Tranche State
+- **F0 (AutoCAD Foundation):** `COMPLETE / FROZEN` (Baseline `9892f905d6650fdeb6cb4a98431fc8d5e17e84bf`).
+- **F1 (Common CAD Contracts):** `WORK_ORDER_DRAFT / PENDING_INDEPENDENT_REVIEW`.
+- **P1 (Component Library):** `BLOCKED_BY_F1_IMPLEMENTATION`.
+- **P2 (Component Placement):** `BLOCKED_BY_UPSTREAM`.
+- **P3..P9 (Panel Designer):** `BLOCKED`.
+- **M1..M8 (Cable Tray Designer):** `BLOCKED` (Future module).
+- **C1, C2 (Standards & Export):** `BLOCKED`.
+
+---
+
+### Next Required Action
+Independent Technical Review of Work Order `WO-F1-001` (`REV-WO-F1-001-001`). F1 BUILD remains strictly NOT AUTHORIZED until Work Order authorization is approved.
+
 
