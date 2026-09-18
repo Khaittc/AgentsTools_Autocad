@@ -10,7 +10,7 @@ Branch:
 simulator
 
 Baseline Commit:
-837e500156b3c8a0f2706265e118f52aa38e3ce6
+aa595df1235cea56bfa0d1d5b9d4ae0f698b782d
 
 Approved Execution Baseline:
 NONE (F1 Build NOT AUTHORIZED; F0 Baseline: 9892f905d6650fdeb6cb4a98431fc8d5e17e84bf)
@@ -20,7 +20,7 @@ Frozen Implementation Baseline:
 
 Repository HEAD:
 Resolve dynamically at task start using `git rev-parse HEAD`.
-Current HEAD contains or descends from F1 review persistence commit of task F1-R5-REVIEW-PERSISTENCE (`837e500156b3c8a0f2706265e118f52aa38e3ce6`).
+Current HEAD contains or descends from F1 review persistence commit of task F1-R5-REVIEW-PERSISTENCE (`aa595df1235cea56bfa0d1d5b9d4ae0f698b782d`).
 
 Development Model:
 SPEC-FIRST PER TRANCHE
@@ -126,7 +126,7 @@ Required First Reads:
 18. docs/tranches/F0/REVIEW.md
 
 Handoff Notes:
-Task F1-R5-REVIEW-PERSISTENCE (Session AG-F1-012) persisted the external independent technical review REV-F1-SPEC-001-R5 (PASS / PASS_FOR_FREEZE) issued by ChatGPT / Independent Technical Reviewer on commit 837e500156b3c8a0f2706265e118f52aa38e3ce6:
+Task F1-R5-REVIEW-PERSISTENCE (Session AG-F1-012) persisted the external independent technical review REV-F1-SPEC-001-R5 (PASS / PASS_FOR_FREEZE) issued by ChatGPT / Independent Technical Reviewer on commit 837e500156b3c8a0f2706265e118f52aa38e3ce6, recorded in commit `aa595df1235cea56bfa0d1d5b9d4ae0f698b782d`:
 1. Persisted REV-F1-SPEC-001-R5 into Section 12 of docs/tranches/F1/REVIEW.md; updated Section 1 status summary to `REVIEWED_PASS / AWAITING_PRODUCT_OWNER_FREEZE` with next action `PRODUCT_OWNER_F1_SPEC_FREEZE`; marked file read-only.
 2. Verified formal closure of all R4 findings: R4-F01 (RESOLVED — separation of entity metadata failure classifications from operation execution results, OPERATION_ABORTED_PRESERVATION_RISK, TEST-F1-29), R4-F02 (RESOLVED — citation correction and WBLOCK target DWG uniqueness postcondition), and R4-F03 (RESOLVED — accurate traceability for verified BUILD test mappings).
 3. Recorded non-blocking observations R5-O01 (Host clone-context distinction during DeepClone/WblockClone for entity metadata preservation deferred to BUILD_VALIDATION_REQUIRED) and R5-O02 (Exact error code preservation when host API throws wrapped exception deferred to BUILD_VALIDATION_REQUIRED). Disposition: NON_BLOCKING / NO_SPEC_CORRECTION_REQUIRED_BEFORE_FREEZE.
